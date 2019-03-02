@@ -128,7 +128,7 @@ public plugin_precache() {
 	spr_dot = precache_model("sprites/dot.spr")
 }
 
-public client_disconnect(player) {
+public client_disconnected(player) {
 	// aus irgend welchen Gründen ist der Spieler einfach wech........
 	if (player == editor) HideAllZones()
 }
@@ -420,7 +420,7 @@ public LoadWGZ() {
 		new Float:mins[3], Float:maxs[3], Float:pos[3]	// Größe & Position
 
 		// Zone abrufen
-		strbreak(input, data, 20, input, 999)
+		argbreak(input, data, 20, input, 999)
 		zm = -1
 		for(new i = 0; ZONEMODE:i < ZONEMODE; ZONEMODE:i++)
 		{
@@ -437,22 +437,22 @@ public LoadWGZ() {
 		}
 		
 		// Position holen
-		strbreak(input, data, 20, input, 999);	pos[0] = str_to_float(data);
-		strbreak(input, data, 20, input, 999);	pos[1] = str_to_float(data);
-		strbreak(input, data, 20, input, 999);	pos[2] = str_to_float(data);
+		argbreak(input, data, 20, input, 999);	pos[0] = str_to_float(data);
+		argbreak(input, data, 20, input, 999);	pos[1] = str_to_float(data);
+		argbreak(input, data, 20, input, 999);	pos[2] = str_to_float(data);
 		
 		// Dimensionen
-		strbreak(input, data, 20, input, 999);	mins[0] = str_to_float(data);
-		strbreak(input, data, 20, input, 999);	mins[1] = str_to_float(data);
-		strbreak(input, data, 20, input, 999);	mins[2] = str_to_float(data);
-		strbreak(input, data, 20, input, 999);	maxs[0] = str_to_float(data);
-		strbreak(input, data, 20, input, 999);	maxs[1] = str_to_float(data);
-		strbreak(input, data, 20, input, 999);	maxs[2] = str_to_float(data);
+		argbreak(input, data, 20, input, 999);	mins[0] = str_to_float(data);
+		argbreak(input, data, 20, input, 999);	mins[1] = str_to_float(data);
+		argbreak(input, data, 20, input, 999);	mins[2] = str_to_float(data);
+		argbreak(input, data, 20, input, 999);	maxs[0] = str_to_float(data);
+		argbreak(input, data, 20, input, 999);	maxs[1] = str_to_float(data);
+		argbreak(input, data, 20, input, 999);	maxs[2] = str_to_float(data);
 
 		if ((ZONEMODE:zm == ZM_CAMPING) || (ZONEMODE:zm == ZM_CAMPING_T1) || (ZONEMODE:zm == ZM_CAMPING_T2))
 		{
 			// Campertime wird immer mitgeliefert
-			strbreak(input, data, 20, input, 999)
+			argbreak(input, data, 20, input, 999)
 			ct = str_to_num(data)
 		}
 

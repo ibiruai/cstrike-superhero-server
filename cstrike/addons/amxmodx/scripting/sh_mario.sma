@@ -3,19 +3,13 @@
 /* CVARS - copy and paste to shconfig.cfg
 
 //Mario
-mario_level 0                          //What level is he avalible
-mario_maxjumps 5		               //How much jumps can he do
+mario_level 0		//What level is he avalible
+mario_maxjumps 5	//How much jumps can he do
 
 */
 
-#include <amxmod>
+#include <amxmodx>
 #include <superheromod>
-#include <Vexd_Utilities>
-
-#if defined AMX98
-        #include <xtrafun>
-        #define FL_ONGROUND (1<<9)
-#endif
 
 // VARIABLES
 new gHeroName[]="Mario"
@@ -58,7 +52,7 @@ public mario_init()
 	gHasMarioPower[id]=(hasPowers!=0)
 
 	if (gHasMarioPower[id]) {
-	       jumpnum[id] = get_cvar_num("mario_maxjumps")
+		jumpnum[id] = get_cvar_num("mario_maxjumps")
 	}
 }
 //----------------------------------------------------------------------------------------------
@@ -71,34 +65,33 @@ public client_PreThink(id)
 {
 	if (!gHasMarioPower[id] || !shModActive()) return PLUGIN_HANDLED
 	
-	new newbutton = Entvars_Get_Int(id,EV_INT_button)
-	new oldbutton = Entvars_Get_Int(id,EV_INT_oldbuttons)
-	new flags = Entvars_Get_Int(id,EV_INT_flags)
+	new newbutton = entity_get_int(id,EV_INT_button)
+	new oldbutton = entity_get_int(id,EV_INT_oldbuttons)
+	new flags = entity_get_int(id,EV_INT_flags)
 
 	if(newbutton&IN_JUMP && !(flags&FL_ONGROUND) && !(oldbutton&IN_JUMP)) {
-	      if(jumpnum[id] > 0) {
-		      gCanJump[id] = true
-		      return PLUGIN_CONTINUE
-	      }
+		if(jumpnum[id] > 0) {
+			gCanJump[id] = true
+			return PLUGIN_CONTINUE
+		}
 	}
 	if(newbutton&IN_JUMP && flags&FL_ONGROUND) {
-	      jumpnum[id] = get_cvar_num("mario_maxjumps")
-	      return PLUGIN_CONTINUE
+		jumpnum[id] = get_cvar_num("mario_maxjumps")
+		return PLUGIN_CONTINUE
 	}
 	return PLUGIN_CONTINUE
 }
-//----------------------------------------------------------------------------------------------	
+//---------------------------------------------------------------------------------------------- 	
 public client_PostThink(id)
 {
 	if(gCanJump[id]) {
-	     new Float:velocity[3]	
-	     Entvars_Get_Vector(id,EV_VEC_velocity,velocity)
-	     velocity[2] = velocity[2] + 285.0
-	     Entvars_Set_Vector(id,EV_VEC_velocity,velocity)
-	     Entvars_Set_Int(id, EV_INT_gaitsequence, 6)  //Just a jump animation
-	     gCanJump[id] = false
-	     jumpnum[id]--
-	     return PLUGIN_CONTINUE
+		new Float:velocity[3]	
+		entity_get_vector(id,EV_VEC_velocity,velocity)
+		velocity[2] = random_float(265.0,285.0)
+		entity_set_vector(id,EV_VEC_velocity,velocity)
+		gCanJump[id] = false
+		jumpnum[id]--
+		return PLUGIN_CONTINUE
 	}
 	return PLUGIN_CONTINUE
 }
@@ -109,7 +102,7 @@ public client_connect(id)
 	jumpnum[id] = 0
 }
 //----------------------------------------------------------------------------------------------
-public client_disconnect(id)
+public client_disconnected(id)
 {
 	gHasMarioPower[id] = false
 	jumpnum[id] = 0

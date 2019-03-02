@@ -1,6 +1,5 @@
-#include <amxmod.inc> 
-#include <xtrafun> 
-#include <superheromod.inc> 
+#include <amxmodx> 
+#include <superheromod>
 
 #define TE_EXPLOSION 3
 #define TE_SMOKE 5

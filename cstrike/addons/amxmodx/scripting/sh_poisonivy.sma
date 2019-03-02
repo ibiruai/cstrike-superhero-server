@@ -35,7 +35,7 @@ poisonivy_self 1		//Can users with Poison Ivy be infected, 0=no 1=yes
 *    Hero orginally created by AssKicR
 */
 
-#include <amxmod>
+#include <amxmodx>
 #include <superheromod>
 
 // GLOBAL VARIABLES
@@ -241,7 +241,7 @@ public client_connect(id)
 	reset_poisoned(id)
 }
 //----------------------------------------------------------------------------------------------
-public client_disconnect(id)
+public client_disconnected(id)
 {
 	remove_poison(id)
 
