@@ -4,6 +4,7 @@
 #include <fakemeta>
 
 #define BOTSPEC			3
+#define MAXSLOTS		32
 
 new bots
 
@@ -52,10 +53,10 @@ podbot_check()
 	
 	switch (humans)
 	{
-		case 0..1:  bots = 3
-		case 2:     bots = 2
-		case 3:     bots = 1
-		case 4..32: bots = 0
+		case 0..1:	bots = 3
+		case 2:		bots = 2
+		case 3:		bots = 1
+		default:	bots = 0
 	}
 	
 	set_cvar_num("pb_maxbots", bots)
@@ -89,7 +90,7 @@ public logevent_round_start()
 	
 	// Имеются лишние подботы - Это следует исправить
 	
-	new bots[32], num
+	new bots[MAXSLOTS], num
 		
 	if ( bot_numT )
 		get_players_ex(bots, num, GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "TERRORIST")
@@ -111,39 +112,60 @@ public logevent_round_start()
 
 public logevent_round_end()
 {
-	if (get_playing_humans_num() >= 3)	// PTB is working
-		return
-		
-	new numCT = get_playersnum_ex(GetPlayers_MatchTeam, "CT")
-	new numT =  get_playersnum_ex(GetPlayers_MatchTeam, "TERRORIST")
+	// Конец раунда. Проверим баланс команд.
 	
-	if ( numCT + numT != 4 || numCT == numT ) return
+	if (get_playing_humans_num() >= 3)	// Работает плагин PTB.
+		return							// Не будем ему мешать.
 	
-	new bots[32], num
-	if ( numCT < numT )
+	// Подсчитаем количество CT и T
+	new players[MAXSLOTS], num, numCT, numT, i
+	numCT = 0
+	numT  = 0
+	get_players_ex(players, num, GetPlayers_ExcludeHLTV)
+	for (i = 0; i < num; i++)
 	{
-		if ( get_playersnum_ex(GetPlayers_ExcludeAlive | GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "TERRORIST") == 0 )
-			get_players_ex(bots, num, GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "TERRORIST")
-		else
-			get_players_ex(bots, num, GetPlayers_ExcludeAlive | GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "TERRORIST")
-	}
-	else
-	{
-		if ( get_playersnum_ex(GetPlayers_ExcludeAlive | GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "CT") == 0 )
-			get_players_ex(bots, num, GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "CT")
-		else
-			get_players_ex(bots, num, GetPlayers_ExcludeAlive | GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "CT")
+        switch( cs_get_user_team(players[i]) )
+        {
+            case CS_TEAM_T:  numT++
+            case CS_TEAM_CT: numCT++
+        }
 	}
 	
-	if ( num == 0 ) return
-	 
-	new bot_id = bots[0]
-	new bot_name[33]
-	get_user_name(bot_id, bot_name, 32)	
+	if ( numCT + numT != 4 || numCT == numT ) // Игроков не 4 или команды равны?
+		return								  // Тогда ничего не делаем.
 	
-	//if ( is_user_alive(bot_id) )
-	//	user_kill(bot_id)
+	// Найдём бота, которого будем перемещать
+	new bot_id = 0
+	for (i = 0; i < num; i++)
+	{
+		if ( !is_user_bot(players[i]) )
+			continue
+
+		if ( numCT < numT )
+		{
+			if ( cs_get_user_team(players[i]) == CS_TEAM_T )
+			{	
+				bot_id = players[i]
+				// Если бот мёртв, то прекращаем поиски - Мы нашли лучшего кандидата
+				if ( !is_user_alive(bot_id) )
+					break
+			}
+		}
+		else
+		{
+			if ( cs_get_user_team(players[i]) == CS_TEAM_CT )
+			{	
+				bot_id = players[i]
+				if ( !is_user_alive(bot_id) )
+					break
+			}			
+		}
+	}
+
+	if ( bot_id == 0 )
+		return // Не получилось найти бота
 	
+	// Выполняем перемещение
 	if ( numCT < numT )
 	{
 		cs_set_user_team(bot_id, CS_TEAM_CT)
@@ -183,7 +205,7 @@ public spectators_check()
 		return										 // Тогда продолжать не нужно.
 	
 	// Убираем всех ботов-зрителей с сервера командой kick
-	new bots_spectators[32], num, name[33]
+	new bots_spectators[MAXSLOTS], num, name[33]
 	get_players_ex(bots_spectators, num, GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "SPECTATOR")
 	for (i = 0; i < num; i++)
 	{
