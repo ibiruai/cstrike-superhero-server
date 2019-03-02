@@ -36,6 +36,9 @@ catwoman_minrounds 5		//Min rounds to wait until you can sneak, no matter your l
 
 */
 
+#define PHOENIX_FIX 1	// I don't want it to work in the middle of a round
+						// when player was revived by PHOENIX or Grandmaster! (evileye)
+
 #include <amxmodx>
 #include <cstrike>
 #include <engine>
@@ -43,16 +46,20 @@ catwoman_minrounds 5		//Min rounds to wait until you can sneak, no matter your l
 //ok happy now jtp? lol
 
 // GLOBAL VARIABLES
+new gHeroID
 new gHeroName[]="Catwoman"
 new bool:gHasCatWomanPowers[SH_MAXSLOTS+1]
 new bool:gCatWomanmns[SH_MAXSLOTS+1] = true //im using mns = message not shown, im doing this because of the double respawn
 new bool:gCatWomanSneak[SH_MAXSLOTS+1]
 new bool:spawnPointsused[2][SH_MAXSLOTS+1]
-new gPlayerLevels[SH_MAXSLOTS+1]
+// new gPlayerLevels[SH_MAXSLOTS+1]
 new catround[SH_MAXSLOTS+1]
 new spawnEntString[2][] = {"info_player_deathmatch", "info_player_start"}
 new CTSkins[4][10] = {"sas", "gsg9", "urban", "gign"}
 new TSkins[4][10] = {"arctic", "leet", "guerilla", "terror"}
+#if PHOENIX_FIX
+new bool:CatWomanAllowed = false
+#endif
 //----------------------------------------------------------------------------------------------
 public plugin_init()
 {
@@ -69,7 +76,7 @@ public plugin_init()
 	register_cvar("catwoman_minrounds", "5")
 
 	// FIRE THE EVENT TO CREATE THIS SUPERHERO!
-	shCreateHero(gHeroName, "Sneak Into Enemies Base", "Chance Of Sneaking Into Enemies Base", false, "catwoman_level")
+	gHeroID = shCreateHero(gHeroName, "Sneak Into Enemies Base", "Chance Of Sneaking Into Enemies Base", false, "catwoman_level")
 
 	// REGISTER EVENTS THIS HERO WILL RESPOND TO! (AND SERVER COMMANDS)
 	// INIT
@@ -80,9 +87,29 @@ public plugin_init()
 	register_event("ResetHUD", "newSpawn", "b")
 
 	// LEVELS
+	/*
 	register_srvcmd("catwoman_levels", "catwoman_levels")
 	shRegLevels(gHeroName,"catwoman_levels")
+	*/
+	
+	#if PHOENIX_FIX
+	register_logevent("logevent_round_start", 2, "1=Round_Start")
+	register_logevent("logevent_round_end", 2, "1=Round_End")  
+	#endif
 }
+//----------------------------------------------------------------------------------------------
+#if PHOENIX_FIX
+public logevent_round_start()
+{
+	// Freeze Time end
+	CatWomanAllowed = false
+}
+//----------------------------------------------------------------------------------------------
+public logevent_round_end()
+{
+	CatWomanAllowed = true
+}
+#endif
 //----------------------------------------------------------------------------------------------
 public catwoman_init()
 {
@@ -96,8 +123,12 @@ public catwoman_init()
 	new hasPowers = str_to_num(temp)
 
 	gHasCatWomanPowers[id] = (hasPowers!=0)
+	
+	if ( !is_user_connected(id) ) return
+	cs_reset_user_model(id)
 }
 //----------------------------------------------------------------------------------------------
+/*
 public catwoman_levels()
 {
 	new id[5]
@@ -108,10 +139,15 @@ public catwoman_levels()
 
 	gPlayerLevels[str_to_num(id)] = str_to_num(lev)
 }
+*/
 //----------------------------------------------------------------------------------------------
 public newSpawn(id)
 {
+	#if PHOENIX_FIX 
+	if ( gHasCatWomanPowers[id] && is_user_alive(id) && shModActive() && CatWomanAllowed )
+	#else
 	if ( gHasCatWomanPowers[id] && is_user_alive(id) && shModActive() )
+	#endif
 	{
 		if ( get_cvar_float("catwoman_change") > 0.0 )
 			cs_reset_user_model(id)
@@ -119,7 +155,7 @@ public newSpawn(id)
 		if ( get_cvar_num("catwoman_mode") == 1 )
 		{
 			new randNum = random_num(0, 100)
-			new level = floatround(gPlayerLevels[id] * get_cvar_float("catwoman_pctperlev") * 100)
+			new level = floatround(/* gPlayerLevels[id] * */ get_cvar_float("catwoman_pctperlev") * 100)
 			if ( level > randNum )
 				gCatWomanSneak[id] = true
 		}
@@ -132,10 +168,10 @@ public newSpawn(id)
 
 			new sneakLevel, max = get_cvar_num("catwoman_maxrounds"), min = get_cvar_num("catwoman_minrounds")
 
-			if ( max - gPlayerLevels[id] < min )
+			if ( max /* - gPlayerLevels[id] */ < min )
 				sneakLevel = min
 			else
-				sneakLevel = max - gPlayerLevels[id]
+				sneakLevel = max /* - gPlayerLevels[id] */
 
 			catround[id] += 1
 			if ( catround[id] >= sneakLevel )
@@ -195,7 +231,7 @@ public catwoman_sneak(id)
 	if ( !entSpawn )
 	{
 		// Didn't find a free spawn spot. Quit...
-		client_print(id, print_chat, "[SH](%s) No opening to sneak through.", gHeroName)
+		sh_chat_message(id, gHeroID, "%L", id, "CATWOMAN_NO_FREE_SPAWN_SPOT")
 		return
 	}
 
@@ -224,7 +260,7 @@ public catwoman_sneak(id)
 	entity_set_int(id, EV_INT_fixangle, 1)
 	entity_set_vector(id, EV_VEC_angles, spawnAngle)
 
-	client_print(id, print_chat, "[SH](%s) You snuck into the enemy base.", gHeroName)
+	sh_chat_message(id, gHeroID, "%L", id, "CATWOMAN_YOU_SNUCK_INTO")
 
 	sh_screenShake(id, 14, 14, 14)
 
@@ -288,12 +324,13 @@ find_free_spawn(spawnType, Float:spawnOrigin[3], Float:spawnAngle[3])
 //----------------------------------------------------------------------------------------------
 public catwoman_changeback(id)
 {
-	if ( !is_user_alive(id) )
+	if ( !is_user_alive(id) || !is_user_connected(id) )
 		return
 
 	cs_reset_user_model(id)
 
-	client_print(id, print_chat, "[SH](%s) You have taken off your sneaking outfit.", gHeroName)
+	sh_chat_message(id, gHeroID, "%L", id, "CATWOMAN_YOU_HAVE_TAKEN_OFF_OUTFIT")
+	
 }
 //----------------------------------------------------------------------------------------------
 public client_connect(id)
