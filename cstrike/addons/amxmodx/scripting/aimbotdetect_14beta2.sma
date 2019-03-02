@@ -299,6 +299,7 @@ new bool:g_bAdminNotify[ 33 ]	//Set to true for admins with NOTIFY access @ clie
 new bool:g_bShootsBlanks[ 33 ]	//Set to true if player shoots blanks
 new g_NumShootsBlanks		//Stores # of players who currently shoot blanks. Used to enable\disable traceline forward
 new g_BodyHits[ 33 ][ 33 ]	//For fm_set_user_hitzones
+new bool:isBot[ 33 ] = false
 
 new const MaxClipAmmo[ CSW_P90 + 1 ] =
 {
@@ -445,6 +446,8 @@ public client_putinserver( id )
 {	
 	if ( !get_pcvar_num( g_pEnabled ) || is_user_bot( id ) )
 		return PLUGIN_CONTINUE
+	
+	isBot[id] = false
 
 	if ( !g_bModSet && get_pcvar_num( g_pAutoWatch ) )
 	{
@@ -489,7 +492,7 @@ public client_putinserver( id )
 	return PLUGIN_CONTINUE
 }
 
-public client_disconnect( id )
+public client_disconnected( id )
 {
 	if ( !get_pcvar_num( g_pEnabled ) || is_user_bot( id ) )
 		return PLUGIN_CONTINUE
@@ -682,11 +685,19 @@ public AddBot()
 	return PLUGIN_HANDLED
 }
 
+public aimbotdetect_bot_check(id)
+{
+	return isBot[id]
+}
 
 public RemoveBot() 
 {
 	if ( !g_BotID )
 		return PLUGIN_HANDLED
+	
+	set_cvar_num( "pb_maxbots", get_cvar_num("pb_maxbots") - 1 )
+	
+	isBot[g_BotID] = false
 	
 	new iDetectMethod = get_pcvar_num( g_pDetectMethod )
 	new Float: fTotalDetectPoints
@@ -1226,6 +1237,8 @@ public fw_HamKilled(victim, killer, shouldgib)
 			
 		return HAM_IGNORED
 	}
+	
+	set_cvar_num( "pb_maxbots", get_cvar_num("pb_maxbots") + 1 )
 
 	AddBot()
 
@@ -1235,9 +1248,13 @@ public fw_HamKilled(victim, killer, shouldgib)
 		//Error spawning bot
 		if ( get_pcvar_num( g_pVerboseMode ) == VERBOSE_3 )	
 			PrintColorMsg( 0 , NORMAL_MSG , "%L" , LANG_PLAYER , "AIMBOTDETECT_ERRORBOT" )
+		
+		set_cvar_num( "pb_maxbots", get_cvar_num("pb_maxbots") - 1 )
 			
 		return HAM_IGNORED
 	}
+	
+	isBot[g_BotID] = true
 	
 	//Reset our hit\aim counters
 	g_HitPoints = 0
