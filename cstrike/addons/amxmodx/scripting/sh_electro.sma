@@ -20,6 +20,15 @@ electro_jumpradius 500		//Radius to search for a lightning jump (Default 500)
 *   Originally commented with "WC3 Chain Lightning Ripoff :D".
 */
 
+//---------- User Changeable Defines --------//
+
+
+// 1 = send another plugins information about cooldown, 0 = don't send
+#define SEND_COOLDOWN 1
+
+
+//------- Do not edit below this point ------//
+
 #include <superheromod>
 
 #define LINE_WIDTH 80
@@ -33,6 +42,9 @@ new const gSoundSearch[] = "turret/tu_ping.wav"
 new const gSoundLightning[] = "weapons/gauss2.wav"
 new gSpriteLightning
 new gPcvarCooldown, gPcvarSearchTime, gPcvarMaxDamage, gPcvarJumpDecay, gPcvarJumpRadius
+#if SEND_COOLDOWN
+new Float:PowerUsedTime[SH_MAXSLOTS+1]
+#endif
 //----------------------------------------------------------------------------------------------
 public plugin_init()
 {
@@ -62,6 +74,18 @@ public plugin_precache()
 	gSpriteLightning = precache_model("sprites/lgtning.spr")
 }
 //----------------------------------------------------------------------------------------------
+#if SEND_COOLDOWN
+public sendElectroCooldown(id)
+{
+	new cooldown
+	if (gPlayerInCooldown[id])
+		cooldown = floatround( get_pcvar_num(gPcvarCooldown) - get_gametime() + PowerUsedTime[id] + 0.4 )
+	else
+		cooldown = -1
+	return cooldown
+}
+#endif
+//----------------------------------------------------------------------------------------------
 public sh_hero_init(id, heroID, mode)
 {
 	if ( gHeroID != heroID ) return
@@ -83,10 +107,15 @@ public sh_hero_key(id, heroID, key)
 	if ( gHeroID != heroID || sh_is_freezetime() ) return
 	if ( !is_user_alive(id) || !gHasElectro[id] ) return
 
-	if ( gIsSearching[id] ) return
-
 	if ( key == SH_KEYDOWN )
 	{
+		if ( gIsSearching[id] )
+		{
+			remove_task(id)
+			gIsSearching[id] = false
+			return
+		}
+	
 		// Let them know they already used their ultimate if they have
 		if ( gPlayerInCooldown[id] )
 		{
@@ -150,6 +179,10 @@ public fm_TraceLine(Float:v1[3], Float:v2[3], const noMonsters, const pentToSkip
 
 	new Float:seconds = get_pcvar_float(gPcvarCooldown)
 	if ( seconds > 0.0 ) sh_set_cooldown(pentToSkip, seconds)
+		
+	#if SEND_COOLDOWN
+	PowerUsedTime[pentToSkip] = get_gametime()
+	#endif
 
 	gIsSearching[pentToSkip] = false
 

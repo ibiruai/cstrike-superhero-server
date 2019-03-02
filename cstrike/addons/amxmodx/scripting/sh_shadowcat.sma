@@ -10,6 +10,17 @@ shadowcat_cliptime 6		//# of seconds Shadowcat has in noclip mode.
 
 */
 
+// 23 dec 2018 - Evileye - sendShadowcatCooldown() added to tell another plugins information about cooldown
+
+//---------- User Changeable Defines --------//
+
+
+// 1 = send another plugins information about cooldown, 0 = don't send
+#define SEND_COOLDOWN 1
+
+
+//------- Do not edit below this point ------//
+
 #include <superheromod>
 
 // GLOBAL VARIABLES
@@ -20,6 +31,10 @@ new gShadowcatTimer[SH_MAXSLOTS+1]
 new const gSoundShadowcat[] = "ambience/alien_zonerator.wav"
 new gPcvarCooldown, gPcvarClipTime
 new gMsgSync
+
+#if SEND_COOLDOWN
+	new Float:ShadowcatUsedTime[SH_MAXSLOTS+1]
+#endif
 //----------------------------------------------------------------------------------------------
 public plugin_init()
 {
@@ -41,6 +56,18 @@ public plugin_init()
 
 	gMsgSync = CreateHudSyncObj()
 }
+//----------------------------------------------------------------------------------------------
+#if SEND_COOLDOWN
+public sendShadowcatCooldown(id)
+{
+	new cooldown
+	if (gPlayerInCooldown[id])
+		cooldown = floatround( get_pcvar_num(gPcvarCooldown) + get_pcvar_num(gPcvarClipTime) - get_gametime() + ShadowcatUsedTime[id] + 0.4 )
+	else
+		cooldown = -1
+	return cooldown
+}
+#endif
 //----------------------------------------------------------------------------------------------
 public plugin_precache()
 {
@@ -94,18 +121,21 @@ public sh_hero_key(id, heroID, key)
 
 		//If the user already has noclip (prob from another hero) cancel this keydown
 		if ( get_user_noclip(id) ) {
-			sh_chat_message(id, gHeroID, "You are already using noclip")
+			sh_chat_message(id, gHeroID, "%L", id, "SHADOWCAT_NOCLIP_ALREADY")
 			sh_sound_deny(id)
 			return
 		}
 
 		gShadowcatTimer[id] = get_pcvar_num(gPcvarClipTime)
+		#if SEND_COOLDOWN
+			ShadowcatUsedTime[id] = get_gametime()
+		#endif
 
 		set_user_noclip(id, 1)
 
 		// Shadowcat Messsage
 		set_hudmessage(255, 0, 0, -1.0, 0.3, 0, 0.25, 1.2, 0.0, 0.0, -1)
-		ShowSyncHudMsg(id, gMsgSync, "Entered %s Mode^nDon't get Stuck or you will die", gHeroName)
+		ShowSyncHudMsg(id, gMsgSync, "%L", id, "SHADOWCAT_USED", gHeroName)
 
 		emit_sound(id, CHAN_STATIC, gSoundShadowcat, 0.2, ATTN_NORM, 0, PITCH_LOW)
 	}
@@ -125,7 +155,7 @@ public shadowcat_loop()
 			noclipTime = gShadowcatTimer[player]
 			if ( noclipTime > 0 ) {
 				set_hudmessage(255, 0, 0, -1.0, 0.3, 0, 1.0, 1.2, 0.0, 0.0, -1)
-				ShowSyncHudMsg(player, gMsgSync, "%d second%s left of %s Mode^nDon't get Stuck or you will Die", noclipTime, noclipTime == 1 ? "" : "s", gHeroName)
+				ShowSyncHudMsg(player, gMsgSync, "%L", player, "SHADOWCAT_TIME_LEFT", noclipTime, noclipTime == 1 ? "" : "s", gHeroName)
 
 				gShadowcatTimer[player]--
 			}

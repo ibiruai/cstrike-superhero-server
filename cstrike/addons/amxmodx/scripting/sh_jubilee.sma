@@ -11,7 +11,16 @@ jubilee_flash 10				//give her free flashbangs? 0=no. 1+ = time delay
 
 */
 
-#include <amxmod>
+//---------- User Changeable Defines --------//
+
+
+// 1 = send another plugins information about cooldown, 0 = don't send
+#define SEND_COOLDOWN 1
+
+
+//------- Do not edit below this point ------//
+
+#include <amxmodx>
 #include <superheromod>
 
 new gHeroName[]="Jubilee"
@@ -19,6 +28,10 @@ new gmsgScreenFade, gBrightness
 new bool:gHasJubileePower[SH_MAXSLOTS+1]
 new bool:gUsingShades[SH_MAXSLOTS+1]
 #define AMMOX_FLASHBANG 11
+new gPcvarCooldown
+#if SEND_COOLDOWN
+new Float:PowerUsedTime[SH_MAXSLOTS+1]
+#endif
 //----------------------------------------------------------------------------------------------
 public plugin_init()
 {
@@ -29,7 +42,7 @@ public plugin_init()
 	register_cvar("jubilee_level", "5")
 	register_cvar("jubilee_time", "10")
 	register_cvar("jubilee_brightness", "50")
-	register_cvar("jubilee_cooldown", "30")
+	gPcvarCooldown = register_cvar("jubilee_cooldown", "30")
 	register_cvar("jubilee_flash", "10")
 
 	// FIRE THE EVENT TO CREATE THIS SUPERHERO!
@@ -78,6 +91,18 @@ public jubilee_init()
 	if (gBrightness > 200) gBrightness = 200
 }
 //----------------------------------------------------------------------------------------------
+#if SEND_COOLDOWN
+public sendJubileeCooldown(id)
+{
+	new cooldown
+	if (gPlayerInCooldown[id])
+		cooldown = floatround( get_pcvar_num(gPcvarCooldown) - get_gametime() + PowerUsedTime[id] + 0.4 )
+	else
+		cooldown = -1
+	return cooldown
+}
+#endif
+//----------------------------------------------------------------------------------------------
 public jubilee_kd()
 {
 	// First Argument is an id with Jubilee Powers!
@@ -90,14 +115,27 @@ public jubilee_kd()
 		playSoundDenySelect(id)
 		return PLUGIN_HANDLED
 	}
-
+	/*
 	new Float:JubileeCooldown = get_cvar_float("jubilee_cooldown")
 	if ( JubileeCooldown > 0.0 )ultimateTimer(id, JubileeCooldown )
+	*/	
 
 	gUsingShades[id] = true
 	set_task(get_cvar_float("jubilee_time"),"shades_off",id)
+	set_task(get_cvar_float("jubilee_time"),"shades_cooldown",id)
 
 	return PLUGIN_HANDLED
+}
+//----------------------------------------------------------------------------------------------
+public shades_cooldown(id)
+{
+	
+	new Float:JubileeCooldown = get_cvar_float("jubilee_cooldown")
+	if ( JubileeCooldown > 0.0 )ultimateTimer(id, JubileeCooldown )
+	
+	#if SEND_COOLDOWN
+	PowerUsedTime[id] = get_gametime()
+	#endif	
 }
 //----------------------------------------------------------------------------------------------
 public shades_off(id)
@@ -132,6 +170,7 @@ public newRound(id)
 	gUsingShades[id] = false
 
 	if (gHasJubileePower[id]) {
+		remove_task(id)
 		shades_off(id)
 		give_flash(id)
 	}

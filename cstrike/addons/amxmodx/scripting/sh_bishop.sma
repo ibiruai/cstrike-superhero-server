@@ -12,6 +12,11 @@ bishop_blastmult 2.50	//Energy absorbed X this cvar = damage that Energy Blast d
 */
 
 /*
+* 23 dec 2018 - Evileye
+*      - sendAbsorbedDamage(id) added to tell another plugins how many energy is absorbed
+*      - SHOW_HUD_MESSAGE added to disable hudmessage
+*      - Plugin now uses sh_chat_message() instead of client_print()
+*      - Bishop users may damage themselves too even if FF is off
 * v1.1 - vittu - 12/28/05
 *      - Cleaned up code.
 *      - Changed look and color of energy blast and hud message a bit.
@@ -20,10 +25,23 @@ bishop_blastmult 2.50	//Energy absorbed X this cvar = damage that Energy Blast d
 *
 */
 
-#include <amxmod>
+//---------- User Changeable Defines --------//
+
+
+// 1 = show hudmessage, 0 = don't show
+#define SHOW_HUD_MESSAGE 0
+
+// 1 = send another plugins how many energy is absorbed, 0 = don't send
+#define SEND_ENERGY 1
+
+
+//------- Do not edit below this point ------//
+
+#include <amxmodx>
 #include <superheromod>
 
 // GLOBAL VARIABLES
+new gHeroID
 new g_heroName[]="Bishop"
 new bool:g_hasBishop[SH_MAXSLOTS+1]
 new g_absorbedDamage[SH_MAXSLOTS+1]
@@ -41,7 +59,7 @@ public plugin_init()
 	register_cvar("bishop_blastmult", "2.50")
 
 	// FIRE THE EVENT TO CREATE THIS SUPERHERO!
-	shCreateHero(g_heroName, "Absorb Energy", "Absorb Damage and use it with your weapons! Or release all energy to deal even more damage.", true, "bishop_level")
+	gHeroID = shCreateHero(g_heroName, "Absorb Energy", "Absorb Damage and use it with your weapons! Or release all energy to deal even more damage.", true, "bishop_level")
 
 	// REGISTER EVENTS THIS HERO WILL RESPOND TO! (AND SERVER COMMANDS)
 	// INIT
@@ -59,8 +77,17 @@ public plugin_init()
 	register_event("Damage", "bishop_damage", "b", "2!0")
 
 	// LOOP
+	#if SHOW_HUD_MESSAGE
 	set_task(1.0, "bishop_loop", 0, "", 0, "b")
+	#endif
 }
+//----------------------------------------------------------------------------------------------
+#if SEND_ENERGY
+public sendAbsorbedDamage(id)
+{
+    return g_absorbedDamage[id]
+}
+#endif
 //----------------------------------------------------------------------------------------------
 public plugin_precache()
 {
@@ -101,7 +128,7 @@ public bishop_kd()
 
 	// Let them know if they have no energy
 	if ( g_absorbedDamage[id] <= 0 ) {
-		client_print(id, print_chat, "[SH](Bishop) You have NO energy left in reserve!")
+		sh_chat_message(id, gHeroID, "%L", id, "BISHOP_NO_ENERGY_LEFT")
 		playSoundDenySelect(id)
 		return
 	}
@@ -109,17 +136,19 @@ public bishop_kd()
 	release_energy(id)
 }
 //----------------------------------------------------------------------------------------------
+#if SHOW_HUD_MESSAGE
 public bishop_loop()
 {
 	for (new id = 1; id <= SH_MAXSLOTS; id++) {
 		if ( g_hasBishop[id] && is_user_alive(id) ) {
 			new message[128]
-			format(message, 127, "Total Energy Absorbed: %i", g_absorbedDamage[id])
+			format(message, 127, "L", id, "BISHOP_ENERGY_ABSORBED_TOTAL", g_absorbedDamage[id])
 			set_hudmessage(50, 50, 255, -1.0, 0.10, 0, 1.0, 1.0, 0.0, 0.0, 4)
 			show_hudmessage(id, message)
 		}
 	}
 }
+#endif
 //----------------------------------------------------------------------------------------------
 public bishop_damage(id)
 {
@@ -135,7 +164,7 @@ public bishop_damage(id)
 		new damageAbsorbed = floatround(get_cvar_float("bishop_absorbmult") * damage)
 		g_absorbedDamage[id] += damageAbsorbed
 
-		client_print(id, print_center, "You absorbed %d energy points", damageAbsorbed)
+		client_print(id, print_center, "%L", id, "BISHOP_ENERGY_ABSORBED", damageAbsorbed)
 
 		// Screen Flash To Acknowledge damage has been absorbed
 		new alphanum = damage * 2
@@ -173,7 +202,8 @@ public release_energy(id)
 	beam_effects(id, userAim)
 
 	for (new vic = 1; vic <= SH_MAXSLOTS; vic++) {
-		if ( is_user_alive(vic) && ( get_user_team(id) != get_user_team(vic) || FFOn ) ) {
+		// Now users damage themselves too
+		if ( is_user_alive(vic) && ( get_user_team(id) != get_user_team(vic) || FFOn || vic == id ) ) {
 
 			get_user_origin(vic, vicOrigin)
 
@@ -185,10 +215,10 @@ public release_energy(id)
 	}
 
 	if ( hit[id] ) {
-		client_print(id, print_chat, "[SH](Bishop) ENERGY BLAST of %d Hit Points", blastDamage)
+		sh_chat_message(id, gHeroID, "%L", id, "BISHOP_BLAST_DAMAGE_DEALT", blastDamage)
 	}
 	else {
-		client_print(id, print_chat, "[SH](Bishop) Your Energy Blast MISSED!")
+		sh_chat_message(id, gHeroID, "%L", id, "BISHOP_BLAST_MISSED")
 	}
 
 	g_absorbedDamage[id] = 0
