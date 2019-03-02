@@ -15,6 +15,12 @@ alien_knifemode 0	//1-knife only can't change weapons, 0-Alien Vision on only wh
 */
 
 /*
+* 24 dec 2018 - evileye <http://evileye.eu.org>
+*      - BOTS_NOT_ALLOWED 1 prevents bots from becoming invisible
+*      - WORKS_WITH_BOMB 1 allows Alien use bomb when alien_knifemode is 1
+*      - Different description if alien_knifemode is 1
+* 
+* 
 * v1.5 - vittu - 6/27/06
 *      - Updated to amxmodx only, requires amxx 1.70 or higher.
 *      - Plus other minor code changes.
@@ -32,6 +38,18 @@ alien_knifemode 0	//1-knife only can't change weapons, 0-Alien Vision on only wh
 *         old version was knife only.
 *
 */
+
+//---------- User Changeable Defines --------//
+
+
+// 0 = Bots will become invisible, 1 = Bots can't be invisible
+#define BOTS_NOT_ALLOWED 1
+
+// 0 = Alien can't use bomb when alien_knifemode is 1, 1 = Alien can use bomb when alien_knifemode is 1
+#define WORKS_WITH_BOMB 1
+
+
+//------- Do not edit below this point ------//
 
 #include <amxmodx>
 #include <superheromod>
@@ -59,7 +77,10 @@ public plugin_init()
 	CvarMode = register_cvar("alien_knifemode", "0")
 
 	// FIRE THE EVENT TO CREATE THIS SUPERHERO!
-	shCreateHero(HeroName, "Alien Vision", "Get Alien Vision and Invisibility when using Knife", false, "alien_level")
+	if ( get_pcvar_num(CvarMode) )
+		shCreateHero(HeroName, "Alien Vision", "Get Alien Vision and Invisibility - You can use only knife", false, "alien_level")
+	else
+		shCreateHero(HeroName, "Alien Vision", "Get Alien Vision and Invisibility when using Knife", false, "alien_level")
 
 	// REGISTER EVENTS THIS HERO WILL RESPOND TO! (AND SERVER COMMANDS)
 	// INIT
@@ -123,6 +144,10 @@ public weapon_change(id)
 {
 	if ( !shModActive() || !is_user_alive(id) || !HasAlien[id] )
 		return
+	
+	#if BOTS_NOT_ALLOWED
+		if (is_user_bot(id)) return
+	#endif
 
 	//new wpnid = read_data(2)
 	// Do it this way since this might be called on alien_init or reset hud
@@ -132,7 +157,12 @@ public weapon_change(id)
 	{
 		case CSW_KNIFE:
 			alien_vision_on(id)
-
+		
+		#if WORKS_WITH_BOMB
+		case CSW_C4:
+			if ( get_pcvar_num(CvarMode) ) alien_vision_on(id)
+		#endif
+		
 		default:
 		{
 			// Force knife only or not?
