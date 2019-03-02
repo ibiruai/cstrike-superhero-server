@@ -10,6 +10,19 @@ daredevil_bright 192		//How bright to make the rings
 
 */
 
+// 25 dec 2018 - Evileye - Spectators see the rings too if they are spectating a player who has Daredevil. You can change this with SPECTATORS_SEE_RINGS 0/1. More people will find out about this useful hero now.
+
+//---------- User Changeable Defines --------//
+
+
+// 1 = show spectators the rings, 0 = don't show
+#define SPECTATORS_SEE_RINGS 1
+
+#define AIMBOTDETECT 1
+
+
+//------- Do not edit below this point ------//
+
 #include <superheromod>
 
 // GLOBAL VARIABLES
@@ -18,6 +31,9 @@ new const gHeroName[] = "Daredevil"
 new bool:gHasDaredevil[SH_MAXSLOTS+1]
 new gSpriteWhite
 new gPcvarRadius, gPcvarBright
+#if AIMBOTDETECT
+new AimbotDetectForward
+#endif
 //----------------------------------------------------------------------------------------------
 public plugin_init()
 {
@@ -35,6 +51,10 @@ public plugin_init()
 
 	// ESP Rings Task
 	set_task(2.0, "daredevil_esploop", _, _, _, "b")
+	
+	#if AIMBOTDETECT
+	AimbotDetectForward = CreateMultiForward("aimbotdetect_bot_check", ET_CONTINUE, FP_CELL)
+	#endif
 }
 //----------------------------------------------------------------------------------------------
 public plugin_precache()
@@ -64,15 +84,39 @@ public daredevil_esploop()
 
 	get_players(players, playerCount, "ah")
 
+#if SPECTATORS_SEE_RINGS
+	static allPlayers[SH_MAXSLOTS], allPlayerCount, specPlayer
+	get_players(allPlayers, allPlayerCount, "h") // Flag "a" means alive. Spectators and dead players are not alive
+	
+	for ( i = 0; i < allPlayerCount; i++ ) {
+		player = allPlayers[i]
+		
+		// Who is the id specing
+		specPlayer = pev(player, pev_iuser2)
+
+		if ( ( is_user_alive(player) && !gHasDaredevil[player]) || 		// Alive player without Daredevil
+			( !is_user_alive(player) && !gHasDaredevil[specPlayer] ) || // Dead player is spectating a player without Daredevil
+			( !is_user_alive(player) && !is_user_alive(specPlayer) ) ) 	// Dead player is spectating another dead player
+				continue												// All of them don't see any rings
+#else
 	for ( i = 0; i < playerCount; i++ ) {
 		player = players[i]
 
 		if ( !gHasDaredevil[player] ) continue
+#endif
 
 		for ( j = 0; j < playerCount; j++ ) {
 			idRing = players[j]
+			
+			#if AIMBOTDETECT
+			if ( is_aimbotdetect_bot(idRing) ) continue	// for AimBot Detection plugin
+			#endif
 
 			if ( idRing == player ) continue
+		
+		#if SPECTATORS_SEE_RINGS
+			if ( idRing == specPlayer ) continue
+		#endif
 
 			if ( !get_user_origin(idRing, ringOrigin) ) continue
 
@@ -104,4 +148,13 @@ public client_connect(id)
 {
 	gHasDaredevil[id] = false
 }
+//----------------------------------------------------------------------------------------------
+#if AIMBOTDETECT
+public is_aimbotdetect_bot(id)
+{
+	new functionReturn
+	ExecuteForward(AimbotDetectForward, functionReturn, id)
+	return functionReturn
+}
+#endif
 //----------------------------------------------------------------------------------------------

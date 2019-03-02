@@ -12,6 +12,20 @@ xavier_refreshtimer 5.0			//How often do the trails refresh
 
 */
 
+/*
+* 25 dec 2018 - Evileye
+* Spectators see the trail too if they are spectating a player who has Xavier. You can change this with SPECTATORS_SEE_TRAIL 0/1. More people will find out about this hero now.
+*/
+
+//---------- User Changeable Defines --------//
+
+
+// 0 = don't show spectators info, 1 = show spectators info
+#define SPECTATORS_SEE_TRAIL 1
+
+
+//------- Do not edit below this point ------//
+
 #include <superheromod>
 
 // GLOBAL VARIABLES
@@ -20,6 +34,11 @@ new const gHeroName[] = "Xavier"
 new bool:gHasXavier[SH_MAXSLOTS+1]
 new gSpriteLaserBeam
 new gPcvarTrailLength, gPcvarShowTeam, gPcvarShowEnemy, gPcvarRefreshTimer
+new pcvarFFA
+
+#if SPECTATORS_SEE_TRAIL
+new lastSpectated[SH_MAXSLOTS+1]
+#endif
 //----------------------------------------------------------------------------------------------
 public plugin_init()
 {
@@ -32,10 +51,16 @@ public plugin_init()
 	gPcvarShowTeam = register_cvar("xavier_showteam", "0")
 	gPcvarShowEnemy = register_cvar("xavier_showenemy", "1")
 	gPcvarRefreshTimer = register_cvar("xavier_refreshtimer", "5.0")
+	pcvarFFA = register_cvar("sh_ffa", "0")
 
 	// FIRE THE EVENT TO CREATE THIS SUPERHERO!
 	gHeroID = sh_create_hero(gHeroName, pcvarLevel)
 	sh_set_hero_info(gHeroID, "Team Detection", "Detect what team a player is on by a glowing trail")
+	
+	#if SPECTATORS_SEE_TRAIL
+	//LOOP
+	set_task(0.1, "xavier_loop", 0, "", 0, "b")
+	#endif
 }
 //----------------------------------------------------------------------------------------------
 public plugin_precache()
@@ -65,6 +90,33 @@ public sh_hero_init(id, heroID, mode)
 	sh_debug_message(id, 1, "%s %s", gHeroName, mode ? "ADDED" : "DROPPED")
 }
 //----------------------------------------------------------------------------------------------
+#if SPECTATORS_SEE_TRAIL
+public xavier_loop()
+{
+	if ( !sh_is_active() ) return
+
+	for ( new player = 1; player <= SH_MAXSLOTS; player++ ) {
+		
+		if ( !is_user_connected(player) || is_user_alive(player) ) continue
+		
+		// Who is the id specing
+		new specPlayer = pev(player, pev_iuser2)
+		
+		if ( specPlayer != lastSpectated[player] )
+		{
+			lastSpectated[player] = specPlayer
+			if ( gHasXavier[specPlayer] )
+			{
+				remove_all_marks(player)
+				add_all_marks(player)
+			}
+			else
+				remove_all_marks(player)
+		}
+	}
+}
+#endif
+//----------------------------------------------------------------------------------------------
 public sh_client_spawn(id)
 {
 	if ( gHasXavier[id] ) {
@@ -74,8 +126,19 @@ public sh_client_spawn(id)
 //----------------------------------------------------------------------------------------------
 public add_all_marks(id)
 {
+#if SPECTATORS_SEE_TRAIL
+	// Who is the id specing
+	new specPlayer = pev(id, pev_iuser2)
+	
+	// spec = true if Dead player is spectating player with Psylocke
+	new bool:spec = ( !is_user_alive(id) && gHasXavier[specPlayer] )
+	
+	if ( ( !sh_is_active() || !is_user_alive(id) || !gHasXavier[id] ) && !spec )
+		return
+#else
 	if ( !sh_is_active() || !is_user_alive(id) || !gHasXavier[id] )
 		return
+#endif
 
 	static bool:sameTeam
 	static bool:showTeam
@@ -83,10 +146,16 @@ public add_all_marks(id)
 	static CsTeams:idTeam
 	static CsTeams:playerTeam
 
-	showTeam = get_pcvar_num(gPcvarShowTeam) ? true : false
-	showEnemy = get_pcvar_num(gPcvarShowEnemy) ? true : false
+	showTeam =  ( get_pcvar_num(gPcvarShowTeam)  || get_pcvar_num(pcvarFFA) ) ? true : false
+	showEnemy = ( get_pcvar_num(gPcvarShowEnemy) || get_pcvar_num(pcvarFFA) ) ? true : false
+#if SPECTATORS_SEE_TRAIL
+	if (spec)
+		idTeam = cs_get_user_team(specPlayer)
+	else
+		idTeam = cs_get_user_team(id)
+#else
 	idTeam = cs_get_user_team(id)
-
+#endif
 	static players[SH_MAXSLOTS], playerCount, player, i
 	get_players(players, playerCount, "ah")
 
@@ -94,6 +163,10 @@ public add_all_marks(id)
 		player = players[i]
 
 		if ( player == id ) continue
+		
+	#if SPECTATORS_SEE_TRAIL
+		if ( player == specPlayer ) continue
+	#endif
 
 		playerTeam = cs_get_user_team(player)
 
@@ -101,7 +174,7 @@ public add_all_marks(id)
 
 		if ( (sameTeam && showTeam) || (!sameTeam && showEnemy) ) {
 			remove_mark(id, player)
-
+			
 			switch(playerTeam) {
 				case CS_TEAM_T: make_trail(id, player, 255, 0, 0)
 				case CS_TEAM_CT: make_trail(id, player, 0, 0, 255)
@@ -112,7 +185,11 @@ public add_all_marks(id)
 //----------------------------------------------------------------------------------------------
 make_trail(id, player, iRed, iGreen, iBlue)
 {
+#if SPECTATORS_SEE_TRAIL
+	if ( !sh_is_active() ||                       !is_user_alive(player) ) return
+#else
 	if ( !sh_is_active() || !is_user_alive(id) || !is_user_alive(player) ) return
+#endif
 
 	message_begin(MSG_ONE_UNRELIABLE, SVC_TEMPENTITY, _, id)
 	write_byte(TE_BEAMFOLLOW)
@@ -129,7 +206,11 @@ make_trail(id, player, iRed, iGreen, iBlue)
 //----------------------------------------------------------------------------------------------
 remove_all_marks(id)
 {
+#if SPECTATORS_SEE_TRAIL
+	if ( is_user_connected(id) )  {
+#else
 	if ( is_user_connected(id) && gHasXavier[id] )  {
+#endif
 		new players[SH_MAXSLOTS]
 		new playerCount, player
 		get_players(players, playerCount, "ah")
@@ -161,7 +242,7 @@ public sh_client_death(victim)
 	remove_all_marks(victim)
 }
 //----------------------------------------------------------------------------------------------
-public client_disconnect(id)
+public client_disconnected(id)
 {
 	remove_task(id)
 	gHasXavier[id] = false
