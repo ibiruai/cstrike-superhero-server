@@ -26,6 +26,7 @@ scorpion_uppercutdmg 20		//Amount of Damage for uppercut performed when speared 
 //If scorpion_mode 2 or 3, these get used:
 scorpion_speardmg 20		//Amount of Damage done when user is speared (Default 20)
 scorpion_stuntime 2			//Seconds of stun when user is speared (Default 2)
+scorpion_escapetime 6.0	//Seconds for victim to escape
 
 */
 
@@ -63,14 +64,17 @@ Version History:
 2.4   - vittu - 7/6/2007
 				Fixed uppercut from being called on non-alive/non-connected players.
 				Will fully convert to amxmodx on next update.
+26 dec 2018 - Evileye
+				Now victim can escape!
+				Use scorpion_escapetime
 */
 //----------------------------------------------------------------------------------------------
 
-#include <amxmod>
-#include <Vexd_Utilities>
+#include <amxmodx>
 #include <superheromod>
 
 // GLOBAL VARIABLES
+new gHeroID
 new g_heroName[]="Scorpion"
 new bool:g_hasScorpionPower[SH_MAXSLOTS+1]
 new bool:g_knifeFight[SH_MAXSLOTS+1][SH_MAXSLOTS+1]
@@ -79,6 +83,8 @@ new g_hooked[SH_MAXSLOTS+1]
 new g_hooksLeft[SH_MAXSLOTS+1]
 new g_lastWeapon[SH_MAXSLOTS+1]
 new g_spriteLine, g_spriteBlood, g_spriteBldSpray
+new Float:escapeTime
+new hookEscape[SH_MAXSLOTS+1]
 //----------------------------------------------------------------------------------------------
 public plugin_init()
 {
@@ -95,9 +101,11 @@ public plugin_init()
 	register_cvar("scorpion_uppercutdmg", "20")
 	register_cvar("scorpion_speardmg", "20")
 	register_cvar("scorpion_stuntime", "2")
+	register_cvar("scorpion_escapetime", "6.0")
+	escapeTime = get_cvar_float("scorpion_escapetime")
 
 	// FIRE THE EVENT TO CREATE THIS SUPERHERO!
-	shCreateHero(g_heroName, "Get Over Here!", "Hold +power key to Harpoon and Drag opponents to you.", true, "scorpion_level")
+	gHeroID = shCreateHero(g_heroName, "Get Over Here!", "Hold +power key to Harpoon and Drag opponents to you.", true, "scorpion_level")
 
 	// REGISTER EVENTS THIS HERO WILL RESPOND TO! (AND SERVER COMMANDS)
 	// INIT
@@ -178,6 +186,8 @@ public scorpion_kd()
 
 	if ( !is_user_alive(id) || !g_hasScorpionPower[id] || !hasRoundStarted() || !shModActive() ) return
 
+	hookEscape[id] = id * 1000 + random_num(100, 999)
+	
 	scorpion_hookOn(id)
 }
 //----------------------------------------------------------------------------------------------
@@ -203,7 +213,7 @@ public scorpion_hookOn(id)
 	if ( g_hooksLeft[id] > 0 ) g_hooksLeft[id]--
 
 	if ( g_hooksLeft[id] >= 0 && g_hooksLeft[id] < 5 ) {
-		client_print(id, print_center, "You have %d Scorpion Spear%s left", g_hooksLeft[id], (g_hooksLeft[id] == 1) ? "" : "s")
+		client_print(id, print_center, "%L", id, "SCORPION_HARPOONS_LEFT", g_hooksLeft[id], (g_hooksLeft[id] == 1) ? "" : "s")
 	}
 
 	new hooktarget, body
@@ -277,6 +287,8 @@ public scorpion_reelin(parm[])
 		scorpion_hookOff(id)
 		return
 	}
+	
+	set_task(escapeTime, "scorpion_escape", hookEscape[id])
 
 	new Float:fl_Velocity[3]
 	new idOrigin[3], vicOrigin[3]
@@ -299,11 +311,23 @@ public scorpion_reelin(parm[])
 		fl_Velocity[2] = 0.0
 	}
 
-	Entvars_Set_Vector(victim, EV_VEC_velocity, fl_Velocity)
+	entity_set_vector(victim, EV_VEC_velocity, fl_Velocity)
+}
+//----------------------------------------------------------------------------------------------
+public scorpion_escape(task_id)
+{
+	new id = task_id / 1000
+	if ( task_id == hookEscape[id] && g_hooked[id] != 0 )
+	{
+		scorpion_hookOff(id)
+		sh_chat_message(id, gHeroID, "%L", id, "SCORPION_ESCAPE")
+	}	
 }
 //----------------------------------------------------------------------------------------------
 public scorpion_hookOff(id)
 {
+	hookEscape[id] = id * 1000 + random_num(100, 999)
+	
 	g_hooked[id] = 0
 
 	hook_remove(id)
@@ -361,7 +385,7 @@ public uppercut(parm[])
 	fl_vicVelocity[1] = (vicOrigin[1] - Origin[1]) / fl_Time
 	fl_vicVelocity[2] = 450.0
 
-	Entvars_Set_Vector(vic, EV_VEC_velocity, fl_vicVelocity)
+	entity_set_vector(vic, EV_VEC_velocity, fl_vicVelocity)
 
 	shExtraDamage(vic, id, get_cvar_num("scorpion_uppercutdmg"), "Scorpion Uppercut")
 }
@@ -370,8 +394,8 @@ public scorpion_fight_on(id, enemy)
 {
 	new enemy_name[32]
 	get_user_name(enemy, enemy_name, 31)
-	client_print(id, print_chat, "[SH](Scorpion) Mortal Kombat! Knife til death with %s", enemy_name)
-	client_print(id, print_center, "FIGHT!")
+	sh_chat_message(id, gHeroID, "%L", id, "SCORPION_KNIFE_FIGHT", enemy_name)
+	client_print(id, print_center, "%L", id, "SCORPION_FIGHT_MSG")
 
 	if ( g_inKnifeFight[id] ) return
 
@@ -415,8 +439,8 @@ public scorpion_fight_off(id)
 				g_inKnifeFight[i] = false
 				new i_name[32]
 				get_user_name(i, i_name, 31)
-				client_print(i, print_center, "%s WINS", i_name)
-				if ( is_user_connected(id) ) client_print(id, print_center, "%s WINS", i_name)
+				client_print(i, print_center, "%L", id, "SCORPION_WINNER", i_name)
+				if ( is_user_connected(id) ) client_print(id, print_center, "%L", id, "SCORPION_WINNER", i_name)
 				sh_setScreenFlash(i, 255, 255, 25, 10, 45)
 				// Switch back to previous weapon...
 				if ( g_lastWeapon[i] != CSW_KNIFE ) shSwitchWeaponID(i, g_lastWeapon[i])
@@ -445,7 +469,7 @@ public scorpion_death()
 	if ( g_inKnifeFight[id] ) scorpion_fight_off(id)
 }
 //----------------------------------------------------------------------------------------------
-public client_disconnect(id)
+public client_disconnected(id)
 {
 	// stupid check but lets see
 	if ( id <= 0 || id > SH_MAXSLOTS ) return
