@@ -1,0 +1,39 @@
+// Maps you can vote for
+de_aztec
+de_cbble
+de_dust
+cs_assault
+cs_office
+cs_italy
+cs_militia
+de_train
+fy_pool_day
+fy_new_pool_day
+de_dust2_2x2
+de_dust2
+de_dust2_mini
+// de_dust20022
+cs_mansion
+de_westwood
+de_nuke
+de_inferno
+de_rats
+// cs_discounter_gx
+// 4_houses
+cs_pf_dust
+cs_estate
+
+// Do I want player to see these maps?
+de_clan1_mill
+de_vertigo
+dm_aztec_maso2
+dm_aztec_maso3
+// dm_dusty
+de_dust2_long
+// big_city2
+// aim_2mansion
+de_tuscan
+fy_snow
+// 1337_ak47
+aim_headshot
+// $1000$

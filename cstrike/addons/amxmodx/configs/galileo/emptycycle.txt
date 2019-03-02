@@ -1,0 +1,9 @@
+// The file which contains a listing of maps, one per line,
+// to be used as the map cycle when the server is empty.
+
+//fy_snow
+//aim_headshot
+//fy_pool_day
+//cs_mansion
+//de_dust2_2x2
+de_dust2
