@@ -1,22 +1,24 @@
 // 21 dec 2018 - Edited by Evileye
-// You can set sh_showdamage 1, and players will see damage
+// You can set MY_ANUBIS, and players will see damage
 // It works like Anubis and Advanced Bullet Damage, but damage dealt with superpowers is also shown!
-// Player can enable and disable this feature with command say /damage
+// Player can enable and disable this feature with shmenu
 #define MY_ANUBIS 1			// 1 - Enabled, 0 - Disabled
 // Spectators see damage. IT DOESN'T WORK PROPERLY.
-#define MY_ANUBIS_SPEC 0	// 1 - Enabled, 0 - Disabled
-// Every player will have this many HPs on spawn
 #define DEFAULT_HEALTH 125	// 100 - Default
 // You can use hudmessage for displaying status information
 // It may be usefull if I'm going to start CS CZ server
 // When default way of showing status message is used in CS CZ, the message is in the center of the screen
 #define MESSAGE_LENGTH 64
-#define STATUS_HUDMESSAGE 0	// 1 - Enabled, 0 - Disabled
+#define STATUS_HUDMESSAGE 1	// 1 - Enabled, 0 - Disabled
 // You can see active powers info (cooldown, etc) in your status information
-// Works for Bishop, Snake, Shadowcat
+// Works for Bishop, Snake, Shadowcat, Blink
 #define ACTIVE_POWERS_INFO 1
 // Cool menus!
 #define COOL_MENUS 1
+
+#define SH_FLAG_NODMGDISPLAY	(1<<4)
+#define SH_FLAG_HUDMSGSTATUS	(1<<5)
+#define SH_FLAG_SPIDEYSTYLE		(1<<6)
 
 /* AMX Mod X script.
 *
@@ -400,13 +402,13 @@
 #include <amxmisc>
 #include <superheromod>
 
+#include <fvault>
+
 #if MY_ANUBIS
 	#include <fakemeta_util>
 
 	new gMsgSync1[SH_MAXSLOTS+1]
 	new gMsgSync2[SH_MAXSLOTS+1]
-	new sh_showdamage							// Do by default or they need to say /damage?
-	new plrDamageDisplay[SH_MAXSLOTS+1]			// Does player want damage to be shown?
 	new anubisShWeaponDamage[SH_MAXSLOTS+1]		// How many weapon extra damage victim got
 	new anubisShPowerDamage[SH_MAXSLOTS+1]		// How many damage attacker dealt with superpower
 	new anubisShPower[SH_MAXSLOTS+1][32]		// Last power attacker used that dealt damage
@@ -418,15 +420,22 @@
 #endif
 
 #if ACTIVE_POWERS_INFO
-	new BishopForward, ShadowcatForward, SnakeForward
+	new BishopForward, ShadowcatForward, SnakeForward, BlinkForward
 	new BishopEnergy[SH_MAXSLOTS+1]
 	new ShadowcatCooldown[SH_MAXSLOTS+1]
 	new SnakeCooldown[SH_MAXSLOTS+1]
+	new BlinkCooldown[SH_MAXSLOTS+1]
 	new ShowPowerInfo[16]
 #endif
 
-#define heroesCount 32
-new RussianTranslation[heroesCount][3][256] = {
+#if COOL_MENUS
+	new bool:backToMenu[SH_MAXSLOTS]
+#endif
+
+#define heroesCount 33
+
+new dictRelation[SH_MAXHEROS]
+new rusDict[heroesCount][3][256] = {
 	{
 		"Alien", "Зрение Чужого", "Получите Зрение Чужого и Невидимость - Вы можете использовать только нож"
 	},
@@ -440,10 +449,13 @@ new RussianTranslation[heroesCount][3][256] = {
 		"Black Panther", "Бесшумные шаги", "Подошвы вашей обуви сделаны из Вибраниума и поглощают звук"
 	},
 	{
-		"Bomberman", "Дистанционные бомбы", "Один раз нажмите +power клавишу, чтобы установить, и второй, чтобы взорвать"
+		"Blink", "Телепортация", "Вы телепорируетесь в направлении своего взгляда"
 	},
 	{
 		"Captain America", "Суперщит", "Шанс получить неуязвимость"
+	},
+	{
+		"Cho'Gath", "Пожирание", "Зарабатывайте HP, убивая врагов ножом"
 	},
 	{
 		"Daredevil", "Радарное чувство", "Экстрасенсорные кольца показывают вам местонахождение игроков"
@@ -455,7 +467,7 @@ new RussianTranslation[heroesCount][3][256] = {
 		"Domino", "Уравнять шансы", "Вы наносите больше пулевого урона по врагам более высокого уровня"
 	},
 	{
-		"Dracula", "Вампиризм", "Вы получаете НР, атакуя игроков"
+		"Dracula", "Вампиризм", "Атакуя игроков, вы восстанавливаете своё здоровье"
 	},
 	{
 		"Explosion", "Взрыв!", "Вы взрываетесь, когда вас убивают"
@@ -485,7 +497,7 @@ new RussianTranslation[heroesCount][3][256] = {
 		"Mario", "Многократные прыжки", "Вы можете прыгать в воздухе много раз"
 	},
 	{
-		"Orc", "Реинкарнация", "Вы получите всё ваше снаряжение в вашей следующей жизни"
+		"Orc", "Реинкарнация снаряжения", "Вы получите всё ваше снаряжение в вашей следующей жизни"
 	},
 	{
 		"Phoenix", "Перерождение", "Подобно Фениксу вы восстаёте из пепла"
@@ -512,9 +524,6 @@ new RussianTranslation[heroesCount][3][256] = {
 		"Spider-Man", "Раскачивание на паутине", "Выстреливайте паутиной и раскачивайтесь - Контролируйте длину, прыгая и приседая"
 	},
 	{
-		"Superman", "Здоровье/Броня/Гравитация", "Больше здоровья и брони и пониженная гравитация"
-	},
-	{
 		"The Tick", "Нетравматичные падения", "SPOOOON! Не получайте урон от падений"
 	},
 	{
@@ -522,6 +531,9 @@ new RussianTranslation[heroesCount][3][256] = {
 	},
 	{
 		"Wolverine", "Восстановление", "Регенерация здоровья"
+	},
+	{
+		"Xavier", "Определение команды", "Вы видите хвост, по которому понятно, какой команде принадлежит игрок"
 	}
 }
 
@@ -585,7 +597,8 @@ new gXpBounsVIP
 //new Float:gLastKeydown[SH_MAXSLOTS+1]
 
 // Other miscellaneous global variables
-new gHelpHudMsg[340]
+new gHelpHudMsg[479]
+new gHelpHudMsg_ru[479]
 new gmsgStatusText, gmsgScoreInfo, gmsgDeathMsg, gmsgDamage
 new gmsgSayText, gmsgTeamInfo
 new bool:gRoundFreeze
@@ -595,6 +608,9 @@ new bool:gGiveMercyXP = true
 new gNumLevels = 0
 new gMaxPowers = 0
 new gMenuID = 0
+new gMenuID_ru = 0
+new gMenuLang = 0
+new gMenuLang_ru = 0
 new gNumHostages = 0
 new gXpBounsC4ID = -1
 new gHelpHudSync, gHeroHudSync
@@ -687,6 +703,15 @@ public plugin_init()
 	gMenuID = register_menuid("Select Super Power")
 	new menukeys = MENU_KEY_1|MENU_KEY_2|MENU_KEY_3|MENU_KEY_4|MENU_KEY_5|MENU_KEY_6|MENU_KEY_7|MENU_KEY_8|MENU_KEY_9|MENU_KEY_0
 	register_menucmd(gMenuID, menukeys, "selectedSuperPower")
+	
+	gMenuID_ru = register_menuid("Выберите способности")
+	register_menucmd(gMenuID_ru, menukeys, "selectedSuperPower")
+	
+	gMenuLang = register_menuid("Choose your preferable language")
+	register_menucmd(gMenuLang, menukeys, "mh_LanguageMenu")
+	
+	gMenuLang_ru = register_menuid("Выберите предпочитаемый язык")
+	register_menucmd(gMenuLang_ru, menukeys, "mh_LanguageMenu")
 
 	// CVARS
 	// DO NOT EDIT THIS FILE TO CHANGE CVARS, USE THE SHCONFIG.CFG
@@ -770,7 +795,6 @@ public plugin_init()
 			gMsgSync1[i] = CreateHudSyncObj() 
 			gMsgSync2[i] = CreateHudSyncObj()
 		}
-		sh_showdamage = register_cvar("sh_showdamage", "1")
 	#endif
 	
 	#if STATUS_HUDMESSAGE
@@ -781,6 +805,7 @@ public plugin_init()
 		BishopForward = CreateMultiForward("sendAbsorbedDamage", ET_CONTINUE, FP_CELL)
 		ShadowcatForward = CreateMultiForward("sendShadowcatCooldown", ET_CONTINUE, FP_CELL)
 		SnakeForward = CreateMultiForward("sendSnakeCooldown", ET_CONTINUE, FP_CELL)
+		BlinkForward = CreateMultiForward("sendBlinkCooldown", ET_CONTINUE, FP_CELL)
 	#endif
 
 	// Must use post or else is_user_alive will return false when dead player respawns
@@ -814,7 +839,8 @@ public plugin_init()
 	register_clcmd("clearpowers", "cl_clearpowers", ADMIN_ALL, "clearpowers")
 	register_clcmd("say", "cl_say")
 	register_clcmd("fullupdate", "cl_fullupdate")
-
+	register_clcmd("showbriefing", "MainMenu")
+	
 	// Power Commands, using a loop so it adjusts with SH_MAXBINDPOWERS
 	for (new x = 1; x <= SH_MAXBINDPOWERS; x++) {
 		new powerDown[10], powerUp[10]
@@ -1079,7 +1105,7 @@ giveWeaponConfig()
 			case '^0', '^n', ';', '/', '\', '#': continue
 		}
 
-		strbreak(data, blockMapName, charsmax(blockMapName), blockWeapons, charsmax(blockWeapons))
+		argbreak(data, blockMapName, charsmax(blockMapName), blockWeapons, charsmax(blockWeapons))
 
 		//all maps or check for something more specific?
 		if ( blockMapName[0] != '*' ) {
@@ -1181,8 +1207,9 @@ public loopMain()
 			get_active_powers_info(id)
 		#endif
 		
-		#if STATUS_HUDMESSAGE	
-			showStatusMessage(id)
+		#if STATUS_HUDMESSAGE
+			if ( gPlayerFlags[id] & SH_FLAG_HUDMSGSTATUS )
+				showStatusMessage(id)
 		#endif
 	}
 	#endif
@@ -1195,6 +1222,8 @@ public setHeroLevels()
 	for ( new x = 0; x < gSuperHeroCount && x <= SH_MAXHEROS; x++ ) {
 		gSuperHeros[x][availableLevel] = get_pcvar_num(gHeroLevelCVAR[x])
 	}
+	
+	dictionaryRelation()
 }
 //----------------------------------------------------------------------------------------------
 public setSvMaxspeed()
@@ -2050,7 +2079,14 @@ menuSuperPowers(id, menuOffset)
 	new playerLevel = gPlayerLevel[id]
 
 	// Don't show menu if they already have enough powers
-	if ( playerpowercount >= playerLevel || playerpowercount >= gMaxPowers ) return PLUGIN_HANDLED
+	if ( playerpowercount >= playerLevel || playerpowercount >= gMaxPowers )
+	{
+		#if COOL_MENUS
+		if (backToMenu[id])
+			MainMenu(id)
+		#endif
+		return PLUGIN_HANDLED
+	}
 
 	// Figure out how many powers a person should be able to have
 	// Example: At level 10 a person can pick a max of 1 lvl 10 hero
@@ -2171,15 +2207,8 @@ menuSuperPowers(id, menuOffset)
 		if ( contain( plrlang, "ru" ) == -1 )
 			format(temp, charsmax(temp), "%d. %-20s- %s^n", x - menuOffset + 1, temp, gSuperHeros[heroIndex][superpower])
 		else
-		{
-			for ( new i = 0; i < heroesCount; i++ )
-				if ( equal( RussianTranslation[i][0], gSuperHeros[heroIndex][hero] ) )
-				{
-					format(temp, charsmax(temp), "%d. %-20s- %s^n", x - menuOffset + 1, temp, RussianTranslation[i][1])
-					break
-				}
-		}
-			
+			format(temp, charsmax(temp), "%d. %-20s- %s^n", x - menuOffset + 1, temp, rusDict[dictRelation[heroIndex]][1])
+
 		add(message, charsmax(message), temp)
 	}
 
@@ -2236,13 +2265,24 @@ public selectedSuperPower(id, key)
 		case 9: {
 			// Cancel
 			gPlayerMenuOffset[id] = 0
+			#if COOL_MENUS
+			if (backToMenu[id])
+				MainMenu(id)
+			#endif
 			return PLUGIN_HANDLED
 		}
 	}
 
 	// Hero was Picked!
 	new playerpowercount = getPowerCount(id)
-	if ( playerpowercount >= gNumLevels || playerpowercount >= gMaxPowers ) return PLUGIN_HANDLED
+	if ( playerpowercount >= gNumLevels || playerpowercount >= gMaxPowers ) 
+	{
+		#if COOL_MENUS
+		if (backToMenu[id])
+			MainMenu(id)
+		#endif
+		return PLUGIN_HANDLED
+	}
 
 	new heroIndex = gPlayerMenuChoices[id][key + gPlayerMenuOffset[id]]
 
@@ -2264,30 +2304,20 @@ public selectedSuperPower(id, key)
 
 	new message[256]
 	if ( !gSuperHeros[heroIndex][requiresKeys] ) {
+		
 		if ( contain( plrlang, "ru" ) == -1 )
 			formatex(message, charsmax(message), "%L", id, "SHMOD_AUTOMATIC_POWER", gSuperHeros[heroIndex][superpower], gSuperHeros[heroIndex][help])
 		else
-		{
-			for ( new i = 0; i < heroesCount; i++ )
-				if ( equal( RussianTranslation[i][0], gSuperHeros[heroIndex][hero] ) )
-				{
-					formatex(message, charsmax(message), "%L", id, "SHMOD_AUTOMATIC_POWER", RussianTranslation[i][1], RussianTranslation[i][2])
-					break
-				}			
-		}
+			formatex(message, charsmax(message), "%L", id, "SHMOD_AUTOMATIC_POWER", rusDict[dictRelation[heroIndex]][1], rusDict[dictRelation[heroIndex]][2])
+		
 	}
 	else {
+		
 		if ( contain( plrlang, "ru" ) == -1 )
 			formatex(message, charsmax(message), "%L", id, "SHMOD_BIND_INSTRUCTION", gPlayerBinds[id][0]+1, gSuperHeros[heroIndex][superpower], gSuperHeros[heroIndex][help])
 		else
-		{
-			for ( new i = 0; i < heroesCount; i++ )
-				if ( equal( RussianTranslation[i][0], gSuperHeros[heroIndex][hero] ) )
-				{
-					formatex(message, charsmax(message), "%L", id, "SHMOD_BIND_INSTRUCTION", gPlayerBinds[id][0]+1, RussianTranslation[i][1], RussianTranslation[i][2])
-					break
-				}				
-		}
+			formatex(message, charsmax(message), "%L", id, "SHMOD_BIND_INSTRUCTION", gPlayerBinds[id][0]+1, rusDict[dictRelation[heroIndex]][1], rusDict[dictRelation[heroIndex]][2])
+		
 	}
 
 	// Show the Hero Picked
@@ -2891,8 +2921,10 @@ public msg_StatusText()
 writeStatusMessage(id, const message[MESSAGE_LENGTH])
 {
 	#if STATUS_HUDMESSAGE
+	if ( gPlayerFlags[id] & SH_FLAG_HUDMSGSTATUS )
 		statusMessage[id] = message;
-	#else
+	else {
+	#endif
 		// Crash Check, bots will crash server is message sent to them
 		if ( !is_user_connected(id) || is_user_bot(id) ) return
 
@@ -2902,6 +2934,8 @@ writeStatusMessage(id, const message[MESSAGE_LENGTH])
 		write_byte(0)
 		write_string(message)
 		message_end()
+	#if STATUS_HUDMESSAGE
+	}
 	#endif
 }
 #if STATUS_HUDMESSAGE
@@ -2975,6 +3009,8 @@ displayPowers(id, bool:setThePowers)
 							format( ShowPowerInfo, 16, "(%i)", ShadowcatCooldown[id] )
 						else if ( equal(gSuperHeros[heroIndex], "Snake") && SnakeCooldown[id] > 0 )
 							format( ShowPowerInfo, 16, "(%i)", SnakeCooldown[id] )
+						else if ( equal(gSuperHeros[heroIndex], "Blink") && BlinkCooldown[id] > 0 )
+							format( ShowPowerInfo, 16, "(%i)", BlinkCooldown[id] )
 						else 
 							ShowPowerInfo = ""
 						
@@ -3007,7 +3043,7 @@ displayPowers(id, bool:setThePowers)
 	// Update menu incase already in menu and levels changed
 	// or user is no longer in menu
 	get_user_menu(id, menuid, mkeys)
-	if ( menuid != gMenuID ) {
+	if ( !(menuid == gMenuID || menuid == gMenuID_ru) ) {
 		gInMenu[id] = false
 	}
 	else {
@@ -3044,8 +3080,10 @@ public _sh_add_kill_xp()
 	// Stupid check - but checking prevents crashes
 	if ( id < 1 || id > gServersMaxPlayers || victim < 1 || victim > gServersMaxPlayers ) return
 
-	//new Float:mult = get_param_f(3)
-	localAddXP(id, floatround(get_param_f(3) * gXPGiven[gPlayerLevel[victim]]))
+	new Float:mult = get_param_f(3) / 2
+	if ( mult < 1.0 ) 
+		mult = 1.0
+	localAddXP(id, floatround(mult * gXPGiven[gPlayerLevel[victim]]))
 	displayPowers(id, false)
 }
 //----------------------------------------------------------------------------------------------
@@ -3347,23 +3385,6 @@ public _sh_extra_damage()
 }
 //---------------------------------------------------------------------------------------------
 #if MY_ANUBIS
-public toggleDamageDisplay(id)
-{
-	plrDamageDisplay[id] = plrDamageDisplay[id] ? false : true
-	if ( plrDamageDisplay[id] )
-	{
-		// set_user_info(id, "damagedisplay", "1")
-		client_cmd(id, "setinfo damagedisplay ^"1^"")
-		sh_chat_message(id, -1, "%L", id, "SHMOD_DISPLAY_DAMAGE_ON")
-	}
-	else
-	{
-		// set_user_info(id, "damagedisplay", "0")
-		client_cmd(id, "setinfo damagedisplay ^"0^"")
-		sh_chat_message(id, -1, "%L", id, "SHMOD_DISPLAY_DAMAGE_FF")
-	}
-	return PLUGIN_HANDLED
-}
 public show_damage(victim, attacker, damage, wpnDescription[32])
 {
 	// List of weapons
@@ -3399,24 +3420,11 @@ public show_damage(victim, attacker, damage, wpnDescription[32])
 			
 			if (anubisShPowerDamage[attacker] != 0)
 			{
-				if (plrDamageDisplay[attacker])
+				if  ( !(gPlayerFlags[attacker] & SH_FLAG_NODMGDISPLAY) )
 				{
 					set_hudmessage(0, 100, 200, -1.0, 0.55, 2, 0.1, 2.0, 0.02, 0.02, 71)
 					ShowSyncHudMsg(attacker, gMsgSync1[attacker], "%d %s", anubisShPowerDamage[attacker], wpnDescription)
 				}
-				
-				#if MY_ANUBIS_SPEC
-				for ( new player = 0; player <= SH_MAXSLOTS; player++ ) {
-					
-					if ( !is_user_connected(player) || is_user_alive(player) ) continue
-					
-					if ( pev(player, pev_iuser2) == attacker && plrDamageDisplay[player] )
-					{
-						set_hudmessage(0, 100, 200, -1.0, 0.55, 2, 0.1, 2.0, 0.02, 0.02, 71)
-						ShowSyncHudMsg(player, gMsgSync1[player], "%d %s", anubisShPowerDamage[attacker], wpnDescription)
-					}
-				}
-				#endif
 			}
 			
 			// We showed superhero damage. Now let's set this to zero
@@ -3425,23 +3433,11 @@ public show_damage(victim, attacker, damage, wpnDescription[32])
 		}
 		
 		// Show superhero damage for victim
-		if ( plrDamageDisplay[victim] )
+		if ( !(gPlayerFlags[victim] & SH_FLAG_NODMGDISPLAY) )
 		{
 			set_hudmessage(200, 0, 0, -1.0, 0.415, 2, 0.1, 2.0, 0.02, 0.02, 72)
 			ShowSyncHudMsg(victim, gMsgSync2[victim], "%d %s", damage, wpnDescription)
 		}
-
-		#if MY_ANUBIS_SPEC
-		for ( new player = 0; player <= SH_MAXSLOTS; player++ ) {
-						
-			if ( !is_user_connected(player) || is_user_alive(player) ) continue
-			
-			if ( pev(player, pev_iuser2) == victim && plrDamageDisplay[player] ) {
-				set_hudmessage(200, 0, 0, -1.0, 0.415, 2, 0.1, 2.0, 0.02, 0.02, 72)
-				ShowSyncHudMsg(player, gMsgSync2[player], "%d %s", damage, wpnDescription)
-			}
-		}
-		#endif
 	}
 }
 public set_anubisShPowerDamage_to_zero(attacker)
@@ -3471,44 +3467,18 @@ public show_weapon_damage_task(parameters[3], victim)
 		is_extradamage = ""
 	
 	// Show weapon damage + weapon extra damage for victim
-	if ( plrDamageDisplay[victim] )
+	if ( !(gPlayerFlags[victim] & SH_FLAG_NODMGDISPLAY) )
 	{
 		set_hudmessage(200, 0, 0, -1.0, 0.415, 2, 0.1, 2.0, 0.02, 0.02, 72)
 		ShowSyncHudMsg(victim, gMsgSync2[victim], "%i%s^n", damage, is_extradamage)
 	}
 	
-	#if MY_ANUBIS_SPEC
-	for ( new player = 0; player <= SH_MAXSLOTS; player++ ) {
-						
-		if ( !is_user_connected(player) || is_user_alive(player) ) continue
-		
-		if ( pev(player, pev_iuser2) == victim && plrDamageDisplay[player] )
-		{
-			set_hudmessage(200, 0, 0, -1.0, 0.415, 2, 0.1, 2.0, 0.02, 0.02, 72)
-			ShowSyncHudMsg(player, gMsgSync2[player], "%i%s^n", damage, is_extradamage)
-		}
-	}
-	#endif
-	
 	// Show weapon damage + weapon extra damage for attacker
-	if( is_user_connected(attacker) && plrDamageDisplay[attacker] )
+	if( is_user_connected(attacker) && !(gPlayerFlags[attacker] & SH_FLAG_NODMGDISPLAY) )
 	{
 		set_hudmessage(0, 100, 200, -1.0, 0.55, 2, 0.1, 2.0, 0.02, 0.02, 71)
 		ShowSyncHudMsg(attacker, gMsgSync1[attacker], "%i%s^n", damage, is_extradamage)
 	}
-	
-	#if MY_ANUBIS_SPEC
-	for ( new player = 0; player <= SH_MAXSLOTS; player++ ) {
-						
-		if ( !is_user_connected(player) || is_user_alive(player) ) continue
-		
-		if ( pev(player, pev_iuser2) == attacker && plrDamageDisplay[player] )
-		{
-			set_hudmessage(0, 100, 200, -1.0, 0.55, 2, 0.1, 2.0, 0.02, 0.02, 71)
-			ShowSyncHudMsg(player, gMsgSync1[player], "%i%s^n", damage, is_extradamage)
-		}
-	}
-	#endif
 	
 	anubisShWeaponDamage[victim] = 0		// We showed extra damage. Now let's set this to zero
 }
@@ -3537,6 +3507,13 @@ public get_active_powers_info(id)
 	if ( SnakeCooldown[id] != functionReturn )
 	{
 		SnakeCooldown[id] = functionReturn
+		flag = true
+	}
+		
+	ExecuteForward(BlinkForward, functionReturn, id)
+	if ( BlinkCooldown[id] != functionReturn )
+	{
+		BlinkCooldown[id] = functionReturn
 		flag = true
 	}
 	
@@ -3895,6 +3872,10 @@ public cl_say(id)
 		dropPower(id, said)
 		return PLUGIN_HANDLED
 	}
+	else if ( equali(said[pos], "langmenu") ) {
+		LanguageMenu(id)
+		return PLUGIN_HANDLED
+	}	
 	else if ( equali(said[pos], "helpon") ) {
 		if ( gCMDProj > 0 ) {
 			chatMessage(id, _, "%L", id, "SHMOD_HELP_HUDMESSAGE_ON")
@@ -4004,23 +3985,8 @@ showHeroList(id)
 	n += copy(buffer[n], charsmax(buffer)-n, string)
 
 	for (new x = 0; x < gSuperHeroCount; x++ ) {
-		
-		// if ( contain( plrlang, "ru" ) == -1 )
 		n += formatex(buffer[n], charsmax(buffer)-n, "%s (%d%s) - %s^n", gSuperHeros[x][hero], getHeroLevel(x), gSuperHeros[x][requiresKeys] ? "b" : "", gSuperHeros[x][superpower])
-		/*
-		else
-		{
-
-		for ( new i = 0; i < heroesCount; i++ )
-			if ( equal( RussianTranslation[i][0], gSuperHeros[x][hero] ) )
-			{
-				n += formatex(buffer[n], charsmax(buffer)-n, "%s (%d%s) - %s^n", gSuperHeros[x][hero], getHeroLevel(x), gSuperHeros[x][requiresKeys] ? "b" : "", RussianTranslation[i][1])
-				break
-			}
-		}
-		*/
 	}
-
 	copy(buffer[n], charsmax(buffer)-n, "</pre></body></html>")
 
 	formatex(string, 64, "%L", id, "SHMOD_MOTD_HEROLIST")
@@ -4786,15 +4752,7 @@ showHeroes(id)
 		if ( contain( plrlang, "ru" ) == -1 )
 			n += formatex(buffer[n], charsmax(buffer)-n, "%d) %-18s- %s %s^n", x, name_lvl, gSuperHeros[heroIndex][superpower], bindNumtxt)
 		else
-		{
-
-		for ( new i = 0; i < heroesCount; i++ )
-			if ( equal( RussianTranslation[i][0], gSuperHeros[heroIndex][hero] ) )
-			{
-				n += formatex(buffer[n], charsmax(buffer)-n, "%d) %-18s- %s %s^n", x, name_lvl, RussianTranslation[i][1], bindNumtxt)
-				break
-			}
-		}
+			n += formatex(buffer[n], charsmax(buffer)-n, "%d) %-18s- %s %s^n", x, name_lvl, rusDict[dictRelation[heroIndex]][1], bindNumtxt)
 	}
 
 	copy(buffer[n], charsmax(buffer)-n, "</pre></body></html>")
@@ -4914,10 +4872,16 @@ showHelpHud()
 	static players[SH_MAXSLOTS], numplayers, id, i
 	get_players(players, numplayers, flags)
 
+	new plrlang[3]
+
 	for ( i = 0; i < numplayers; i++ ) {
 		id = players[i]
 		if ( gPlayerFlags[id] & SH_FLAG_HUDHELP ) {
-			ShowSyncHudMsg(id, gHelpHudSync, "%s", gHelpHudMsg)
+			get_user_info(id, "lang", plrlang, 3)
+			if ( contain( plrlang, "ru" ) == -1 )
+				ShowSyncHudMsg(id, gHelpHudSync, "%s", gHelpHudMsg)
+			else
+				ShowSyncHudMsg(id, gHelpHudSync, "%s", gHelpHudMsg_ru)
 		}
 	}
 }
@@ -4940,7 +4904,7 @@ public client_connect(id)
 	initPlayer(id)
 }
 //----------------------------------------------------------------------------------------------
-public client_disconnect(id)
+public client_disconnected(id)
 {
 	// Don't want any left over residuals
 	initPlayer(id)
@@ -4978,15 +4942,11 @@ public client_putinserver(id)
 		gPlayerXP[id] = getAverageXP()
 	}
 	
-	#if MY_ANUBIS
-	plrDamageDisplay[id] = get_pcvar_num(sh_showdamage) > 0 ? true : false
+	#if COOL_MENUS
+	backToMenu[id] = false
 	
-	new string[1]
-	get_user_info(id, "damagedisplay", string, 1)
-	if ( equali(string, "1", 1) )
-		plrDamageDisplay[id] = true
-	else if ( equali(string, "0", 1) )
-		plrDamageDisplay[id] = false
+	if ( gPlayerFlags[id] & SH_FLAG_SPIDEYSTYLE )
+		set_user_info(id, "hookstyle", "3")
 	#endif
 }
 //----------------------------------------------------------------------------------------------
@@ -5833,17 +5793,41 @@ buildHelpHud()
 	// Max characters hud messages can be is 479
 	// Message is 338 characters currently
 	new n
-	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "SuperHero Mod Help^n^n")
 
-	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "How To Use Powers:^n")
-	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "--------------------^n")
-	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "Input bind into console^n")
-	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "Example:^n")
-	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "bind h +power1^n^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "Команды чата:^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "--------------------^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "/shmenu - Меню мода^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "/help - Окно помощи^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "/langmenu - Language menu^n^n")
+	
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "Кнопки активных умений^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "--------------------^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "Чтобы назначить кнопку,^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "пропишите bind в консоли^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "Примеры:^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "bind f +power1^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "bind mouse3 +power2^n")
+	
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "--------------------^n")
+	n += copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "Вкл. эту справку:  /helpon^n")
+	copy(gHelpHudMsg_ru[n], charsmax(gHelpHudMsg_ru)-n, "Выкл. эту справку: /helpoff")		
+
+	n = 0
 
 	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "Say Commands:^n")
 	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "--------------------^n")
-	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "/help^n")
+	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "/shmenu - SuperHero Mod menu^n")
+	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "/help - Help^n^n")
+	
+	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "How To Use Powers:^n")
+	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "--------------------^n")
+	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "You need to bind a key^n")
+	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "Input bind into console^n")
+	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "Examples:^n")
+	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "bind f +power1^n")
+	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "bind mouse3 +power2^n")
+	
+	/*
 	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "/clearpowers^n")
 	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "/showmenu^n")
 	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "/drop <hero>^n")
@@ -5852,9 +5836,10 @@ buildHelpHud()
 	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "/playerlevels^n")
 	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "/myheroes^n")
 	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "/automenu^n")
+	*/
 	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "--------------------^n")
 	n += copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "Enable This HUD:  /helpon^n")
-	copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "Disable This HUD: /helpoff")
+	copy(gHelpHudMsg[n], charsmax(gHelpHudMsg)-n, "Disable This HUD: /helpoff")		
 }
 //----------------------------------------------------------------------------------------------
 
@@ -5968,15 +5953,16 @@ public regInit()
 //----------------------------------------------------------------------------------------------
 public MainMenu(id)
 {
+	backToMenu[id] = true
 	new string[128]
 	
-	formatex(string, 128, "%L", id, "Menu_MainMenuTitle")
+	formatex(string, 128, "%L", id, "MENU_MM_TITLE")
 	new menu = menu_create(string, "mh_MainMenu");
 	
 	new items[7][24] = {
-		"Menu_itemSelectMenu", "Menu_itemDropMenu", "Menu_itemMyHeroes",
-		"Menu_itemPlayerSkills", "Menu_itemHeroList", "Menu_itemHelp",
-		"Menu_itemSettings"
+		"MENU_MM_SHOWMENU", "MENU_MM_DROPMENU", "MENU_MM_MYHEROES",
+		"MENU_MM_PLAYERSKILLS", "MENU_MM_HEROLIST", "MENU_MM_HELP",
+		"MENU_MM_SETTINGS"
 	}
 
 	for ( new i = 0; i < 7; i++ )
@@ -5989,11 +5975,11 @@ public MainMenu(id)
 	menu_setprop(menu, MPROP_NOCOLORS, 1);
 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\w");
 		
-	formatex(string, 128, "%L", id, "Menu_Back")
+	formatex(string, 128, "%L", id, "MENU_BACK")
 	menu_setprop(menu, MPROP_BACKNAME, string);
-	formatex(string, 128, "%L", id, "Menu_More")
+	formatex(string, 128, "%L", id, "MENU_MORE")
 	menu_setprop(menu, MPROP_NEXTNAME, string);
-	formatex(string, 128, "%L", id, "Menu_Exit")
+	formatex(string, 128, "%L", id, "MENU_EXIT")
 	menu_setprop(menu, MPROP_EXITNAME, string);
 
 	menu_display(id, menu, 0);
@@ -6003,9 +5989,12 @@ public MainMenu(id)
 //----------------------------------------------------------------------------------------------
 public mh_MainMenu(id, menu, item)
 {
+	if ( !is_user_connected(id) || is_user_bot(id) ) return PLUGIN_HANDLED;
+	
 	if(item == MENU_EXIT)
 	{
 		menu_cancel(id);
+		backToMenu[id] = false;
 		return PLUGIN_HANDLED;
 	}
 
@@ -6022,16 +6011,27 @@ public mh_MainMenu(id, menu, item)
 		{
 			// Don't show menu if they already have enough powers
 			if ( gPlayerLevel[id] == 0 )
-				chatMessage(id, _, "%L", id, "Menu_YouAre0Lvl")
+			{
+				chatMessage(id, _, "%L", id, "MENU_SM_YOU_ARE_0_LVL")
+				MainMenu(id);
+			}
 			else if ( playerpowercount >= playerLevel || playerpowercount >= gMaxPowers )
-				chatMessage(id, _, "%L", id, "Menu_DropSomePowers")
+			{
+				chatMessage(id, _, "%L", id, "MENU_SM_DROP_SOME_POWERS")
+				MainMenu(id);
+			}
 			else
+			{
 				menuSuperPowers(id, 0)
+			}
 		}
 		case 1:
 		{
 			if ( playerpowercount == 0 )
-				chatMessage(id, _, "%L", id, "Menu_NoPowers")
+			{
+				chatMessage(id, _, "%L", id, "MENU_DM_NO_POWERS")
+				MainMenu(id);
+			}
 			else
 				DropMenu(id)
 		}
@@ -6041,6 +6041,8 @@ public mh_MainMenu(id, menu, item)
 		case 5: showHelp(id)
 		case 6: SettingsMenu(id)
 	}
+	if (item >= 2 && item <= 5)
+		MainMenu(id)
 
 	menu_destroy(menu);
 
@@ -6051,7 +6053,7 @@ public DropMenu(id)
 {
 	new string[200]
 	
-	formatex(string, 200, "%L", id, "Menu_DropMenuTitle")
+	formatex(string, 200, "%L", id, "MENU_DM_TITLE")
 	new menu = menu_create(string, "mh_DropMenu");
 	
 	new heroIndex
@@ -6065,11 +6067,11 @@ public DropMenu(id)
 	menu_setprop(menu, MPROP_EXIT, MEXIT_ALL);
 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\w");
 	
-	formatex(string, 128, "%L", id, "Menu_Back")
+	formatex(string, 128, "%L", id, "MENU_BACK")
 	menu_setprop(menu, MPROP_BACKNAME, string);
-	formatex(string, 128, "%L", id, "Menu_More")
+	formatex(string, 128, "%L", id, "MENU_MORE")
 	menu_setprop(menu, MPROP_NEXTNAME, string);
-	formatex(string, 128, "%L", id, "Menu_Exit")
+	formatex(string, 128, "%L", id, "MENU_CANCEL")
 	menu_setprop(menu, MPROP_EXITNAME, string);
 
 	menu_display(id, menu, 0);
@@ -6079,9 +6081,12 @@ public DropMenu(id)
 //----------------------------------------------------------------------------------------------
 public mh_DropMenu(id, menu, x)
 {
+	if ( !is_user_connected(id) || is_user_bot(id) ) return PLUGIN_HANDLED;
+	
 	if (x == MENU_EXIT)
 	{
 		menu_cancel(id);
+		MainMenu(id);
 		return PLUGIN_HANDLED;
 	}
 
@@ -6095,7 +6100,10 @@ public mh_DropMenu(id, menu, x)
 	clearPower(id, x)
 	chatMessage(id, _, "%L", id, "SHMOD_DROP_SUCCESS", gSuperHeros[heroIndex][hero])
 	displayPowers(id, true)
-	DropMenu(id)
+	if (getPowerCount(id) > 0)
+		DropMenu(id);
+	else
+		MainMenu(id);
 
 	menu_destroy(menu);
 
@@ -6107,32 +6115,50 @@ public SettingsMenu(id)
 	
 	new string[128]
 	
-	formatex(string, 128, "%L", id, "Menu_Settings")
+	formatex(string, 128, "%L", id, "MENU_SET_TITLE")
 	new menu = menu_create(string, "mh_SettingsMenu");
-
-	if ( plrDamageDisplay[id] )
-		formatex(string, 128, "%L", id, "Menu_DamageDisplayOff")
+	
+	formatex(string, 128, "%L", id, "MENU_SET_BASS_COLOR")
+	menu_additem(menu, string, "", 0);
+	
+	formatex(string, 128, "%L", id, "MENU_SET_HOOK_COLOR")
+	menu_additem(menu, string, "", 0);
+	
+	if ( gPlayerFlags[id] & SH_FLAG_SPIDEYSTYLE )
+		formatex(string, 128, "%L", id, "MENU_SET_HOOK_BAT")
 	else
-		formatex(string, 128, "%L", id, "Menu_DamageDisplayOn")
+		formatex(string, 128, "%L", id, "MENU_SET_HOOK_SPIDER")
 	menu_additem(menu, string, "", 0);
 	
-	formatex(string, 128, "%L", id, "Menu_BassColor")
+	formatex(string, 128, "%L", id, "MENU_LANGUAGE")
 	menu_additem(menu, string, "", 0);
 	
-	formatex(string, 128, "%L", id, "Menu_HookColor")
+	if ( gPlayerFlags[id] & SH_FLAG_NODMGDISPLAY )
+		formatex(string, 128, "%L", id, "MENU_DAMAGEDISPLAY_NO")
+	else
+		formatex(string, 128, "%L", id, "MENU_DAMAGEDISPLAY_YES")
 	menu_additem(menu, string, "", 0);
 	
-	formatex(string, 128, "%L", id, "Menu_HookStyle")
+	if ( gPlayerFlags[id] & SH_FLAG_NOAUTOMENU )
+		formatex(string, 128, "%L", id, "MENU_AUTOMENU_NO")
+	else
+		formatex(string, 128, "%L", id, "MENU_AUTOMENU_YES")
+	menu_additem(menu, string, "", 0);
+	
+	if ( gPlayerFlags[id] & SH_FLAG_HUDMSGSTATUS )
+		formatex(string, 128, "%L", id, "MENU_HUDMSGSTATUS_ALT")
+	else
+		formatex(string, 128, "%L", id, "MENU_HUDMSGSTATUS_DEF")
 	menu_additem(menu, string, "", 0);
 
 	menu_setprop(menu, MPROP_EXIT, MEXIT_ALL);
 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\w");
 	
-	formatex(string, 128, "%L", id, "Menu_Back")
+	formatex(string, 128, "%L", id, "MENU_BACK")
 	menu_setprop(menu, MPROP_BACKNAME, string);
-	formatex(string, 128, "%L", id, "Menu_More")
+	formatex(string, 128, "%L", id, "MENU_MORE")
 	menu_setprop(menu, MPROP_NEXTNAME, string);
-	formatex(string, 128, "%L", id, "Menu_Exit")
+	formatex(string, 128, "%L", id, "MENU_CANCEL")
 	menu_setprop(menu, MPROP_EXITNAME, string);
 
 	menu_display(id, menu, 0);
@@ -6142,9 +6168,12 @@ public SettingsMenu(id)
 //----------------------------------------------------------------------------------------------
 public mh_SettingsMenu(id, menu, item)
 {
+	if ( !is_user_connected(id) || is_user_bot(id) ) return PLUGIN_HANDLED;
+	
 	if(item == MENU_EXIT)
 	{
 		menu_cancel(id);
+		MainMenu(id);
 		return PLUGIN_HANDLED;
 	}
 
@@ -6154,13 +6183,65 @@ public mh_SettingsMenu(id, menu, item)
 
 	switch(item)
 	{
-		case 0:
+		case 0: BassColorMenu(id)
+		case 1: HookColorMenu(id)
+		case 2:
 		{
-			toggleDamageDisplay(id)
+			// Toggle SH_FLAG_SPIDEYSTYLE
+			if ( gPlayerFlags[id] & SH_FLAG_SPIDEYSTYLE )
+			{
+				chatMessage(id, _, "%L", id, "MENU_OPTION_SPIDERMAN")
+				set_user_info(id, "hookstyle", "2")
+			}
+			else
+			{
+				chatMessage(id, _, "%L", id, "MENU_OPTION_BATGIRL")
+				set_user_info(id, "hookstyle", "3")
+			}
+			gPlayerFlags[id] ^= SH_FLAG_SPIDEYSTYLE
+			
+			SettingsMenu(id);
 		}
-		case 1: BassColorMenu(id)
-		case 2: HookColorMenu(id)
-		case 3: HookStyleMenu(id)
+		case 3: LanguageMenu(id)
+		case 4:
+		{
+			// Toggle SH_FLAG_NODMGDISPLAY
+			new flagStatus[24]
+			if ( gPlayerFlags[id] & SH_FLAG_NODMGDISPLAY )
+				formatex( flagStatus, 24, "%L", id, "SHMOD_DAMAGEDISPLAY_ENABLED" )
+			else
+				formatex( flagStatus, 24, "%L", id, "SHMOD_DAMAGEDISPLAY_DISABLED" )
+			chatMessage(id, _, "%L", id, "SHMOD_DAMAGEDISPLAY_CHANGED", flagStatus)
+			gPlayerFlags[id] ^= SH_FLAG_NODMGDISPLAY
+
+			SettingsMenu(id);
+		}
+		case 5:
+		{
+			// Toggle SH_FLAG_NOAUTOMENU
+			new automenuStatus[24]
+			if ( gPlayerFlags[id] & SH_FLAG_NOAUTOMENU )
+				formatex( automenuStatus, 24, "%L", id, "SHMOD_AUTOMENU_ENABLED" )
+			else
+				formatex( automenuStatus, 24, "%L", id, "SHMOD_AUTOMENU_DISABLED" )
+			chatMessage(id, _, "%L", id, "SHMOD_AUTOMENU_CHANGED", automenuStatus)
+			gPlayerFlags[id] ^= SH_FLAG_NOAUTOMENU
+			
+			SettingsMenu(id);
+		}
+		case 6:
+		{
+			// Toggle SH_FLAG_HUDMSGSTATUS
+			new flagStatus[30]
+			if ( gPlayerFlags[id] & SH_FLAG_HUDMSGSTATUS )
+				formatex( flagStatus, 30, "%L", id, "SHMOD_HUDMSGSTATUS_DEFAULT" )
+			else
+				formatex( flagStatus, 30, "%L", id, "SHMOD_HUDMSGSTATUS_ALT" )
+			chatMessage(id, _, "%L", id, "SHMOD_HUDMSGSTATUS_CHANGED", flagStatus)
+			gPlayerFlags[id] ^= SH_FLAG_HUDMSGSTATUS
+
+			SettingsMenu(id);
+		}
 	}
 
 	menu_destroy(menu);
@@ -6172,13 +6253,13 @@ public BassColorMenu(id)
 {
 	new string[128]
 	
-	formatex(string, 128, "%L", id, "Menu_ChooseColor")
+	formatex(string, 128, "%L", id, "MENU_SET_CHOOSE_YOUR_COLOR")
 	new menu = menu_create(string, "mh_BassColorMenu");
 	
 	new items[8][24] = {
-		"Menu_Red", "Menu_Green", "Menu_Blue",
-		"Menu_lBlue", "Menu_Yellow", "Menu_Purple",
-		"Menu_Orange", "Menu_White"
+		"MENU_OPTION_RED", "MENU_OPTION_GREEN", "MENU_OPTION_BLUE",
+		"MENU_OPTION_LBLUE", "MENU_OPTION_YELLOW", "MENU_OPTION_PURPLE",
+		"MENU_OPTION_ORANGE", "MENU_OPTION_WHITE"
 	}
 
 	for ( new i = 0; i < 8; i++ )
@@ -6190,11 +6271,11 @@ public BassColorMenu(id)
 	menu_setprop(menu, MPROP_EXIT, MEXIT_ALL);
 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\w");
 	
-	formatex(string, 128, "%L", id, "Menu_Back")
+	formatex(string, 128, "%L", id, "MENU_BACK")
 	menu_setprop(menu, MPROP_BACKNAME, string);
-	formatex(string, 128, "%L", id, "Menu_More")
+	formatex(string, 128, "%L", id, "MENU_MORE")
 	menu_setprop(menu, MPROP_NEXTNAME, string);
-	formatex(string, 128, "%L", id, "Menu_Exit")
+	formatex(string, 128, "%L", id, "MENU_CANCEL")
 	menu_setprop(menu, MPROP_EXITNAME, string);
 
 	menu_display(id, menu, 0);
@@ -6204,9 +6285,12 @@ public BassColorMenu(id)
 //----------------------------------------------------------------------------------------------
 public mh_BassColorMenu(id, menu, item)
 {
+	if ( !is_user_connected(id) || is_user_bot(id) ) return PLUGIN_HANDLED;
+	
 	if(item == MENU_EXIT)
 	{
 		menu_cancel(id);
+		SettingsMenu(id);
 		return PLUGIN_HANDLED;
 	}
 
@@ -6225,25 +6309,33 @@ public mh_BassColorMenu(id, menu, item)
 		{255, 255, 255}     // White
 	}
 	
-	new colorName[8][16] = {
-		"Menu_ired",
-		"Menu_igreen",
-		"Menu_iblue",
-		"Menu_ilblue",
-		"Menu_iyellow",
-		"Menu_ipurple",
-		"Menu_iorange",
-		"Menu_iwhite"
+	new colorName[8][24] = {
+		"MENU_COLOR_RED",
+		"MENU_COLOR_GREEN",
+		"MENU_COLOR_BLUE",
+		"MENU_COLOR_LBLUE",
+		"MENU_COLOR_YELLOW",
+		"MENU_COLOR_PURPLE",
+		"MENU_COLOR_ORANGE",
+		"MENU_COLOR_WHITE"
 	}
 	
-	new newColor[32]
-	format( newColor, 32, "%i %i %i", color[item][0], color[item][1], color[item][2] )
-	// set_user_info(id, "basscolor", newColor)
-	client_cmd(id, "setinfo basscolor ^"%s^"", newColor)
-	format( newColor, 32, "%L", id, colorName[item] )
-	sh_chat_message(id, -1, "%L", id, "Menu_BassColorChanged", newColor)
+	new playername[33], vaultdata[16], newColor[40]
+	get_user_name(id, playername, 32)
+	format(vaultdata, 15, "%i %i %i", color[item][0], color[item][1], color[item][2])
+	fvault_pset_data("vault_basscolor", playername, vaultdata)
+	
+	if ( callfunc_begin("basscolor_update", "sh_bass.amxx") == 1 ) 
+    {
+        callfunc_push_int(id)
+        callfunc_end()
+    }
+	
+	format( newColor, 39, "%L", id, colorName[item] )
+	sh_chat_message(id, -1, "%L", id, "MENU_SET_BASS_COLOR_CHANGED", newColor)
 
 	menu_destroy(menu);
+	SettingsMenu(id);
 
 	return PLUGIN_HANDLED;
 }
@@ -6252,13 +6344,13 @@ public HookColorMenu(id)
 {
 	new string[128]
 	
-	formatex(string, 128, "%L", id, "Menu_ChooseColor")
+	formatex(string, 128, "%L", id, "MENU_SET_CHOOSE_YOUR_COLOR")
 	new menu = menu_create(string, "mh_HookColorMenu");
 	
 	new items[8][24] = {
-		"Menu_Red", "Menu_Green", "Menu_Blue",
-		"Menu_lBlue", "Menu_Yellow", "Menu_Purple",
-		"Menu_Orange", "Menu_White"
+		"MENU_OPTION_RED", "MENU_OPTION_GREEN", "MENU_OPTION_BLUE",
+		"MENU_OPTION_LBLUE", "MENU_OPTION_YELLOW", "MENU_OPTION_PURPLE",
+		"MENU_OPTION_ORANGE", "MENU_OPTION_WHITE"
 	}
 
 	for ( new i = 0; i < 8; i++ )
@@ -6270,11 +6362,11 @@ public HookColorMenu(id)
 	menu_setprop(menu, MPROP_EXIT, MEXIT_ALL);
 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\w");
 	
-	formatex(string, 128, "%L", id, "Menu_Back")
+	formatex(string, 128, "%L", id, "MENU_BACK")
 	menu_setprop(menu, MPROP_BACKNAME, string);
-	formatex(string, 128, "%L", id, "Menu_More")
+	formatex(string, 128, "%L", id, "MENU_MORE")
 	menu_setprop(menu, MPROP_NEXTNAME, string);
-	formatex(string, 128, "%L", id, "Menu_Exit")
+	formatex(string, 128, "%L", id, "MENU_CANCEL")
 	menu_setprop(menu, MPROP_EXITNAME, string);
 
 	menu_display(id, menu, 0);
@@ -6284,9 +6376,12 @@ public HookColorMenu(id)
 //----------------------------------------------------------------------------------------------
 public mh_HookColorMenu(id, menu, item)
 {
+	if ( !is_user_connected(id) || is_user_bot(id) ) return PLUGIN_HANDLED;
+	
 	if(item == MENU_EXIT)
 	{
 		menu_cancel(id);
+		SettingsMenu(id);
 		return PLUGIN_HANDLED;
 	}
 
@@ -6305,82 +6400,104 @@ public mh_HookColorMenu(id, menu, item)
 		{255, 255, 255}		// White
 	}
 	
-	new colorName[8][16] = {
-		"Menu_ired",
-		"Menu_igreen",
-		"Menu_iblue",
-		"Menu_ilblue",
-		"Menu_iyellow",
-		"Menu_ipurple",
-		"Menu_iorange",
-		"Menu_iwhite"
+	new colorName[8][24] = {
+		"MENU_COLOR_RED",
+		"MENU_COLOR_GREEN",
+		"MENU_COLOR_BLUE",
+		"MENU_COLOR_LBLUE",
+		"MENU_COLOR_YELLOW",
+		"MENU_COLOR_PURPLE",
+		"MENU_COLOR_ORANGE",
+		"MENU_COLOR_WHITE"
 	}
 	
-	new newColor[32]
-	format( newColor, 32, "%i %i %i", color[item][0], color[item][1], color[item][2] )
-	// set_user_info(id, "hookcolor", newColor)
-	client_cmd(id, "setinfo hookcolor ^"%s^"", newColor)
-	format( newColor, 32, "%L", id, colorName[item] )
-	sh_chat_message(id, -1, "%L", id, "Menu_HookColorChanged", newColor)
+	new playername[33], vaultdata[16], newColor[40]
+	get_user_name(id, playername, 32)
+	format(vaultdata, 15, "%i %i %i", color[item][0], color[item][1], color[item][2])
+	fvault_pset_data("vault_hookcolor", playername, vaultdata)
+    
+	if ( callfunc_begin("hookcolor_update", "sh_spiderman.amxx") == 1 ) 
+    {
+        callfunc_push_int(id)
+        callfunc_end()
+    }
+
+	format( newColor, 39, "%L", id, colorName[item] )
+	sh_chat_message(id, -1, "%L", id, "MENU_SET_HOOK_COLOR_CHANGED", newColor)
 
 	menu_destroy(menu);
+	SettingsMenu(id);
 
 	return PLUGIN_HANDLED;
 }
 //----------------------------------------------------------------------------------------------
-public HookStyleMenu(id)
+public LanguageMenu(id)
 {
-	new string[128]
+	new message[800]
+	new temp[90]
+	new keys = 0
 	
-	formatex(string, 128, "%L", id, "Menu_ChooseStyle")
-	new menu = menu_create(string, "mh_HookStyleMenu");
-
-	menu_additem(menu, "Space Dude", "", 0); // case 0
-	menu_additem(menu, "Spider-Man", "", 0); // case 1
-	menu_additem(menu, "Batgirl", "", 0); // case 2
-
-	menu_setprop(menu, MPROP_EXIT, MEXIT_ALL);
-	menu_setprop(menu, MPROP_NUMBER_COLOR, "\w");
+	formatex(message, 200, "\y%L^n^n", id, "MENU_CHOOSE_LANGUAGE")
 	
-	formatex(string, 128, "%L", id, "Menu_Back")
-	menu_setprop(menu, MPROP_BACKNAME, string);
-	formatex(string, 128, "%L", id, "Menu_More")
-	menu_setprop(menu, MPROP_NEXTNAME, string);
-	formatex(string, 128, "%L", id, "Menu_Exit")
-	menu_setprop(menu, MPROP_EXITNAME, string);
-
-	menu_display(id, menu, 0);
-
-	return PLUGIN_HANDLED;
+	formatex(temp, 90, "\w8. %L^n", id, "MENU_ENGLISH")
+	add(message, charsmax(message), temp)
+	keys |= MENU_KEY_8
+	formatex(temp, 90, "9. %L^n", id, "MENU_RUSSIAN")
+	add(message, charsmax(message), temp)
+	keys |= MENU_KEY_9
+	formatex(temp, 90, "%L", id, "SHMOD_SHOWMENU_CANCEL")
+	add(message, charsmax(message), temp)
+	keys |= MENU_KEY_0
+	
+	show_menu(id, keys, message)
+	
+	return PLUGIN_HANDLED
 }
 //----------------------------------------------------------------------------------------------
-public mh_HookStyleMenu(id, menu, item)
+public mh_LanguageMenu(id, key)
 {
-	if(item == MENU_EXIT)
-	{
-		menu_cancel(id);
-		return PLUGIN_HANDLED;
+	switch(key) {
+		case 7: {
+			client_cmd(id, "setinfo lang en")
+			set_user_info(id, "lang", "en")
+			sh_chat_message(id, -1, "You've selected English language")
+		}
+		case 8: {
+			client_cmd(id, "setinfo lang ru")
+			set_user_info(id, "lang", "ru")
+			sh_chat_message(id, -1, "Вы выбрали русский язык")
+		}
 	}
-
-	new command[6], name[64], access, callback;
-
-	menu_item_getinfo(menu, item, access, command, sizeof command - 1, name, sizeof name - 1, callback);
-
-	// set_user_info(id, "hookstyle", "%i", item + 1)
-	client_cmd(id, "setinfo hookstyle ^"%i^"", item + 1)
-	switch(item)
-	{
-		case 0:
-			sh_chat_message(id, -1, "%L", id, "Menu_SpaceDude");
-		case 1: 
-			sh_chat_message(id, -1, "%L", id, "Menu_SpiderMan");
-		case 2:
-			sh_chat_message(id, -1, "%L", id, "Menu_Batgirl");
-	}
-
-	menu_destroy(menu);
-
-	return PLUGIN_HANDLED;
+	
+	if (backToMenu[id])
+		SettingsMenu(id);
+	
+	return PLUGIN_HANDLED	
 }
 //----------------------------------------------------------------------------------------------
 #endif
+
+
+//----------------------------------------------------------------------------------------------
+public dictionaryRelation()
+{
+	for ( new x = 0; x < gSuperHeroCount && x < SH_MAXHEROS; x++ ) 
+	{
+		for ( new i = 0; i < heroesCount; i++ )
+			if ( equal( rusDict[i][0], gSuperHeros[x][hero] ) )
+			{
+				dictRelation[x] = i
+				break
+			}
+	}
+}
+//----------------------------------------------------------------------------------------------
+public sh_change_max_hp(id, hitPoints)
+{
+	//stupid check - but checking prevents crashes
+	if ( id < 1 || id > gServersMaxPlayers ) return
+
+	if (hitPoints > gMaxHealth[id])
+		gMaxHealth[id] = hitPoints
+}
+//----------------------------------------------------------------------------------------------
