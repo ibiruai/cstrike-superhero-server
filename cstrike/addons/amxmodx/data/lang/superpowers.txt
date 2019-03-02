@@ -1,0 +1,408 @@
+[ru]
+BASS_NOSHOTS = Bass - Нет снарядов
+BASS_SHOTS_LEFT_N = Bass : Осталось %d выстрелов
+BASS_SHOTS_LEFT_2_4 = Bass : Осталось %d выстрела
+BASS_SHOTS_LEFT_1 = Bass : Остался %d выстрел
+
+BISHOP_NO_ENERGY_LEFT = У вас нет энергии в запасе!
+BISHOP_ENERGY_ABSORBED_TOTAL = Всего энергии впитано: %i
+BISHOP_ENERGY_ABSORBED = Вы впитали %d ед. энергии
+BISHOP_BLAST_DAMAGE_DEALT = ПОТОК ЭНЕРГИИ НА %d НР
+BISHOP_BLAST_MISSED = Ваш поток энергии не достиг цели!
+
+BLINK_FAILED_BAD_DESTINATION = Телепортация не удалась^nНеверная точка назначения
+BLINK_SLAIN_FOR_TELEPORTING = Вы не можете телепортироваться в эту зону
+BLINK_FAILED_BOMB_PLANTING = Вы не можете телепортироваться во время установки бомбы
+BLINK_STUCK_MOVING = Вы застряли! Вы возвращаетесь на ваш спавн
+BLINK_STUCK_SORRY = Вы застряли, но в данный момент невозможно что-либо с этим сделать
+
+BOMBERMAN_EXPLOSION = Ваша игрушечная бомба взрывается
+BOMBERMAN_DISACTIVATED = %s отключает вашу игрушечную бомбу
+BOMBERMAN_YOU_DISACTIVATE_YOURS = Вы отключаете вашу игрушечную бомбу
+BOMBERMAN_YOU_DISACTIVATE = Вы отключаете игрушечную бомбу %s
+BOMBERMAN_ACTIVATED = %s включает вашу игрушечную бомбу
+BOMBERMAN_YOU_ACTIVATE_YOURS = Вы включаете вашу игрушечную бомбу
+BOMBERMAN_YOU_ACTIVATE = Вы включаете игрушечную бомбу %s
+
+CATWOMAN_NO_FREE_SPAWN_SPOT = Нет возможности пробраться на базу противника
+CATWOMAN_YOU_SNUCK_INTO = Вы пробрались на базу противника
+CATWOMAN_YOU_HAVE_TAKEN_OFF_OUTFIT = Вы сбросили свою маскировку
+
+CHOGATH_FEAST = %s пожирает %s и разрастается на %d HP
+CHOGATH_FEAST_MAX = %s пожирает %s
+
+DEMOMAN_MINE_LIMIT_REACHED = Максимальное количество мин (%d) достигнуто
+DEMOMAN_YOU_MUST_PLANT_ON_A_WALL = Мина может быть установлена только на стене
+DEMOMAN_DETONATED = Ваша мина взорвалась
+DEMOMAN_DETONATED_BY_PLAYER = %s взрывает вашу мину
+DEMOMAN_DETONATED_BY_YOU = Вы взорвали свою мину
+
+GRANDMASTER_POWER_USED = %s использует космическую жизненную силу, чтобы воскресить %s!
+
+HUMANTORCH_YOU_CANNOT_USE_IT_UNDER_WATER = Вы не можете использовать пламя под водой
+HUMANTORCH_COST = Выстрел пламенем стоит %d вашей брони
+
+INVISMAN_NO_LONGER_CLOAKED = Invisible Man : Вы больше не замаскированы
+INVISMAN_100_PERCENT_CLOAKED = Invisible Man : 100%s маскировка
+INVISMAN_N_PERCENT_CLOAKED = Invisible Man : %d%s маскировка
+
+IRONMAN_NO_FUEL = У вас кончилось топливо для реактивного ранца
+
+MIRAGE_INVISIBLE = -Вас невидно-
+MIRAGE_VISIBLE = -Вас снова видно-
+
+MYSTIQUE_YOU_LOOK_LIKE_AN_ENEMY = %s - Вы выглядите как боец %s
+MYSTIQUE_RETURNED_TO_SELF = %s - Вы вернули свой облик
+MYSTIQUE_POWER_HAS_WORN_OFF = Ваша сила перевоплощения иссякла
+
+PHOENIX_REBORN_MSG_TO_YOU = Вы использовали Силу Феникса, чтобы восстать из пепла!
+PHOENIX_TEAM_CHECK = Вы сменили команду и использовали Силу Феникса. Теперь вы умрёте.
+PHOENIX_POSITION_CHECK = Вы погибли, застряв в стене
+PHOENIX_REBORN_MSG_TO_OTHERS = %s перерождается благодаря Силе Феникса!
+
+PSYLOCK_DISTANCE1 = ОПАСНО!  Враг замечен в 1 метре!!!
+PSYLOCK_DISTANCE2 = ОПАСНО!  Враг замечен в %d метрах!!!
+PSYLOCK_DISTANCE3 = ОСТОРОЖНО!  Враг замечен в %d метрах!!
+PSYLOCK_DISTANCE4 = ВНИМАНИЕ!  Враг замечен в %d метрах!
+
+SCORPION_ESCAPE = Ваша жертва сбежала!
+SCORPION_HARPOONS_LEFT = Зарядов Скорпиона осталось - %d
+SCORPION_KNIFE_FIGHT = Мортал Комбат! Деритесь до смерти с %s
+SCORPION_FIGHT_MSG = FIGHT!
+SCORPION_WINNER = %s ПОБЕЖДАЕТ
+
+SHADOWCAT_NOCLIP_ALREADY = Вы уже используете noclip
+SHADOWCAT_USED = Режим %s активирован^nВы умрёте, если застрянете в стене
+SHADOWCAT_TIME_LEFT = Секунд осталось - %d^nВы умрёте, если застрянете в стене
+
+SNAKE_RATION_USED = Snake - Паёк использован
+
+SPIDERMAN_SWINGS = You have %d web swing%s left
+
+THING_BULLETS_MSG_TO_YOU = Пуля отскакивает от вашей каменной кожи.
+THING_BULLETS_MSG_TO_ENEMY = ^n^nПуля отскакивает от каменной кожи противника.
+THING_KNIFE_MSG_TO_YOU = Ваша каменная кожа блокирует ножевой удар.
+THING_KNIFE_MSG_TO_ENEMY = ^n^nКаменная кожа противника блокирует ножевой удар.
+
+MONITOR_SPEC= Уровень: %d/%d  |  Опыт: %d%s^nЗдоровье: %d  |  Броня: %d  %s^nГравитация: %d%%  |  Скорость: %d
+MONITOR_INVINCIBLE = [ЩИТ]
+
+SHMOD_BIND_NOT_A_CHAT_COMMAND = * Команду bind нужно писать не в чате, а в консоли (нажмите ~).
+SHMOD_HUD_HELP = Команды чата:^n--------------------^n/shmenu - Меню мода^n/help - Помощь^n/langmenu - Language menu^n^nКнопки активных умений^n--------------------^nЧтобы назначить кнопку,^nпропишите bind в консоли^nПримеры:^nbind f +power1^nbind mouse3 +power2^n--------------------^nВкл. эту справку:  /helpon^nВыкл. эту справку: /helpoff
+
+SHMOD_NOT_ALLOWED_TO_HAVE_POWERS = Вам не позволено иметь способности
+SHMOD_SHOWMENU_TITLE = \yВыберите способности:%-3s\r(Выбрано %d/%d)^n^n
+SHMOD_SHOWMENU_MORE = \w^n9. Далее
+SHMOD_SHOWMENU_CANCEL = \w^n0. Отмена
+SHMOD_RULE_MAXBINDS = Вы не можете выбрать больше %d способностей, требующих назначения клавиш
+SHMOD_RULE_LVL_LIMIT = Вы больше не можете выбирать способности этого уровня
+SHMOD_AUTOMATIC_POWER = ПАССИВНОЕ УМЕНИЕ: %s^n%s
+SHMOD_BIND_INSTRUCTION = НАЗНАЧЬТЕ КЛАВИШУ ДЛЯ "+POWER%d": %s^n%s
+SHMOD_CLEARPOWERS_SUCCESS = Все ваши способности успешно сброшены
+SHMOD_RULE_DROPALIVE = Вы не можете сбрасывать способности, когда живы
+SHMOD_MERCYXP_GIVEN = Вы получили %d MercyXP
+SHMOD_RULE_VIP_POWERS = VIP не может использовать +power клавиши
+SHMOD_NOT_ALLOWED_TO_USE_POWERS = Вам запрещено использовать способности
+SHMOD_XP_ON_NEXT_ROUND = [SH] Ваш опыт будет загружен в следующем раунде
+SHMOD_DAMAGEDISPLAY_CHANGED = Отображение урона: %s
+SHMOD_DAMAGEDISPLAY_ENABLED = ВКЛЮЧЕНО
+SHMOD_DAMAGEDISPLAY_DISABLED = ВЫКЛЮЧЕНО
+SHMOD_AUTOMENU_CHANGED = Автоматическое появление меню выбора героев: %s
+SHMOD_AUTOMENU_ENABLED = ВКЛЮЧЕНО
+SHMOD_AUTOMENU_DISABLED = ВЫКЛЮЧЕНО
+SHMOD_HUDMSGSTATUS_CHANGED = Метод отображения статуса: %s
+SHMOD_HUDMSGSTATUS_DEFAULT = Стандартный
+SHMOD_HUDMSGSTATUS_ALT = Альтернативный
+SHMOD_MOD_IS_DISABLED = SuperHero мод в данный момент отключен
+SHMOD_WHOHAS_SYNTAX = Для этой команды необходимо предоставить часть имени героя
+SHMOD_HELP_HUDMESSAGE_ON = Справочное HUD сообщение теперь отображается
+SHMOD_HELP_HUDMESSAGE_OFF = Справочное HUD сообщение теперь не отображается
+SHMOD_HELP_HINT = Для отображения справки по моду SuperHero напишите /help
+SHMOD_DROP_SYNTAX = Пожалуйста, напишите как минимум две буквы имени героя, которого вы хотите сбросить
+SHMOD_DROP_SUCCESS = Герой сброшен: %s
+SHMOD_DROP_HERO_NOT_FOUND = Не получилось найти героя по вашему запросу: %s
+SHMOD_WHOHAS_WRONG_HERO = Не получилось найти героя по вашему запросу: %s
+SHMOD_BANNED_FROM_USING_POWERS = Вам было запрещено использовать способности
+SHMOD_DONT_BUY_SHIELD = Вы не можете купить ЩИТ ввиду вашего выбора героев
+SHMOD_DONT_AUTOBUY = Вы не можете использовать автоматическую закупку ввиду вашего выбора героев
+SHMOD_XP_VIP_CT = Вы получили %d XP за побег в качестве VIP
+SHMOD_XP_VIP_T = Вы получили %d XP за устранение VIP
+SHMOD_XP_VIP_CT_TEAM = Ваша команда получила %d XP за успешный побег VIP
+SHMOD_XP_HOSTAGE_LOST = Вы потеряли %d XP за убийство заложника
+SHMOD_XP_HOSTAGE_CT = Вы получили %d XP за спасение заложника
+SHMOD_XP_HOSTAGE_CT_TEAM = Ваша команда получила %d XP за спасение всех заложников
+SHMOD_XP_BOMB_T = Вы получили %d XP за установку бомбы
+SHMOD_XP_BOMB_CT = Вы получили %d XP за обезвреживание бомбы
+SHMOD_XP_BOMB_T_TEAM = Ваша команда получила %d XP за успешный взрыв бомбы
+
+SHMOD_MOTD_HELP = Информация
+SHMOD_MOTD_HEROLIST = Список героев
+SHMOD_MOTD_PLAYERLEVELS = Уровни игроков
+SHMOD_MOTD_PLAYERSKILLS = Герои игроков
+SHMOD_MOTD_MYHEROES = Ваши герои
+SHMOD_MOTD_MYHEROES_LIST = Ваши герои:^n^n
+SHMOD_MOTD_HEROLIST_TEXT1 = СОВЕТ: Детальная информация о способностях доступна в /help.^n^n
+SHMOD_MOTD_HEROLIST_TEXT2 = Герои:^n
+
+SHMOD_SH_MERCHANT_NOT_INSTALLED = Superhero Merchant не установлен на этом сервере
+
+MENU_MM_TITLE = \yМеню SuperHero Mod\w
+MENU_MM_SHOWMENU = Выбор способностей
+MENU_MM_DROPMENU = Сброс способностей
+MENU_MM_MYHEROES = Ваши способности
+MENU_MM_PLAYERSKILLS = Способности игроков
+MENU_MM_HEROLIST = Описание способностей
+MENU_MM_HELP = Информация о моде
+MENU_MM_SETTINGS = Настройки
+MENU_SM_DROP_SOME_POWERS = Сбросьте имеющиеся способности, чтобы иметь возможность выбрать новые
+MENU_SM_YOU_ARE_0_LVL = Способности становятся доступны с первого уровня
+MENU_DM_NO_POWERS = У вас нет способностей
+MENU_DM_TITLE = Сбросьте способности
+MENU_SET_TITLE = Настройки
+MENU_DAMAGEDISPLAY_YES = Отображение урона \r[Включено]
+MENU_DAMAGEDISPLAY_NO = Отображение урона \r[Выключено]
+MENU_AUTOMENU_YES = Появление меню выбора \r[Автоматическое]
+MENU_AUTOMENU_NO = Появление меню выбора \r[По запросу]
+MENU_HUDMSGSTATUS_DEF = Метод отображения статуса \r[Стандартный]
+MENU_HUDMSGSTATUS_ALT = Метод отображения статуса \r[Альтернативный]
+MENU_SET_DAMAGE_OFF = Выключить отображение урона
+MENU_SET_DAMAGE_ON = Включить отображение урона
+MENU_SET_BASS_COLOR = Bass - Цвет луча
+MENU_SET_HOOK_COLOR = Spider-Man - Цвет паутины
+MENU_SET_HOOK_SPIDER = Spider-Man - Стиль \r[Человек-паук]
+MENU_SET_HOOK_BAT = Spider-Man - Стиль \r[Бэтгёрл]
+MENU_SET_CHOOSE_YOUR_COLOR = Выберите ваш цвет
+MENU_OPTION_RED = Красный
+MENU_OPTION_GREEN = Зелёный
+MENU_OPTION_BLUE = Синий
+MENU_OPTION_LBLUE = Голубой
+MENU_OPTION_YELLOW = Жёлтый
+MENU_OPTION_PURPLE = Фиолетовый
+MENU_OPTION_ORANGE = Оранжевый
+MENU_OPTION_WHITE = Белый
+MENU_COLOR_RED = красного цвета
+MENU_COLOR_GREEN = зелёного цвета
+MENU_COLOR_BLUE = синего цвета
+MENU_COLOR_LBLUE = голубого цвета
+MENU_COLOR_YELLOW = жёлтого цвета
+MENU_COLOR_PURPLE = фиолетового цвета
+MENU_COLOR_ORANGE = оранжевого цвета
+MENU_COLOR_WHITE = белого цвета
+MENU_SET_BASS_COLOR_CHANGED = Ваш луч Bass теперь %s
+MENU_SET_HOOK_COLOR_CHANGED = Ваша паутина теперь %s
+MENU_OPTION_SPIDERMAN = Теперь вы летаете как Человек-паук
+MENU_OPTION_BATGIRL = Теперь вы летаете как Бэтгёрл
+MENU_BACK = Назад
+MENU_MORE = Далее
+MENU_EXIT = Выход
+MENU_CANCEL = Отмена
+MENU_LANGUAGE = Язык
+MENU_CHOOSE_LANGUAGE = Выберите предпочитаемый язык
+MENU_ENGLISH = Английский - English
+MENU_RUSSIAN = Русский
+MENU_OTHER = Другой
+
+
+[en]
+BASS_NOSHOTS = No Bass Shots Left
+BASS_SHOTS_LEFT_N = Warning: %d Bass Shots Left
+BASS_SHOTS_LEFT_2_4 = Warning: %d Bass Shots Left
+BASS_SHOTS_LEFT_1 = Warning: %d Bass Shot Left
+
+BISHOP_NO_ENERGY_LEFT = You have NO energy left in reserve!
+BISHOP_ENERGY_ABSORBED_TOTAL = Total Energy Absorbed: %i
+BISHOP_ENERGY_ABSORBED = You absorbed %d energy points
+BISHOP_BLAST_DAMAGE_DEALT = ENERGY BLAST of %d Hit Points
+BISHOP_BLAST_MISSED = Your Energy Blast MISSED!
+
+BLINK_FAILED_BAD_DESTINATION = Teleport Failed^nBad Destination
+BLINK_SLAIN_FOR_TELEPORTING = You can't teleport into this area
+BLINK_FAILED_BOMB_PLANTING = You can't blink while planting the bomb
+BLINK_STUCK_MOVING = You are stuck! Ahhh! Moving you back to your spawn!
+BLINK_STUCK_SORRY = Sorry, I know you're stuck, but I can't move you right now :/
+
+BOMBERMAN_EXPLOSION = Your toy bomb has exploded
+BOMBERMAN_DISACTIVATED = %s turned off your toy bomb
+BOMBERMAN_YOU_DISACTIVATE_YOURS = You turned off your toy bomb
+BOMBERMAN_YOU_DISACTIVATE = You turned off %s's toy bomb
+BOMBERMAN_ACTIVATED = %s turned on your toy bomb
+BOMBERMAN_YOU_ACTIVATE_YOURS = You turned on your toy bomb
+BOMBERMAN_YOU_ACTIVATE = You turned on %s's toy bomb
+
+CATWOMAN_NO_FREE_SPAWN_SPOT = No opening to sneak through.
+CATWOMAN_YOU_SNUCK_INTO = You snuck into the enemy base.
+CATWOMAN_YOU_HAVE_TAKEN_OFF_OUTFIT = You have taken off your sneaking outfit.
+
+CHOGATH_FEAST = %s has eaten %s and gained %d HPs
+CHOGATH_FEAST_MAX = %s has eaten %s
+
+DEMOMAN_MINE_LIMIT_REACHED = Maximum Mine limit of %d reached
+DEMOMAN_YOU_MUST_PLANT_ON_A_WALL = You must plant the tripmine on a wall
+DEMOMAN_DETONATED = Your mine has detonated
+DEMOMAN_DETONATED_BY_PLAYER = %s detonated your mine
+DEMOMAN_DETONATED_BY_YOU = You detonated your mine
+
+GRANDMASTER_POWER_USED = %s used cosmic life force to Revive Dead Teammate %s!
+
+HUMANTORCH_YOU_CANNOT_USE_IT_UNDER_WATER = You cannot use the Flame Blast while underwater
+HUMANTORCH_COST = Flame Blasts cost %d armor points each
+
+INVISMAN_NO_LONGER_CLOAKED = Invisible Man : You are no longer cloaked
+INVISMAN_100_PERCENT_CLOAKED = Invisible Man : 100%s cloaked
+INVISMAN_N_PERCENT_CLOAKED = Invisible Man : %d%s cloaked
+
+IRONMAN_NO_FUEL = You ran out of Jetpack Fuel
+
+MIRAGE_INVISIBLE = -Turned invisible-
+MIRAGE_VISIBLE = -Visible again-
+
+MYSTIQUE_YOU_LOOK_LIKE_AN_ENEMY = %s - YOU NOW LOOK LIKE THE ENEMY (%s)
+MYSTIQUE_RETURNED_TO_SELF = %s - RETURNED TO SELF
+MYSTIQUE_POWER_HAS_WORN_OFF = Your shapeshifting power has worn off
+
+PHOENIX_REBORN_MSG_TO_YOU = You used the Phoenix power to Rise Again from the Ashes!
+PHOENIX_TEAM_CHECK = You changed teams and used Phoenix Respawn, now you shall die
+PHOENIX_POSITION_CHECK = You were killed for being stuck in a wall
+PHOENIX_REBORN_MSG_TO_OTHERS = %s was Re-Born using the power of the Phoenix!
+
+PSYLOCK_DISTANCE1 = DANGER!  Enemy Detected Within 1 Meter!!!
+PSYLOCK_DISTANCE2 = DANGER!  Enemy Detected Within %d Meters!!!
+PSYLOCK_DISTANCE3 = WARNING!  Enemy Detected Within %d Meters!!
+PSYLOCK_DISTANCE4 = CAUTION!  Enemy Detected Within %d Meters!
+
+SCORPION_ESCAPE = Your victim has escaped!
+SCORPION_HARPOONS_LEFT = You have %d Scorpion Spear%s left
+SCORPION_KNIFE_FIGHT = Mortal Kombat! Knife til death with %s
+SCORPION_FIGHT_MSG = FIGHT!
+SCORPION_WINNER = %s WINS
+
+SHADOWCAT_NOCLIP_ALREADY = You are already using noclip
+SHADOWCAT_USED = Entered %s Mode^nDon't get Stuck or you will die
+SHADOWCAT_TIME_LEFT = "%d second%s left of %s Mode^nDon't get Stuck or you will Die"
+
+SNAKE_RATION_USED = Snake - Ration Used
+
+SPIDERMAN_SWINGS = You have %d web swing%s left
+
+THING_BULLETS_MSG_TO_YOU = Bullet bounces off your rock skin.
+THING_BULLETS_MSG_TO_ENEMY = ^nBullet bounces off victim's rock skin.
+THING_KNIFE_MSG_TO_YOU = Your rock skin blocks the knife attack.
+THING_KNIFE_MSG_TO_ENEMY = nVictim's rock skin blocks the knife attack.
+
+MONITOR_SPEC = Level: %d/%d  |  XP: %d%s^nHealth: %d  |  Armor: %d  %s^nGravity: %d%%  |  Speed: %d
+MONITOR_INVINCIBLE = [INVINCIBLE]
+
+SHMOD_BIND_NOT_A_CHAT_COMMAND = * Bind command doesn't work in the chat. You should use it in the console (press ~).
+SHMOD_HUD_HELP = Say Commands:^n--------------------^n/shmenu - Main menu^n/help - Help^n^nHow To Use Powers:^n--------------------^nYou need to bind a key^nInput bind into console^nExamples:^nbind f +power1^nbind mouse3 +power2^n--------------------^nEnable This HUD:  /helpon^nDisable This HUD: /helpoff
+
+SHMOD_NOT_ALLOWED_TO_HAVE_POWERS = You are not allowed to have powers
+SHMOD_SHOWMENU_TITLE = \ySelect Super Power:%-16s\r(You've Selected %d/%d)^n^n
+SHMOD_SHOWMENU_MORE = \w^n9. More Heroes
+SHMOD_SHOWMENU_CANCEL = \w^n0. Cancel
+SHMOD_RULE_MAXBINDS = You cannot choose more than %d heroes that require binds
+SHMOD_RULE_LVL_LIMIT = You cannot pick any more heroes from that level
+SHMOD_AUTOMATIC_POWER = AUTOMATIC POWER: %s^n%s
+SHMOD_BIND_INSTRUCTION = BIND KEY TO "+POWER%d": %s^n%s
+SHMOD_CLEARPOWERS_SUCCESS = All your powers have been cleared successfully
+SHMOD_RULE_DROPALIVE = You are not allowed to drop heroes while alive
+SHMOD_MERCYXP_GIVEN = You were given %d MercyXP points
+SHMOD_RULE_VIP_POWERS = VIP's are not allowed to use +power keys
+SHMOD_NOT_ALLOWED_TO_USE_POWERS = You are banned from using powers
+SHMOD_XP_ON_NEXT_ROUND = [SH] Your XP will be loaded next round
+SHMOD_DAMAGEDISPLAY_CHANGED = Damage display %s
+SHMOD_DAMAGEDISPLAY_ENABLED = ENABLED
+SHMOD_DAMAGEDISPLAY_DISABLED = DISABLED
+SHMOD_AUTOMENU_CHANGED = Automatically show Select Super Power menu %s
+SHMOD_AUTOMENU_ENABLED = ENABLED
+SHMOD_AUTOMENU_DISABLED = DISABLED
+SHMOD_HUDMSGSTATUS_CHANGED = Status message method: %s
+SHMOD_HUDMSGSTATUS_DEFAULT = DEFAULT
+SHMOD_HUDMSGSTATUS_ALT = ALTERNATIVE
+SHMOD_MOD_IS_DISABLED = SuperHero Mod is currently disabled
+SHMOD_WHOHAS_SYNTAX = A partial hero name is required for that command
+SHMOD_HELP_HUDMESSAGE_ON = Help HUD message enabled
+SHMOD_HELP_HUDMESSAGE_OFF = Help HUD message disabled
+SHMOD_HELP_HINT = For help with SuperHero Mod, say: /help
+SHMOD_DROP_SYNTAX = Please provide at least two letters from the hero name you wish to drop
+SHMOD_DROP_SUCCESS = Dropped Hero: %s
+SHMOD_DROP_HERO_NOT_FOUND = Could Not Find Power to Drop: %s
+SHMOD_WHOHAS_WRONG_HERO = Could not find a hero that matches: %s
+SHMOD_BANNED_FROM_USING_POWERS = You have been banned from using superhero powers
+SHMOD_DONT_BUY_SHIELD = You are not allowed to buy a SHIELD due to a hero selection you have made
+SHMOD_DONT_AUTOBUY = You are not allowed to use AUTOBUY due to a hero selection you have made
+SHMOD_XP_VIP_CT = You got %d XP for escaping as the VIP
+SHMOD_XP_VIP_T = You got %d XP for assassinating the VIP
+SHMOD_XP_VIP_CT_TEAM = Your team got %d XP for a successful VIP esacpe
+SHMOD_XP_HOSTAGE_LOST = You lost %d XP for killing a hostage
+SHMOD_XP_HOSTAGE_CT = You got %d XP for rescuing a hostage
+SHMOD_XP_HOSTAGE_CT_TEAM = Your team got %d XP for rescuing all the hostages
+SHMOD_XP_BOMB_T = You got %d XP for planting the bomb
+SHMOD_XP_BOMB_CT = You got %d XP for defusing the bomb
+SHMOD_XP_BOMB_T_TEAM = Your team got %d XP for a successful bomb explosion
+
+SHMOD_MOTD_HELP = SuperHero Mod Help
+SHMOD_MOTD_HEROLIST = List of Heroes
+SHMOD_MOTD_PLAYERLEVELS = Players SuperHero Levels
+SHMOD_MOTD_PLAYERSKILLS = Players SuperHero Skills
+SHMOD_MOTD_MYHEROES = Your SuperHero Heroes
+SHMOD_MOTD_MYHEROES_LIST = Your Heroes Are:^n^n
+SHMOD_MOTD_HEROLIST_TEXT1 = TIP: Use "herolist" in the console for better output and searchability.^nTIP: Say /help to learn more details about heroes.^n^n
+SHMOD_MOTD_HEROLIST_TEXT2 = Installed Heroes:^n^n
+
+SHMOD_SH_MERCHANT_NOT_INSTALLED = Superhero Merchant is not installed on the server
+
+MENU_MM_TITLE = \ySuperHero Mod menu\w
+MENU_MM_SHOWMENU = Select powers
+MENU_MM_DROPMENU = Drop powers
+MENU_MM_MYHEROES = Show your powers
+MENU_MM_PLAYERSKILLS = Show players' powers
+MENU_MM_HEROLIST = Description of powers
+MENU_MM_HELP = SuperHero Mod Help
+MENU_MM_SETTINGS = Settings
+MENU_SM_DROP_SOME_POWERS = Drop some powers so you can pick another
+MENU_SM_YOU_ARE_0_LVL = No powers are available on level 0
+MENU_DM_NO_POWERS = You don't have any powers
+MENU_DM_TITLE = Drop Super Power
+MENU_SET_TITLE = Settings
+MENU_DAMAGEDISPLAY_YES = Show damage \r[Yes]
+MENU_DAMAGEDISPLAY_NO = Show damage \r[No]
+MENU_AUTOMENU_YES = Automatically show Select Powers Menu \r[Yes]
+MENU_AUTOMENU_NO = Automatically show Select Powers Menu \r[No]
+MENU_HUDMSGSTATUS_DEF = Status message display method \r[Default]
+MENU_HUDMSGSTATUS_ALT = Status message display method \r[Alternative]
+MENU_SET_DAMAGE_OFF = Turn off damage display
+MENU_SET_DAMAGE_ON = Turn on damage display
+MENU_SET_BASS_COLOR = Bass beam color
+MENU_SET_HOOK_COLOR = Spider-Man's hook color
+MENU_SET_HOOK_SPIDER = Spider-Man's hook style \r[Spider-Man]
+MENU_SET_HOOK_BAT = Spider-Man's hook style \r[Batgirl]
+MENU_SET_CHOOSE_YOUR_COLOR = Pick your color
+MENU_OPTION_RED = Red
+MENU_OPTION_GREEN = Green
+MENU_OPTION_BLUE = Blue
+MENU_OPTION_LBLUE = Light blue
+MENU_OPTION_YELLOW = Yellow
+MENU_OPTION_PURPLE = Purple
+MENU_OPTION_ORANGE = Orange
+MENU_OPTION_WHITE = White
+MENU_COLOR_RED = red
+MENU_COLOR_GREEN = green
+MENU_COLOR_BLUE = blue
+MENU_COLOR_LBLUE = light blue
+MENU_COLOR_YELLOW = yellow
+MENU_COLOR_PURPLE = purple
+MENU_COLOR_ORANGE = orange
+MENU_COLOR_WHITE = white
+MENU_SET_BASS_COLOR_CHANGED = Your Bass beam is %s now
+MENU_SET_HOOK_COLOR_CHANGED = Your web is %s now
+MENU_OPTION_SPIDERMAN = Now you fly like Spider-Man
+MENU_OPTION_BATGIRL = Now you fly like Batgirl
+MENU_BACK = Back
+MENU_MORE = More
+MENU_EXIT = Exit
+MENU_CANCEL = Cancel
+MENU_LANGUAGE = Language
+MENU_CHOOSE_LANGUAGE = Choose your preferable language
+MENU_ENGLISH = English
+MENU_RUSSIAN = Russian - Русский
+MENU_OTHER = Other

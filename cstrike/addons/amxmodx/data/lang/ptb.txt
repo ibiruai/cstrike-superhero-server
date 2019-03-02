@@ -1,0 +1,7 @@
+[en]
+PTB_SWITCHING = PTB: Switching %s with %s
+PTB_TRANSFERRING = PTB: Transfering %s to the %s
+
+[ru]
+PTB_SWITCHING = PTB: %s и %s меняются местами
+PTB_TRANSFERRING = PTB: %s переводится за %s

@@ -124,29 +124,29 @@ AIMBOTDETECT_VICTIMLOCATION = Kon de aimbot detectiebot niet spawnen vanwege de 
 AIMBOTDETECT_ERRORBOT = Spawnfout van detectiebot.
 
 [ru]
-AIMBOTDETECT_DISCONNECT =  %s vyshel. Proverka ostanovlena
-AIMBOTDETECT_SHOOTBLANKSREAPPLIED = %s has connected and shoot-blanks punishment has been re-applied.
-AIMBOTDETECT_NOTIFYADMIN = sechas proverjaetsja %s
-AIMBOTDETECT_PASSEDALL = %s proshel vse testy na aimbot. Proverka ubrana.
-AIMBOTDETECT_NOAUTOWATCH = %s proshel %d proverok bez obnaruzhenija aimbot'a i teper' ne budet avtomaticheski proverjatsja.
-AIMBOTDETECT_DISABLED = plagin vykljuchen.
-AIMBOTDETECT_CURRENTWATCH = sechas proverjaetsja %s.
-AIMBOTDETECT_NOPLAYERWATCH = sechas nikto ne proverjaetsja.
-AIMBOTDETECT_MONITORINGSTOPPED = Aimbot monitor na  %s ostanovlen.
-AIMBOTDETECT_NOWMONITORING = %s sechas proverjaetsa.
-AIMBOTDETECT_NOTWATCHING = %s sechas ne proverjaetsa.
-AIMBOTDETECT_NOLONGERMONITOR =  %s bol'she ne proverjaetsa.
-AIMBOTDETECT_PROPERUSAGE = ispol'zovanie: amx_aimwatch <igrok> <0=on/1=off> ili amx_aimwatch bez parametrov.
-AIMBOTDETECT_ALREADYWATCHING = %s uzhe proverjalsja.
-AIMBOTDETECT_AWNOWWATCHING = [AutoWatch] sechas proverjaetsa %s
-AIMBOTDETECT_ISUSINGAIMBOT = %s ispol'zuet aimbot!!!
-AIMBOTDETECT_NOWSHOOTBLANKS = %s will now shoot blanks.
-AIMBOTDETECT_PLR_DETECTED = %s ispol'zuet aimbot!!!
-AIMBOTDETECT_MOREDETECTIONS = %d more detection%s needed for player to be punished.
-AIMBOTDETECT_SERVERFULL = server polon, nevozmozhno sozdat' bota.
-AIMBOTDETECT_TOOCLOSE = proverjaemyj igrok slishkom blizok k zhertve, nevozmozhno sozdat' bota.
-AIMBOTDETECT_VICTIMLOCATION = nevozmozhno sozdat' bota iz-za pozicii zhertvy.
-AIMBOTDETECT_ERRORBOT = oshibka sozdanija bota.
+AIMBOTDETECT_DISCONNECT =  Наблюдение за %s прекращено, так как игрок отключается
+AIMBOTDETECT_SHOOTBLANKSREAPPLIED = %s присоединяется. Мера "Стрельба без урона" возобновлена
+AIMBOTDETECT_NOTIFYADMIN = Сейчас наблюдается %s
+AIMBOTDETECT_PASSEDALL = %s: тест пройден, наблюдение прекращено
+AIMBOTDETECT_NOAUTOWATCH = %s проходит %d проверки и теперь не будет автоматически проверяться
+AIMBOTDETECT_DISABLED = Плагин выключен
+AIMBOTDETECT_CURRENTWATCH = Сейчас наблюдается %s
+AIMBOTDETECT_NOPLAYERWATCH = Сейчас никто не наблюдается
+AIMBOTDETECT_MONITORINGSTOPPED = Наблюдение за  %s остановлено
+AIMBOTDETECT_NOWMONITORING = %s сейчас наблюдается
+AIMBOTDETECT_NOTWATCHING = %s сейчас не наблюдается
+AIMBOTDETECT_NOLONGERMONITOR =  %s больше не наблюдается
+AIMBOTDETECT_PROPERUSAGE = Proper usage: amx_aimwatch <player> <0=Off/1=On> OR amx_aimwatch with no parameters.
+AIMBOTDETECT_ALREADYWATCHING = %s уже наблюдается
+AIMBOTDETECT_AWNOWWATCHING = [AutoWatch] Сейчас наблюдается %s
+AIMBOTDETECT_ISUSINGAIMBOT = %s может использовать aimbot
+AIMBOTDETECT_NOWSHOOTBLANKS = %s теперь не наносит пулевой урон
+AIMBOTDETECT_PLR_DETECTED = %s подозревается в использовании aimbot
+AIMBOTDETECT_MOREDETECTIONS = Ещё %d обнаружений необходимо для вынесения меры
+AIMBOTDETECT_SERVERFULL = Сервер полный, невозможно создать бота
+AIMBOTDETECT_TOOCLOSE = Проверяемый игрок стоит слишком близко к жертве, невозможно создать бота
+AIMBOTDETECT_VICTIMLOCATION = Невозможно создать бота из-за местоположения жертвы
+AIMBOTDETECT_ERRORBOT = Ошибка при создании бота
 
 [es]
 AIMBOTDETECT_DISCONNECT = Observacion sobre %s fue detenida debido a que el jugador fue desconectado.

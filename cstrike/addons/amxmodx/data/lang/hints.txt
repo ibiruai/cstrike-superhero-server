@@ -1,0 +1,29 @@
+[en]
+WELCOME = ^1Welcome to the server, ^3^3%s^1^1!
+HELLO_1 = ^1Nice to see you again, ^3%s^1
+HELLO_2 = ^1Welcome back, ^3%s^1!
+HELLO_3 = ^1Hello, ^3%s^1!
+HELLO_4 = ^1Hello, ^3%s^1!
+HELLO_5 = ^1Hi, ^3%s^1!
+HELLO_6 = ^1How are you, ^3%s^1?
+HINT_RTV = ^1* Do you want to change the map? Say ^3rtv^1 then
+HINT_NOM = ^1* To nominate a map type ^3<mapname>^1 or ^3nom <mapname>
+HINT_MENU = ^1* Say ^3shmenu^1 to open SuperHero Mod menu
+HINT_MENU_KEY = ^1* SuperHero Mod menu can be accessed by pressing ^3[ I ]
+HINT_BIND_1 = ^1* You need to bind keys if you want to use your active powers
+HINT_BIND_2 = ^1* Say ^3help^1 to learn more about powers
+
+[ru]
+WELCOME = ^1Добро пожаловать на сервер, ^3%s^1!
+HELLO_1 = ^1Всегда рады вам, ^3%s^1!
+HELLO_2 = ^1Сердечно приветствую, ^3%s^1!
+HELLO_3 = ^1Здравствуйте, ^3%s^1!
+HELLO_4 = ^1Добро пожаловать, ^3%s^1!
+HELLO_5 = ^1C возвращением, ^3%s^1!
+HELLO_6 = ^1Какая встреча, ^3%s^1!
+HINT_RTV = ^1* Напишите ^3rtv^1, если хотите сменить карту
+HINT_NOM = ^1* Если вы хотите конкретную карту, напишите ^3nom имя_карты
+HINT_MENU = ^1* Напишите ^3shmenu^1, чтобы вызвать меню SuperHero мода
+HINT_MENU_KEY = ^1* Меню мода можно вызвать клавишей ^3[ I ]
+HINT_BIND_1 = ^1* Назначьте клавиши для своих активных способностей
+HINT_BIND_2 = ^1* Напишите ^3help^1, чтобы узнать о способностях больше

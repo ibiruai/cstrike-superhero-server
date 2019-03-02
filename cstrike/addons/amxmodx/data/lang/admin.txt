@@ -9,7 +9,7 @@ SQL_LOADED_ADMINS = Loaded %d admins from database
 INV_PAS = Invalid Password!
 PAS_ACC = Password accepted
 PRIV_SET = Privileges set
-NO_ENTRY = You have no entry to the server...
+NO_ENTRY = This name is protected by password
 
 [de]
 LOADED_ADMIN = 1 Admin aus der Datei geladen
@@ -282,7 +282,7 @@ SQL_LOADED_ADMINS = Загружено %d администраторов из б
 INV_PAS = Неверный пароль!
 PAS_ACC = Пароль принят!
 PRIV_SET = Права доступа предоставлены
-NO_ENTRY = Вы не имеете права входа на этот сервер...
+NO_ENTRY = Это имя защищено паролем.
 
 [cn]
 LOADED_ADMIN = 从文件中读取到 1 位管理员

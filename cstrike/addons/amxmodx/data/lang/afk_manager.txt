@@ -1,3 +1,18 @@
+[ru]
+AFK_KICK_REASON = Away From Keyboard (AFK)
+TRANSFERRED_TO_SPEC = [AFK Manager] %s переносится в зрители по причине бездействия
+COLORED_TRANSFERRED_TO_SPEC = ^4[AFK Manager]^3 %s^1 переносится в зрители по причине бездействия
+AFK_KICKED = [AFK Manager] %s кикается по причине продолжительного бездействия
+COLORED_AFK_KICKED = ^4[AFK Manager]^3 %s^1 кикается по причине продолжительного бездействия
+ALL_TERRORISTS_AFK = [AFK Manager] Оставшиеся противники бездействуют
+ALL_CTS_AFK = [AFK Manager] Оставшиеся противники бездействуют
+BOMB_TRANSFERRED = [AFK Manager] Бомба передана %s по причине бездействия %s
+COLORED_BOMB_TRANSFERRED = ^4[AFK Manager]^1 Бомба передана ^3 %s^1 по причине бездействия ^3 %s^1
+BOMB_GOT = [AFK Manager] Вы получаете бомбу, потому что %s бездействует
+COLORED_BOMB_GOT = ^4[AFK Manager]^1 Вы получаете бомбу, потому что ^3 %s^1 бездействует
+FORCED_TO_DROP = [AFK Manager] %s лишается бомбы по причине продолжительного бездействия
+COLORED_FORCED_TO_DROP = ^4[AFK Manager]^3 %s^1 лишается бомбы по причине продолжительного бездействия
+
 [en]
 AFK_KICK_REASON = Away From Keyboard (AFK)
 TRANSFERRED_TO_SPEC = [AFK Manager] %s was transferred to the spectators for being AFK too long.
@@ -162,18 +177,3 @@ BOMB_GOT = [AFK Manager] Dostal si bombu pretoze %s je AFK.
 COLORED_BOMB_GOT = ^4[AFK Manager]^1 Dostal si bombu pretoze^3 %s^1 je AFK.
 FORCED_TO_DROP = [AFK Manager] %s odhodil bombu pretoze je AFK.
 COLORED_FORCED_TO_DROP = ^4[AFK Manager]^3 %s^1 odhodil bombu pretoze je AFK.
-
-[ru]
-AFK_KICK_REASON = Ты был изгнан из-за длительного бездействия (АФК)
-TRANSFERRED_TO_SPEC = [AFK Manager] %s был перемещен за команду наблюдателей из-за длительного бездействия.
-COLORED_TRANSFERRED_TO_SPEC = ^4[AFK Manager]^3 %s^1 был перемещен за команду наблюдателей из-за длительного бездействия.
-AFK_KICKED = [AFK Manager] %s был изгнан из-за длительного бездействия.
-COLORED_AFK_KICKED = ^4[AFK Manager]^3 %s^1 был изгнан из-за длительного бездействия.
-ALL_TERRORISTS_AFK = [AFK Manager] Все террористы находятся АФК.
-ALL_CTS_AFK = [AFK Manager] Все контр-террористы находятся АФК.
-BOMB_TRANSFERRED = [AFK Manager] Бомба была перемещена к %s потому, что %s находится АФК.
-COLORED_BOMB_TRANSFERRED = ^4[AFK Manager]^1 Бомба была перемещена к^3 %s^1 потому, что^3 %s^1 находится АФК.
-BOMB_GOT = [AFK Manager] Бомба перешла к тебе, так как %s находится АФК.
-COLORED_BOMB_GOT = ^4[AFK Manager]^1 Бомба перешла к тебе, так как^3 %s^1 находится АФК.
-FORCED_TO_DROP = [AFK Manager] %s был вынужден бросить бомбу из-за длительного бездействия.
-COLORED_FORCED_TO_DROP = ^4[AFK Manager]^3 %s^1 был вынужден бросить бомбу из-за длительного бездействия.

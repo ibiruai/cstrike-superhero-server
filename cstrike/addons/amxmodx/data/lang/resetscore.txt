@@ -1,0 +1,11 @@
+[en]
+Player_Reseted_Score = %s has just reset his score
+You_Reseted_Score = You have just reset your score
+Reset_Score_Advertise1 = By typing /rs you can restart your deaths and kills back to 0
+Reset_Score_Advertise2 = By typing /resetscore at any time during the game, you can reset your deaths and kills back to 0 (rather than reconnecting)
+
+[ru]
+Player_Reseted_Score = %s обнуляет счёт
+You_Reseted_Score = Ваш счёт обнулён
+Reset_Score_Advertise1 = Написав /rs, вы можете обнулить счётчики ваших убийств и смертей
+Reset_Score_Advertise2 = Написав /resetscore в любое время игры, вы можете обнулить счётчики ваших убийств и смертей
