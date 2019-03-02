@@ -11,6 +11,7 @@ goblin_grenadetimer 10		//How many second delay for new grenade
 
 // v1.17 - JTP - Fixed giving new genades using more reliable event
 
+#include <amxmodx>
 #include <superheromod>
 
 // GLOBAL VARIABLES
@@ -19,6 +20,8 @@ new const gHeroName[]= "Hobgoblin"
 new bool:gHasHobgoblin[SH_MAXSLOTS+1]
 new bool:gBlockGiveTask[SH_MAXSLOTS+1]
 new gPcvarGrenadeTimer
+new gGrenTrail
+new const HEGRENADE_MODEL[] = "models/w_hegrenade.mdl"
 
 #define AMMOX_HEGRENADE 12
 //----------------------------------------------------------------------------------------------
@@ -39,6 +42,11 @@ public plugin_init()
 
 	// REGISTER EVENTS THIS HERO WILL RESPOND TO!
 	register_event("AmmoX", "on_ammox", "b")
+}
+//----------------------------------------------------------------------------------------------
+public plugin_precache()
+{
+	gGrenTrail = precache_model("sprites/zbeam5.spr")
 }
 //----------------------------------------------------------------------------------------------
 public sh_hero_init(id, heroID, mode)
@@ -93,6 +101,41 @@ public on_ammox(id)
 		else if ( iAmmoCount > 0 ) {
 			gBlockGiveTask[id] = false
 			remove_task(id)
+		}
+		
+		// From SuperHero Gambit
+		// https://forums.alliedmods.net/showthread.php?t=30213
+		// Have to Find the current HE grenade
+		new iCurrent = -1
+		while ( ( iCurrent = find_ent(iCurrent, "grenade") ) > 0 ) {
+			new string[32]
+			entity_get_string(iCurrent, EV_SZ_model, string, 31)
+
+			if ( id == entity_get_edict(iCurrent, EV_ENT_owner) && equali(HEGRENADE_MODEL, string)) {
+
+				new Float:glowColor[3] = {225.0, 0.0, 20.0}
+
+				// Make the nade glow
+				entity_set_int(iCurrent, EV_INT_renderfx, kRenderFxGlowShell)
+				entity_set_vector(iCurrent, EV_VEC_rendercolor, glowColor)
+
+				// Make the nade a bit invisible to make glow look better
+				entity_set_int(iCurrent, EV_INT_rendermode, kRenderTransAlpha)
+				entity_set_float(iCurrent, EV_FL_renderamt, 100.0 )
+
+				// Make a trail
+				message_begin(MSG_BROADCAST ,SVC_TEMPENTITY)
+				write_byte(22)			//TE_BEAMFOLLOW
+				write_short(iCurrent)	// entity:attachment to follow
+				write_short(gGrenTrail)	// sprite index
+				write_byte(10)		// life in 0.1's
+				write_byte(10)		// line width in 0.1's
+				write_byte(225)	// colour
+				write_byte(90)
+				write_byte(102)
+				write_byte(255)	// brightness
+				message_end()
+			}
 		}
 	}
 }
