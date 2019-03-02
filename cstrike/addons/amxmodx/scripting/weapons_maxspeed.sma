@@ -1,3 +1,7 @@
+// 19 dec 2018 - edited by evileye <http://evileye.eu.org>
+// * Now it works with zoomed sniper rifles too
+// * amx_weapon_maxspeed_multiplier cvar has been added
+
 /*	Formatright © 2010, ConnorMcLeod
 
 	This plugin is free software;
@@ -19,6 +23,7 @@
 #include <amxmisc>
 #include <fakemeta>
 #include <hamsandwich>
+#include <fun>
 
 #define VERSION "0.0.5"
 #define PLUGIN "Weapons MaxSpeed"
@@ -46,12 +51,39 @@ enum _:MaxSpeedType {
 
 new HamHook:g_iHhForwards[MAX_WEAPONS+1]
 new Float:g_flMaxSpeed[MAX_WEAPONS+1][MaxSpeedType]
+new pCvar_Multiplier
+new Float:multiplier
 
 public plugin_init()
 {
 	register_plugin(PLUGIN, VERSION, "ConnorMcLeod")
 
 	register_concmd("amx_weapon_maxspeed", "ConsoleCommand_WeaponSpeed", ADMIN_CFG, "<weapon shortname> <maxspeed> [zoom maxspeed] [shield maxspeed]")
+	register_logevent("EventRoundStart", 2, "1=Round_Start")
+	pCvar_Multiplier = register_cvar("amx_weapon_maxspeed_multiplier", "1.0")
+	
+	// This plugin is great but it doesn't work with zoom. Let's fix it.
+	// People who use Scout, SG550, AWP, and G3SG1 want to run fast as well!
+	register_event("CurWeapon", "SetZoomedMaxSpeed", "be", "1=1", "2=3", "2=13", "2=18", "2=24")
+}
+
+public EventRoundStart( )
+{
+	multiplier = get_pcvar_float(pCvar_Multiplier)
+}
+
+public SetZoomedMaxSpeed(id)
+{
+	new wID = get_user_weapon(id)
+	new Float:defaultMaxSpeed
+	switch (wID)
+	{
+		case 3: 		 defaultMaxSpeed = 220.0	// Scout
+		case 13, 18, 24: defaultMaxSpeed = 150.0	// SG550, AWP, GS3SG1
+		// We'll need these default values to check if we are zooming
+	}
+	if ( get_user_maxspeed(id) == defaultMaxSpeed ) // Are we zooming?
+		set_user_maxspeed( id, g_flMaxSpeed[wID][ZoomedMaxSpeed] * multiplier ) // Then set new maxspeed
 }
 
 public ConsoleCommand_WeaponSpeed(id, lvl, cid)
@@ -123,18 +155,18 @@ Get_Weapon_State(id, iId, szWeapon[])
 {
 	if( !g_flMaxSpeed[iId][DefaultMaxSpeed] )
 	{
-		console_print(id, "%s maxspeed is default, plugin is not active on this weapon", szWeapon)
+		// console_print(id, "%s maxspeed is default, plugin is not active on this weapon", szWeapon)
 	}
 	else
 	{
-		console_print(id, "%s maxspeed is %.1f", szWeapon, g_flMaxSpeed[iId][DefaultMaxSpeed])
+		// console_print(id, "%s maxspeed is %.1f", szWeapon, g_flMaxSpeed[iId][DefaultMaxSpeed])
 		if( g_flMaxSpeed[iId][ZoomedMaxSpeed] )
 		{
-			console_print(id, "%s shield maxspeed is %.1f", szWeapon, g_flMaxSpeed[iId][ZoomedMaxSpeed])
+			// console_print(id, "%s zoomed maxspeed is %.1f", szWeapon, g_flMaxSpeed[iId][ZoomedMaxSpeed])
 		}
 		if( g_flMaxSpeed[iId][ShieldMaxSpeed] )
 		{
-			console_print(id, "%s zoomed maxspeed is %.1f", szWeapon, g_flMaxSpeed[iId][ShieldMaxSpeed])
+			// console_print(id, "%s shield maxspeed is %.1f", szWeapon, g_flMaxSpeed[iId][ShieldMaxSpeed])
 		}
 	}
 }
@@ -147,27 +179,16 @@ public Item_GetMaxSpeed( iWeapon )
 	if(	g_flMaxSpeed[iId][ShieldMaxSpeed]
 	&&	get_pdata_int(get_pdata_cbase(iWeapon, m_pPlayer, XO_WEAPON), OFFSET_SHIELD, XO_PLAYER) & HAS_AND_USES_SHIELD == HAS_AND_USES_SHIELD	)
 	{
-		SetHamReturnFloat( g_flMaxSpeed[iId][ShieldMaxSpeed] )
+		SetHamReturnFloat( g_flMaxSpeed[iId][ShieldMaxSpeed] * multiplier )
 	}
 	else if(	g_flMaxSpeed[iId][ZoomedMaxSpeed]
 	&&			get_pdata_int(get_pdata_cbase(iWeapon, m_pPlayer, XO_WEAPON), m_iFOV, XO_PLAYER) != 90	)
 	{
-		SetHamReturnFloat( g_flMaxSpeed[iId][ZoomedMaxSpeed] )
+		SetHamReturnFloat( g_flMaxSpeed[iId][ZoomedMaxSpeed] * multiplier )
 	}
 	else
 	{
-		SetHamReturnFloat( g_flMaxSpeed[iId][DefaultMaxSpeed] )
+		SetHamReturnFloat( g_flMaxSpeed[iId][DefaultMaxSpeed] * multiplier )
 	}
 	return HAM_SUPERCEDE
 }
-
-
-
-
-
-
-
-
-
-
-
