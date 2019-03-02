@@ -16,6 +16,8 @@ bass_multishot 0.1			//Delay for multishots on holding key down, set to -1 for o
 */
 
 /*
+* 26 dec 2018 - Evileye
+*      - Players can change their beam color now
 * v1.3 - vittu - 7/29/05
 *      - Fixed bug with cooldown, if one is set.
 *
@@ -31,19 +33,29 @@ bass_multishot 0.1			//Delay for multishots on holding key down, set to -1 for o
 *   From original code "Based on dr.doom Hero but added gravity.."
 */
 
-#include <amxmod>
+//---------- User Changeable Defines --------//
+
+
+// 1 = players are allowed to change their bass beam color 0 = players aren't allowed
+#define PLAYER_COLOR 1
+
+
+//------- Do not edit below this point ------//
+
+#include <amxmodx>
 #include <superheromod>
+#include <fvault>
 
 // Damage Variables
-#define h1_dam 500	// head
-#define h2_dam 250	// body
-#define h3_dam 250	// stomach
-#define h4_dam 100	// arm
-#define h6_dam 100	// leg
+#define h1_dam 100	// head		(Default 500)
+#define h2_dam 56	// body		(Default 250)
+#define h3_dam 56	// stomach	(Default 250)
+#define h4_dam 36	// arm		(Default 100)
+#define h6_dam 36	// leg		(Default 100)
 
 //Colors To Pick From ***DO NOT MODIFY***
 #define CUSTOM		0
-#define RED		1
+#define RED			1
 #define GREEN		2
 #define BLUE		3
 #define LTBLUE		4
@@ -52,7 +64,7 @@ bass_multishot 0.1			//Delay for multishots on holding key down, set to -1 for o
 #define ORANGE		7
 
 //Color Settings ***CHANGE COLOR HERE***
-#define BEAM_COLOR GREEN		// Set beam color here, use color names from above (Default GREEN)
+#define BEAM_COLOR ORANGE		// Set beam color here, use color names from above (Default GREEN)
 #define BEAM_ALPHA 200		// alpha value, visibility from 0-255 (Default 200)
 
 //Color definitions
@@ -73,6 +85,11 @@ new bool:gHasBassPower[SH_MAXSLOTS+1]
 new bool:gLaserFired[SH_MAXSLOTS+1]
 new gLaserShots[SH_MAXSLOTS+1]
 new smoke, laser
+
+#if PLAYER_COLOR
+new bool:plrColorSet[SH_MAXSLOTS+1]
+new plrColor[SH_MAXSLOTS+1][3]
+#endif
 //----------------------------------------------------------------------------------------------
 public plugin_init()
 {
@@ -91,7 +108,7 @@ public plugin_init()
 	register_cvar("bass_multishot", "0.1")
 
 	// FIRE THE EVENT TO CREATE THIS SUPERHERO!
-	shCreateHero(gHeroName, "Uber Energy Beam", "Press the +power key to fire your your beam cannon", true, "bass_level")
+	shCreateHero(gHeroName, "Uber Energy Beam", "Press the +power key to fire your beam cannon", true, "bass_level")
 
 	// REGISTER EVENTS THIS HERO WILL RESPOND TO! (AND SERVER COMMANDS)
 	// INIT
@@ -177,7 +194,7 @@ public bass_kd()
 	if ( !is_user_alive(id) ) return
 
 	if ( gLaserShots[id] == 0 ) {
-		client_print(id, print_center, "No Bass Shots Left")
+		client_print(id, print_center, "%L", id, "BASS_NOSHOTS")
 		playSoundDenySelect(id)
 		return
 	}
@@ -221,7 +238,7 @@ public fire_laser(id)
 	if ( !is_user_alive(id) ) return
 
 	if ( gLaserShots[id] == 0 ) {
-		client_print(id, print_center, "No Bass Shots Left")
+		client_print(id, print_center, "%L", id, "BASS_NOSHOTS")
 		playSoundDenySelect(id)
 		return
 	}
@@ -229,9 +246,12 @@ public fire_laser(id)
 	if ( gLaserShots[id] > -1 ) gLaserShots[id]--
 
 	// Warn How many Blasts Left...
-	if ( gLaserShots[id] <= 10 && gLaserShots[id] >= 0 ) {
-		client_print(id, print_center, "Warning: %d Bass Shots Left", gLaserShots[id])
-	}
+	if ( gLaserShots[id] <= 10 && gLaserShots[id] >= 5 )
+		client_print(id, print_center, "%L", id, "BASS_SHOTS_LEFT_N", gLaserShots[id])
+	else if ( gLaserShots[id] <= 4 && gLaserShots[id] >= 2 )
+		client_print(id, print_center, "%L", id, "BASS_SHOTS_LEFT_2_4", gLaserShots[id])
+	else if ( gLaserShots[id] == 1 )
+		client_print(id, print_center, "%L", id, "BASS_SHOTS_LEFT_1", gLaserShots[id])
 
 	get_user_origin(id, aimvec, 3)
 
@@ -274,6 +294,11 @@ public laserEffects(id, aimvec[3])
 		//If invalid value set it to default green
 		colornum = 2
 	}
+	#if PLAYER_COLOR
+	if (plrColorSet[id])
+		colors = plrColor[id]
+	else
+	#endif
 	colors = BeamColors[colornum]
 
 	// DELIGHT
@@ -283,9 +308,9 @@ public laserEffects(id, aimvec[3])
 	write_coord(origin[1])
 	write_coord(origin[2])
 	write_byte(10)
-	write_byte(0)			// r, g, b
-	write_byte(255)		// r, g, b
-	write_byte(0)			// r, g, b
+	write_byte(colors[0])			// r, g, b
+	write_byte(colors[1])		// r, g, b
+	write_byte(colors[2])			// r, g, b
 	write_byte(2)			// life
 	write_byte(1)			// decay
 	message_end()
@@ -354,7 +379,7 @@ public bass_death()
 	remove_task(id)
 }
 //----------------------------------------------------------------------------------------------
-public client_disconnect(id)
+public client_disconnected(id)
 {
 	// stupid check but lets see
 	if ( id <= 0 || id > SH_MAXSLOTS ) return
@@ -364,4 +389,53 @@ public client_disconnect(id)
 
 	gHasBassPower[id] = false
 }
+//----------------------------------------------------------------------------------------------
+#if PLAYER_COLOR
+public client_connect(id)
+{
+	plrColorSet[id] = basscolor(id)
+}
+//----------------------------------------------------------------------------------------------
+public basscolor_update(id)
+{
+	plrColorSet[id] = basscolor(id)
+}
+//----------------------------------------------------------------------------------------------
+bool:basscolor(id)
+{
+	new string[16], playername[33]
+	
+	get_user_name(id, playername, 32)
+	if ( fvault_get_data("vault_basscolor", playername, string, 15) )
+	{
+		ExplodeString(string, plrColor[id])
+		
+		return true
+	}
+	return false
+}
+//----------------------------------------------------------------------------------------------
+// https://forums.alliedmods.net/showpost.php?p=1253124&postcount=8
+ExplodeString ( const string[], output[], olen = sizeof output )
+{
+    new len = strlen( string ); // We retrieve the length of the current string passed.
+    
+    if ( !len )  { return 0; } // If the string is empty we stop there.
+
+    new i, c, j, count;
+    new number[ 12 ];
+    
+    do
+    {
+        while ( string[ i ] == ' ' ) i++; // One or more spaces can be used between 2 numbers, so we move forward until we find a number.
+        while ( ( number[ j++ ] = c = string[ i++ ] ) && c != ' ' ) {} // We loop and save the number found until the next space found or end of string.
+
+        output[ count++ ] = str_to_num( number ); // We convert the number saved previously into a number and we stored in output at the slot count.
+        j = 0;
+    }
+    while ( i < len && count < olen ) // We should looping while we have not cross the string length.
+    
+    return count;
+}
+#endif
 //----------------------------------------------------------------------------------------------

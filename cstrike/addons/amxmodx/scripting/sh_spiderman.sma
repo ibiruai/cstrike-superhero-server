@@ -12,7 +12,27 @@ spiderman_maxhooks 60		//Max ammout of hooks allowed (-1 is an unlimited ammount
 
 */
 
+/*
+* 26 dec 2018 - Evileye
+*      - Players can change their web color and hook style
+*/
+
+
+//---------- User Changeable Defines --------//
+
+
+// 1 = players are allowed to change their bass beam color 0 = players aren't allowed
+#define PLAYER_COLOR 1
+
+// 1 = players are allowed to change their hook style 0 = players aren't allowed
+#define PLAYER_STYLE 1
+
+
+//------- Do not edit below this point ------//
+
+
 #include <superheromod>
+#include <fvault>
 
 // GLOBAL VARIABLES
 #define HOOKBEAMLIFE  100
@@ -29,6 +49,12 @@ new const gSoundWeb[] = "bullchicken/bc_bite2.wav"
 new gSpriteWeb
 new pCvarMoveAcc, pCvarReelSpeed, pCvarHookStyle
 new pCvarMaxHooks, pCvarTeamColored, pCvarSvGravity
+
+#if PLAYER_COLOR
+new bool:plrColorSet[SH_MAXSLOTS+1] = false
+new plrColor[SH_MAXSLOTS+1][3]
+new plrHookStyle[SH_MAXSLOTS+1]
+#endif
 //----------------------------------------------------------------------------------------------
 public plugin_init()
 {
@@ -92,7 +118,7 @@ public sh_hero_key(id, heroID, key)
 			if ( hooksleft > 0 ) gHooksLeft[id] = --hooksleft
 
 			if ( -1 < hooksleft < 6 ) {
-				client_print(id, print_center, "You have %d web swing%s left", hooksleft, hooksleft == 1 ? "" : "s")
+				client_print(id, print_center, "%L", id, "SPIDERMAN_SWINGS", hooksleft, hooksleft == 1 ? "" : "s")
 			}
 
 			gHooked[id] = true
@@ -114,7 +140,11 @@ public sh_hero_key(id, heroID, key)
 
 			emit_sound(id, CHAN_STATIC, gSoundWeb, VOL_NORM, ATTN_NORM, 0, PITCH_NORM)
 
-			parm[1] = get_pcvar_num(pCvarHookStyle)
+			#if PLAYER_STYLE
+				parm[1] = plrHookStyle[id]
+			#else
+				parm[1] = get_pcvar_num(pCvarHookStyle)
+			#endif
 
 			set_task(HOOK_DELTA_T, "spiderman_check_web", id, parm, 2, "b")
 		}
@@ -277,6 +307,9 @@ beamentpoint(id)
 			case CS_TEAM_T: rgb = {255, 0, 0}
 			case CS_TEAM_CT: rgb = {0, 0, 255}
 		}
+	} else if ( plrColorSet[id] )
+	{
+		rgb = plrColor[id]
 	}
 
 	message_begin(MSG_BROADCAST, SVC_TEMPENTITY)
@@ -316,7 +349,7 @@ public sh_client_death(victim)
 	if ( gHooked[victim] ) spiderman_hook_off(victim)
 }
 //----------------------------------------------------------------------------------------------
-public client_disconnect(id)
+public client_disconnected(id)
 {
 	// stupid check but lets see
 	if ( id < 1 || id > sh_maxplayers() ) return
@@ -324,4 +357,80 @@ public client_disconnect(id)
 	// Yeah don't want any left over residuals
 	remove_task(id)
 }
+//----------------------------------------------------------------------------------------------
+#if PLAYER_COLOR || PLAYER_STYLE
+public client_connect(id)
+{
+	#if PLAYER_COLOR
+	plrColorSet[id] = hookcolor(id)
+	#endif
+	
+	#if PLAYER_STYLE
+	plrHookStyle[id] = hookstyle(id)
+	#endif
+}
+//----------------------------------------------------------------------------------------------
+#if PLAYER_COLOR
+public hookcolor_update(id)
+{
+	plrColorSet[id] = hookcolor(id)
+}
+#endif
+//----------------------------------------------------------------------------------------------	
+#if PLAYER_STYLE
+public client_infochanged(id)
+{
+	plrHookStyle[id] = hookstyle(id)
+}
+#endif
+//----------------------------------------------------------------------------------------------
+bool:hookcolor(id)
+{
+	new string[16], playername[33]
+	
+	get_user_name(id, playername, 32)
+	if ( fvault_get_data("vault_hookcolor", playername, string, 15) )
+	{
+		ExplodeString(string, plrColor[id])
+		
+		return true
+	}
+	return false
+}
+//----------------------------------------------------------------------------------------------
+hookstyle(id)
+{
+	new string[16]
+	new count, style[1]
+	get_user_info(id, "hookstyle", string, 16)	
+	count = ExplodeString(string, style)
+	if ( !count || count && ( style[0] < 1 || style[0] > 3 ) )		// Style should be set with 1 number
+		return get_pcvar_num(pCvarHookStyle)
+		
+	return style[0]
+}
+//----------------------------------------------------------------------------------------------
+// https://forums.alliedmods.net/showpost.php?p=1253124&postcount=8
+ExplodeString ( const string[], output[], olen = sizeof output )
+{
+    new len = strlen( string ); // We retrieve the length of the current string passed.
+    
+    if ( !len )  { return 0; } // If the string is empty we stop there.
+
+    new i, c, j, count;
+    new number[ 12 ];
+    
+    do
+    {
+        while ( string[ i ] == ' ' ) i++; // One or more spaces can be used between 2 numbers, so we move forward until we find a number.
+        while ( ( number[ j++ ] = c = string[ i++ ] ) && c != ' ' ) {} // We loop and save the number found until the next space found or end of string.
+
+        output[ count++ ] = str_to_num( number ); // We convert the number saved previously into a number and we stored in output at the slot count.
+        j = 0;
+    }
+    while ( i < len && count < olen ) // We should looping while we have not cross the string length.
+    
+    return count;
+}
+#endif
 //----------------------------------------------------------------------------------------------
