@@ -53,8 +53,8 @@ afk_kick_time 240
 afk_kick_spec_only_if_full 1
 
 // This cvar control the full status, it only matters if afk_kick_spec_only_if_full is enabled
-//    0    - server is full when MaxClients - amx_reservation (default amxx cvar) is met
-// 1 to 32 - server is full when MaxClients - afk_full_minus_num is met
+//    0    - server is full when Max_Clients - amx_reservation (default amxx cvar) is met
+// 1 to 32 - server is full when Max_Clients - afk_full_minus_num is met
 // Default value: 0
 afk_full_minus_num 0
 
@@ -112,24 +112,17 @@ afk_loop_frequency 1.0
 #include <fakemeta>
 #include <hamsandwich>
 
-//---------- User Changeable Include --------//
-
-// You may need to modify this include if you want to use the colorchat module include or use a custom colorchat include
-#include <colorchat>
-
-//------- Do not edit below this point ------//
-
 #define PLUGIN	"CS AFK Manager"
 #define VERSION	"1.0.6 (amx 1.8.2)"
 #define AUTHOR	"Freeman"
 
 const Buttons = IN_ATTACK|IN_JUMP|IN_DUCK|IN_FORWARD|IN_BACK|IN_USE|IN_CANCEL|IN_LEFT|IN_RIGHT|IN_MOVELEFT|IN_MOVERIGHT|IN_ATTACK2|IN_RUN|IN_RELOAD|IN_ALT1|IN_SCORE
 
-const MAX_PLAYERS = 32
-const MAX_NAME_LENGTH = 32
+const MAXPLAYERS = 32
+const MAX_NAMELENGTH = 32
 const INT_BYTES = 4
 const BYTE_BITS = 8
-new MaxClients
+new Max_Clients
 
 const m_iMenu = 205
 const Menu_ChooseAppearance = 3
@@ -138,9 +131,9 @@ const MAX_ITEM_TYPES = 6
 new const m_rgpPlayerItems[MAX_ITEM_TYPES] = { 367, 368, ... }
 
 new bool:RoundFreeze
-new Float:AfkTime[MAX_PLAYERS+1]
-new UserID[MAX_PLAYERS+1]
-new Float:ViewAngle[MAX_PLAYERS+1][3]
+new Float:AfkTime[MAXPLAYERS+1]
+new UserID[MAXPLAYERS+1]
+new Float:ViewAngle[MAXPLAYERS+1][3]
 new ViewAngleChanged
 #define SetViewAngleChanged(%1)		ViewAngleChanged |= 1<<(%1&31)
 #define RemoveViewAngleChanged(%1)	ViewAngleChanged &= ~(1<<(%1&31))
@@ -156,7 +149,7 @@ public plugin_init()
 	register_plugin(PLUGIN, VERSION, AUTHOR)
 	register_cvar("afk_manager_version", VERSION, FCVAR_SERVER|FCVAR_EXTDLL|FCVAR_UNLOGGED|FCVAR_SPONLY)
 
-	register_dictionary_colored("afk_manager.txt")
+	register_dictionary("afk_manager.txt")
 
 	PcvarGlobalMessagesAwayTime = register_cvar("afk_global_messages_away_time", "10")
 	PcvarBombAction = register_cvar("afk_bomb_action", "2")
@@ -188,7 +181,7 @@ public plugin_init()
 	register_logevent("LogEvent_Round_Start", 2, "1=Round_Start")
 	RegisterHam(Ham_Spawn, "player", "Ham_Player_Spawn_Post", .Post = true)
 
-	MaxClients = get_maxplayers()
+	Max_Clients = get_maxplayers()
 }
 
 public plugin_cfg()
@@ -235,7 +228,7 @@ public afk_manager_loop(ent)
 		entity_set_float(ent, EV_FL_nextthink, get_gametime() + loop_frequency)
 	}
 
-	static players[MAX_PLAYERS], player_count
+	static players[MAXPLAYERS], player_count
 	get_players(players, player_count, "ch")
 
 	if ( player_count < get_pcvar_num(PcvarMinPlayers) ) return
@@ -243,8 +236,8 @@ public afk_manager_loop(ent)
 	static Float:global_messages_away_time, bomb_action, Float:afk_time, Float:bomb_action_time, Float:switch_to_spec_time, Float:kick_time 
 	static kick_spec_only_if_full, bomb_management_immunity, switch_to_spec_immunity, kick_immunity, bomb_management_immunity_flag[27]
 	static switch_to_spec_immunity_flag[27], kick_immunity_flag[27], allow_spectators, full_maxplayers, player, i, CsTeams:player_team
-	static player_name[MAX_NAME_LENGTH], players_num, terrorists[MAX_PLAYERS], terrorist_count, terrorist, j, is_player_alive, deaths
-	static bomb_receiver, bomb_receiver_name[MAX_NAME_LENGTH], c4_ent, backpack, terrorists_afk, cts_afk, terrorists_not_afk
+	static player_name[MAX_NAMELENGTH], players_num, terrorists[MAXPLAYERS], terrorist_count, terrorist, j, is_player_alive, deaths
+	static bomb_receiver, bomb_receiver_name[MAX_NAMELENGTH], c4_ent, backpack, terrorists_afk, cts_afk, terrorists_not_afk
 	static cts_not_afk, Float:player_origin[3], Float:terrorist_origin[3], Float:origins_distance, Float:shortest_distance
 	static check_v_angle, Float:current_v_angle[3], last_kick_id, Float:last_kick_time, colored_messages
 
@@ -267,17 +260,17 @@ public afk_manager_loop(ent)
 
 	if ( full_maxplayers )
 	{
-		full_maxplayers = MaxClients - full_maxplayers
+		full_maxplayers = Max_Clients - full_maxplayers
 	}
 	else
 	{
 		if ( PcvarAmxReservation )
 		{
-			full_maxplayers = MaxClients - get_pcvar_num(PcvarAmxReservation)
+			full_maxplayers = Max_Clients - get_pcvar_num(PcvarAmxReservation)
 		}
 		else
 		{
-			full_maxplayers = MaxClients
+			full_maxplayers = Max_Clients
 		}
 	}
 
@@ -561,6 +554,10 @@ public afk_manager_loop(ent)
 			}
 		}
 	}
+	
+	// Bots are never AFK (they don't have keyboards but nevermind)
+	terrorists_not_afk += get_playersnum_ex(GetPlayers_ExcludeDead | GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "TERRORIST")
+	cts_not_afk += get_playersnum_ex(GetPlayers_ExcludeDead | GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "CT")
 
 	if ( last_kick_id > 0 )
 	{
@@ -614,7 +611,7 @@ user_kick(id)
 {
 	AfkTime[id] = 0.0
 
-	new name[MAX_NAME_LENGTH]
+	new name[MAX_NAMELENGTH]
 	get_user_name(id, name, charsmax(name))
 
 	if ( get_pcvar_num(PcvarColoredMessages) )
