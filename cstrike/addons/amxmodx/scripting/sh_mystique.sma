@@ -103,11 +103,22 @@ mystique_morph(id)
 {
 	if ( !sh_is_active() || !is_user_alive(id) || gMorphed[id] ) return
 
+	new skinNames[2][4][20] = { {"SEAL Team 6", "GSG-9", "SAS", "GIGN"}, {"Phoenix Connexion", "Elite Crew", "Arctic Avengers", "Guerrilla warfare"} }
+	new skinName[20]
+
 	new newSkin[10]
 	new num = random_num(0, 3)
 	switch(cs_get_user_team(id)) {
-		case CS_TEAM_T: copy(newSkin, charsmax(newSkin), CTSkins[num])
-		case CS_TEAM_CT: copy(newSkin, charsmax(newSkin), TSkins[num])
+		case CS_TEAM_T:
+		{
+			copy(newSkin, charsmax(newSkin), CTSkins[num])
+			skinName = skinNames[0][num]
+		}
+		case CS_TEAM_CT:
+		{
+			copy(newSkin, charsmax(newSkin), TSkins[num])
+			skinName = skinNames[1][num]
+		}
 		default: return
 	}
 
@@ -118,7 +129,7 @@ mystique_morph(id)
 
 	// Message
 	set_hudmessage(200, 200, 0, -1.0, 0.45, 2, 0.02, 4.0, 0.01, 0.1, -1)
-	ShowSyncHudMsg(id, gMsgSync, "%s - YOU NOW LOOK LIKE THE ENEMY", gHeroName)
+	ShowSyncHudMsg(id, gMsgSync, "%L", id, "MYSTIQUE_YOU_LOOK_LIKE_AN_ENEMY", gHeroName, skinName)
 
 	new Float:mystiqueMaxTime = get_pcvar_float(pCvarMaxTime)
 	if ( mystiqueMaxTime > 0.0 ) {
@@ -140,7 +151,7 @@ mystique_unmorph(id)
 	mystique_sound(id)
 
 	set_hudmessage(200, 200, 0, -1.0, 0.45, 2, 0.02, 4.0, 0.01, 0.1, -1)
-	ShowSyncHudMsg(id, gMsgSync, "%s - RETURNED TO SELF", gHeroName)
+	ShowSyncHudMsg(id, gMsgSync, "%L", id, "MYSTIQUE_RETURNED_TO_SELF", gHeroName)
 
 	new Float:cooldown = get_pcvar_float(pCvarCooldown)
 	if ( cooldown > 0.0 ) sh_set_cooldown(id, cooldown)
@@ -159,7 +170,7 @@ public sh_client_death(victim)
 //----------------------------------------------------------------------------------------------
 public force_unmorph(id)
 {
-	sh_chat_message(id, gHeroID, "Your shapeshifting power has worn off")
+	sh_chat_message(id, gHeroID, "%L", id, "MYSTIQUE_POWER_HAS_WORN_OFF")
 
 	mystique_unmorph(id)
 }
