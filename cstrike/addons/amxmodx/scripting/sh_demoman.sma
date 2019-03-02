@@ -12,6 +12,10 @@ demoman_minehealth 80		// health of mines (determines how many shots blow them u
 
 */
 
+// 30 dec 2018 - Evileye
+//  - Teammates and user don't blow it up by passing through
+//  - Mines don't vanish when you are revived (with Grandmaster or Phoenix for example)
+
 #include <superheromod>
 
 //Max number of mines that can be set using the CVAR
@@ -21,7 +25,7 @@ demoman_minehealth 80		// health of mines (determines how many shots blow them u
 
 //Colors To Pick From
 #define CUSTOM		0
-#define RED		1
+#define RED			1
 #define GREEN		2
 #define BLUE		3
 #define LTBLUE		4
@@ -38,8 +42,8 @@ demoman_minehealth 80		// health of mines (determines how many shots blow them u
 #define TEAMCOLOR	102	//Colors them for what team the planter is on
 
 //Color Settings
-#define MINE_COLOR LTBLUE
-#define MINE_ALPHA 60
+#define MINE_COLOR 102
+#define MINE_ALPHA 80
 
 //Color definitions
 new const LineColors[COLORS_NUM][3] = {
@@ -68,7 +72,7 @@ new const gSoundCharge[] = "weapons/mine_charge.wav"
 new const gSoundDeploy[] = "weapons/mine_deploy.wav"
 new const gModelMine[] = "models/v_tripmine.mdl"
 new gSpriteBeam, gSpriteFire, gSpriteSmoke
-new gPcvarRadius, gPcvarMaxDamage, gPcvarMaxMines, gPcvarMineHealth
+new gPcvarRadius, gPcvarMaxDamage, gPcvarMaxMines, gPcvarMineHealth//, gPcvarFFA
 //----------------------------------------------------------------------------------------------
 public plugin_init()
 {
@@ -81,11 +85,14 @@ public plugin_init()
 	gPcvarMaxDamage = register_cvar("demoman_maxdamage", "125")
 	gPcvarMaxMines = register_cvar("demoman_maxmines", "2")
 	gPcvarMineHealth = register_cvar("demoman_minehealth", "80")
+	//gPcvarFFA = register_cvar("sh_ffa", "0")
 
 	// FIRE THE EVENT TO CREATE THIS SUPERHERO!
 	gHeroID = sh_create_hero(gHeroName, pcvarLevel)
 	sh_set_hero_info(gHeroID, "Tripmines", "Unlimited Tripmines - Limited ammount that can be planted at once")
 	sh_set_hero_bind(gHeroID)
+	
+	register_event("HLTV", "event_new_round", "a", "1=0", "2=0")
 
 	register_forward(FM_Think, "mine_think")
 }
@@ -144,7 +151,7 @@ create_mine(id)
 
 	if ( gPlayerMinesCount[id] >= maxmines ) {
 		sh_sound_deny(id)
-		sh_chat_message(id, gHeroID, "Maximum Mine limit of %d reached", maxmines)
+		sh_chat_message(id, gHeroID, "%L", id, "DEMOMAN_MINE_LIMIT_REACHED", maxmines)
 		return
 	}
 
@@ -166,7 +173,7 @@ create_mine(id)
 
 	if ( fraction >= 1.0 ) {
 		sh_sound_deny(id)
-		sh_chat_message(id, gHeroID, "You must plant the tripmine on a wall")
+		sh_chat_message(id, gHeroID, "%L", id, "DEMOMAN_YOU_MUST_PLANT_ON_A_WALL")
 		return
 	}
 
@@ -282,7 +289,12 @@ public mine_think(ent)
 			get_tr2(tr, TR_vecEndPos, vTrace)
 			iHit = get_tr2(tr, TR_pHit)
 
-			if ( is_user_alive(iHit) ) detonate_mine(ent, iHit)
+			// I want this hero to be stronger
+			// Owner and teammates won't be able to detonate mines
+			new owner = pev(ent, pev_iuser2)
+			if ( is_user_alive(iHit) && cs_get_user_team( owner ) != cs_get_user_team(iHit) )
+//				&& !get_pcvar_num(gPcvarFFA) || is_user_alive(iHit) && owner != iHit )
+				detonate_mine(ent, iHit)
 		}
 	}
 
@@ -299,7 +311,7 @@ detonate_mine(MineID, iHit)
 	pev(MineID, pev_origin, vOrigin)
 
 	new id = pev(MineID, pev_iuser2)
-
+	
 	// clear this from the list of live tripmines
 	for ( slot = 0; slot < MAX_MINES; slot++ ) {
 		if ( gPlayerMines[id][slot] == MineID ) {
@@ -310,12 +322,15 @@ detonate_mine(MineID, iHit)
 	}
 
 	if ( iHit == -1 ) {
-		sh_chat_message(id, gHeroID, "Your mine has detonated")
+		sh_chat_message(id, gHeroID, "%L", id, "DEMOMAN_DETONATED")
+	}
+	else if ( iHit == id ) {
+		sh_chat_message(id, gHeroID, "%L", id, "DEMOMAN_DETONATED_BY_YOU")
 	}
 	else {
 		new name[32]
 		get_user_name(iHit, name, charsmax(name))
-		sh_chat_message(id, gHeroID, "%s detonated your mine", name)
+		sh_chat_message(id, gHeroID, "%L", id, "DEMOMAN_DETONATED_BY_PLAYER", name)
 	}
 
 	//Kill the Beam
@@ -358,7 +373,7 @@ blow_up(id, Float:vExplodeAt[3])
 				dRatio = distanceBetween / dmgRadius
 				damage = maxDamage - floatround(maxDamage * dRatio)
 				if ( !damage ) damage = 1	// Incase damage cvar is really low cause something if within the radius 
-				sh_extra_damage(player, id, damage, "tripmine", _, SH_DMG_NORM, true, _, vExplodeAt)
+				sh_extra_damage(player, id, damage, "Trip Mine", _, SH_DMG_NORM, true, _, vExplodeAt)
 			}
 
 			// Add some push and shake effects instead of dmgStun later, and cause it on everyone within radius
@@ -517,15 +532,27 @@ public client_connect(id)
 	remove_mines(id)
 }
 //----------------------------------------------------------------------------------------------
-public client_disconnect(id)
+public client_disconnected(id)
 {
 	remove_mines(id)
 }
 //----------------------------------------------------------------------------------------------
-public sh_client_spawn(id)
+public event_new_round()
+{
+	new players[SH_MAXSLOTS], playerCount
+	get_players(players, playerCount, "h")
+	
+	for ( new i = 0; i < playerCount; i++ )
+	{
+		new id = players[i]
+		
+		remove_mines(id)		
+	}
+}
+/* public sh_client_spawn(id)
 {
 	remove_mines(id)
-}
+}*/
 //----------------------------------------------------------------------------------------------
 public bomb_explode()
 {
