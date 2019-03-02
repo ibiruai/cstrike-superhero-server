@@ -14,8 +14,19 @@ Thing_weapon_percent 0.25	// Percent chance to ignore bullets
 Thing_knife_percent 1.00	// Percent chance to ignore knife hits (headshots always hit)
 --------------------------------------------------------------------------------------------------*/
 
+// 26 dec 2018 - Evileye - Attacker sees a hudmessage if victim ignored damage (SHOW_HUDMESSAGE_TO_ATTACKER 1)
+// Also you can't ignore grenades anymore
 
-#include <amxmod>
+//---------- User Changeable Defines --------//
+
+
+// 1 = show hudmessage to attacker, 0 = don't show
+#define SHOW_HUDMESSAGE_TO_ATTACKER 1
+
+
+//------- Do not edit below this point ------//
+
+#include <amxmodx>
 #include <superheromod>
 
 new gHeroName[]="Thing" 
@@ -53,20 +64,39 @@ public Thing_damage(id)
 
   new damage = read_data(2)
   new weapon, bodypart, attacker = get_user_attacker(id,weapon,bodypart)
+  
+  // Grenade is not a bullet or a knife hit
+  if (weapon == CSW_HEGRENADE) return PLUGIN_CONTINUE
 
   new randNum = random_num(0, 100 )
   new ThingLevel = floatround(get_cvar_float("Thing_weapon_percent") * 100)
   if ( ThingLevel >= randNum && is_user_alive(id) && id != attacker && gHasThingPower[id] && weapon!=CSW_KNIFE ) {
     shAddHPs(id, damage, 500 )
     set_hudmessage(0, 100, 200, 0.05, 0.60, 1, 0.1, 2.0, 0.1, 0.1, 80)
-    show_hudmessage(id, "Bullet bounces off your rock skin.")
+    show_hudmessage(id, "%L", id, "THING_BULLETS_MSG_TO_YOU")
+  
+  #if SHOW_HUDMESSAGE_TO_ATTACKER
+  if ( attacker >= 0 && attacker <= SH_MAXSLOTS )
+  {
+    set_hudmessage(128, 0, 255, 0.05, 0.60, 1, 0.1, 2.0, 0.1, 0.1, 81)
+    show_hudmessage(attacker, "%L", attacker, "THING_BULLETS_MSG_TO_ENEMY")
+  }
+  #endif
   }
   randNum = random_num(0, 100 )
   ThingLevel = floatround(get_cvar_float("Thing_knife_percent") * 100)
   if ( ThingLevel >= randNum && is_user_alive(id) && id != attacker && gHasThingPower[id] && weapon==CSW_KNIFE && bodypart!=HIT_HEAD ) {
     shAddHPs(id, damage, 500 )
-    set_hudmessage(0, 100, 200, 0.05, 0.63, 1, 0.1, 2.0, 0.1, 0.1, 81)
-    show_hudmessage(id, "Your rock skin blocks the knife attack.")
+    set_hudmessage(0, 100, 200, 0.05, 0.60, 1, 0.1, 2.0, 0.1, 0.1, 80)
+    show_hudmessage(id, "%L", id, "THING_KNIFE_MSG_TO_YOU")
+	
+  #if SHOW_HUDMESSAGE_TO_ATTACKER
+  if ( attacker >= 0 && attacker <= SH_MAXSLOTS )
+  {
+    set_hudmessage(128, 0, 255, 0.05, 0.60, 1, 0.1, 2.0, 0.1, 0.1, 81)
+    show_hudmessage(attacker, "%L", attacker, "THING_KNIFE_MSG_TO_ENEMY")
+  }
+  #endif
   }
 
   return PLUGIN_CONTINUE
