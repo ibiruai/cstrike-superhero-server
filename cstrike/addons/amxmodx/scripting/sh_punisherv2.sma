@@ -1,7 +1,18 @@
+// PUNISHERV2
+
+/* CVARS - copy and paste to shconfig.cfg
+
+//PunisherV2
+punisherv2_level 0
+punisherv2_ammotoadd 3		//How many ammo to add
+punisherv2_ammotime 0.5		//# of seconds
+
+*/
+
 #include <superheromod>
 
 new gHasHero[SH_MAXSLOTS+1]
-new const gHeroName[] = "PunisherV2"
+new const gHeroName[] = "Punisher"
 new gHeroID
 new pcvarAmmoToAdd
 
