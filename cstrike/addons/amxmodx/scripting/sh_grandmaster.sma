@@ -100,7 +100,10 @@ public gmaster_respawn(parm[])
 	new gmasterName[32], deadName[32]
 	get_user_name(gmaster, gmasterName, charsmax(gmasterName))
 	get_user_name(dead, deadName, charsmax(deadName))
-	sh_chat_message(0, gHeroID, "%s used cosmic life force to Revive Dead Teammate %s!", gmasterName, deadName)
+	
+	for ( new i = 1; i <= SH_MAXSLOTS; i++ )
+		if ( is_user_connected(i) )
+			sh_chat_message(i, gHeroID, "%L", i, "GRANDMASTER_POWER_USED", gmasterName, deadName)
 
 	//Respawns the player best available method
 	ExecuteHamB(Ham_CS_RoundRespawn, dead)

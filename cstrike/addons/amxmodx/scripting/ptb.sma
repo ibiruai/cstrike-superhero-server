@@ -156,6 +156,7 @@ new show_in_hlsw
 public plugin_init(){
 	register_plugin("Team Balancer",PTB_VERSION,"Ptahhotep")
 	register_cvar("amx_ptb_version",PTB_VERSION,FCVAR_SERVER|FCVAR_EXTDLL|FCVAR_UNLOGGED|FCVAR_SPONLY)
+	register_dictionary("ptb.txt")
 	
 	saychat = register_cvar("ptb_saychat", "1")
 	transfer_type = register_cvar("ptb_transfer_type", "1")
@@ -296,7 +297,7 @@ public check_lasttransfer(id) {
 	lasttransfer = lastRoundSwitched[id]
 	
 	format(text,255,"LastRound transfered: %i", lasttransfer)
-	say(text)
+	/* say(text) */
 }
 #endif
 
@@ -307,9 +308,10 @@ actAtEndOfRound(){
 	// honor switch frequency setting
 	if (roundCounter - lastSwitchRound < PTB_SWITCHFREQ) return
 	// skip switching for a small number of players
-	if (get_playersnum() < PTB_SWITCHMIN) return
+	new humans_num = get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "CT") + get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "TERRORIST")
+	if (humans_num < PTB_SWITCHMIN) return
 	
-	say("PTB: Round ended, checking teams.")
+	if (PTB_ANNOUNCE) say("PTB: Round ended, checking teams.")
 	checkTeamBalance()
 	if (winnerTeam) {
 		sortTeam(CTS)
@@ -417,21 +419,21 @@ doSwitch() {
 	if ( teamCounts[winnerTeam] == 0 || teamCounts[loserTeam] == 0 ) {
 		copy(text,255, "PTB: Can't switch players, need players in each team.")
 		doTypesay(text, 5, 0, 255, 0)
-		say(text)
+		/* say(text) */
 		return
 	}
 	// don't switch, if winner is alone (RULER!!!)
 	if (teamCounts[winnerTeam] == 1) {
 		copy(text,255, "PTB: Won't switch players, best player makes the winning team.")
 		doTypesay(text, 5, 0, 255, 0)
-		say(text)
+		/* say(text) */
 		return
 	}
 	// don't switch, if both teams are full
 	if (teamCounts[winnerTeam] >= PTB_MAXSIZE && teamCounts[loserTeam] >= PTB_MAXSIZE) {
 		copy(text,255, "PTB: Can't switch players, both teams are full.")
 		doTypesay(text, 5, 0, 255, 0)
-		say(text)
+		/* say(text) */
 		return
 	}
 	if (!PTB_DEADONLY || couldNotSwitchCounter > PTB_FORCESWITCH) {
@@ -443,7 +445,7 @@ doSwitch() {
 			++couldNotSwitchCounter
 			copy(text,255, "PTB: Can't switch players, need valid target in each team.")
 			doTypesay(text, 5, 0, 255, 0)
-			say(text)
+			/* say(text) */
 			return
 		}
 	}
@@ -460,7 +462,7 @@ doSwitch() {
 			}
 			copy(text, 255,"PTB: Can't switch players, need valid target in each team.")
 			doTypesay(text, 5, 0, 255, 0)
-			say(text)
+			/* say(text) */
 			return
 		}
 	}
@@ -482,9 +484,9 @@ doSwitch() {
 		}
 	}
 	if (winner == 0 && loser == 0) {
-		copy(text, 255,"PTB: No switch would improve team balancing.")
+		if (PTB_ANNOUNCE) copy(text, 255,"PTB: No switch would improve team balancing.")
 		doTypesay(text, 5, 0, 255, 0)
-		say(text)
+		/* say(text) */
 		return
 	}
 	couldNotSwitchCounter = 0
@@ -509,10 +511,10 @@ doSwitch() {
 		//show_hudmessage(0, text )
 		set_hudmessage(0, 255, 0, 0.05, 0.25, 0, 6.0, 5.0 , 0.5, 0.15, -1)
 		ShowSyncHudMsg(0, g_MyMsgSync, "%s", text)
-		client_print(0,print_chat,"PTB: Switching %s with %s.",winnerName,loserName)
+		client_print(0,print_chat,"%L",LANG_PLAYER,"PTB_SWITCHING",winnerName,loserName)
 	}else{
 		doTypesay(text, 5, 0, 255, 0)
-		client_print(0,print_chat,"PTB: Switching %s with %s.",winnerName,loserName)
+		client_print(0,print_chat,"%L",LANG_PLAYER,"PTB_SWITCHING",winnerName,loserName)
 		//say(text)
 	}
 }
@@ -523,13 +525,13 @@ doTransfer() {
 	if (teamCounts[winnerTeam] == 0) {
 			copy(text,255, "PTB: Can't switch players, need players in each team.")
 			doTypesay(text, 5, 0, 255, 0)
-			say(text)
+			/* say(text) */
 			return
 	}
 	if (teamCounts[loserTeam] >= PTB_MAXSIZE) {
 		copy(text,255, "PTB: Can't transfer player, losing team is full.")
 		doTypesay(text, 5, 0, 255, 0)
-		say(text)
+		/* say(text) */
 		return
 	}
 	if (!PTB_DEADONLY || couldNotSwitchCounter > PTB_FORCESWITCH) {
@@ -537,7 +539,7 @@ doTransfer() {
 		if (validTargetCounts[winnerTeam] == 0) {
 			copy(text,255, "PTB: Can't transfer player, no valid target in winning team.")
 			doTypesay(text, 5, 0, 255, 0)
-			say(text)
+			/* say(text) */
 			++couldNotSwitchCounter
 			return
 		}
@@ -553,7 +555,7 @@ doTransfer() {
 			}
 			copy(text,255, "PTB: Can't transfer player, no valid target in winning team.")
 			doTypesay(text, 5, 0, 255, 0)
-			say(text)
+			/* say(text) */
 			return
 		}
 	}
@@ -569,9 +571,9 @@ doTransfer() {
 		}
 	}
 	if (winner == 0) {
-		copy(text, 255,"PTB: No transfer would improve team balancing.")
+		if (PTB_ANNOUNCE) copy(text, 255,"PTB: No transfer would improve team balancing.")
 		doTypesay(text, 5, 0, 255, 0)
-		say(text)
+		/* say(text) */
 		return
 	}
 	couldNotSwitchCounter = 0
@@ -586,10 +588,10 @@ doTransfer() {
 		//show_hudmessage(0, text )
 		set_hudmessage(0, 255, 0, 0.05, 0.25, 0, 6.0, 5.0 , 0.5, 0.15, -1)
 		ShowSyncHudMsg(0, g_MyMsgSync, "%s", text)
-		client_print(0,print_chat,"PTB: Transfering %s to the %s",winnerName, (winnerTeam == CTS) ? "Ts" : "CTs")
+		client_print(0,print_chat,"%L",LANG_PLAYER,"PTB_TRANSFERRING",winnerName, (winnerTeam == CTS) ? "TERRORIST" : "CT")
 	}else{
 		doTypesay(text, 5, 0, 255, 0)
-		client_print(0,print_chat,"PTB: Transfering %s to the %s",winnerName, (winnerTeam == CTS) ? "Ts" : "CTs")
+		client_print(0,print_chat,"%L",LANG_PLAYER,"PTB_TRANSFERRING",winnerName, (winnerTeam == CTS) ? "TERRORIST" : "CT")
 		//say(text)
 	}
 }
@@ -741,7 +743,7 @@ checkTeamSwitch(id,iNewTeam) {
 			if (++wtjCount[id] >= PTB_WTJKICK && PTB_KICK) {
 				format(text, 255, "PTB: Kicking %s for a WTJ count %d of %d.", name, wtjCount[id],PTB_WTJKICK )
 				doTypesay(text, 5, 0, 255, 0)
-				say(text)
+				/* say(text) */
 				server_cmd("kick #%d",get_user_userid(id))
 				return PLUGIN_HANDLED
 			}
@@ -755,7 +757,7 @@ checkTeamSwitch(id,iNewTeam) {
 					format(text, 255, "PTB: The Ts are strong enough, %s (WTJ: %d/%d).", name, wtjCount[id],PTB_WTJKICK)
 					doTypesay(text, 5, 255, 50, 0)
 				}
-				say(text)
+				/* say(text) */
 			}
 #if !defined MANUAL_SWITCH
 			engclient_cmd(id,"chooseteam") // display menu again
@@ -794,7 +796,7 @@ checkTeamSwitch(id,iNewTeam) {
 			if (++wtjCount[id] >= PTB_WTJKICK && PTB_KICK) {
 				format(text, 255, "PTB: Kicking %s for a WTJ count %d of %d.", name, wtjCount[id],PTB_WTJKICK)
 				doTypesay(text, 5, 0, 255, 0)
-				say(text)
+				/* say(text) */
 				server_cmd("kick #%d", get_user_userid(id))
 				return PLUGIN_HANDLED
 			}
@@ -806,12 +808,12 @@ checkTeamSwitch(id,iNewTeam) {
 					engclient_cmd(id,"jointeam","1")
 
 					doTypesay(text, 5, 255, 50, 0)
-					say(text)
+					/* say(text) */
 				}
 				else if (PTB_TELLWTJ) {
 					format(text, 255, "PTB: The CTs are strong enough, %s (WTJ: %d/%d).", name, wtjCount[id],PTB_WTJKICK)
 					doTypesay(text, 5, 0, 50, 255)
-					say(text)
+					/* say(text) */
 #if !defined MANUAL_SWITCH
 					engclient_cmd(id,"chooseteam") // display menu again
 #endif
@@ -825,12 +827,12 @@ checkTeamSwitch(id,iNewTeam) {
 					engclient_cmd(id,"jointeam","2")
 
 					doTypesay(text, 5, 0, 50, 255)
-					say(text)
+					/* say(text) */
 				}
 				else if (PTB_TELLWTJ) {
 					format(text, 255, "PTB: The Ts are strong enough, %s (WTJ: %d/%d).", name, wtjCount[id],PTB_WTJKICK)
 					doTypesay(text, 5, 255, 50, 0)
-					say(text)
+					/* say(text) */
 #if !defined MANUAL_SWITCH
 					engclient_cmd(id,"chooseteam") // display menu again
 #endif
@@ -1327,7 +1329,7 @@ public client_connect(id){
 	return PLUGIN_CONTINUE
 }
 
-public client_disconnect(id) {
+public client_disconnected(id) {
 	kills[id] = 0
 	deaths[id] = 0
 	isBeingTransfered[id] = false

@@ -1,3 +1,8 @@
+// 17 dec 2018 - Edited by Evileye
+// While you are spectating someone you can see if they are invincible
+// Added sh_monitor pcvar to decide if players will see monitor when they are alive by default
+// Added say /monitor client command to toggle monitor visibility when player is alive
+
 /* AMX Mod X script.
 *
 *   SuperHero Monitor (sh_monitor.sma)
@@ -104,11 +109,11 @@
 //#define REPLACE_HUD
 
 /********* Uncomment the ones you want to display **********/
-#define MONITOR_HP
-#define MONITOR_AP
-//#define MONITOR_GRAVITY
-//#define MONITOR_SPEED
-//#define MONITOR_GODMODE
+// #define MONITOR_HP
+// #define MONITOR_AP
+// #define MONITOR_GRAVITY
+// #define MONITOR_SPEED
+// #define MONITOR_GODMODE
 #define MONITOR_SPEC
 
 
@@ -134,6 +139,8 @@
 	#define HIDE_HUD_HEALTH (1<<3)
 #endif
 
+new bool:plrMonitor[33] = false
+
 new MonitorHudSync
 new const TaskClassname[] = "monitorloop"
 //----------------------------------------------------------------------------------------------
@@ -155,6 +162,10 @@ public plugin_init()
 	#endif
 
 	MonitorHudSync = CreateHudSyncObj()
+	
+	#if defined MONITOR_HP || defined MONITOR_AP || defined MONITOR_GRAVITY || defined MONITOR_SPEED || defined MONITOR_GODMODE
+		register_clcmd("say /monitor", "toogleMonitor")
+	#endif
 
 	new monitor = engfunc(EngFunc_CreateNamedEntity, engfunc(EngFunc_AllocString, "info_target"))
 	if ( monitor )
@@ -163,6 +174,12 @@ public plugin_init()
 		set_pev(monitor, pev_nextthink, get_gametime() + 0.1)
 		register_forward(FM_Think, "monitor_think")
 	}
+}
+//----------------------------------------------------------------------------------------------
+public toogleMonitor(id)
+{
+	plrMonitor[id] = plrMonitor[id] ? false : true
+	return PLUGIN_HANDLED
 }
 //----------------------------------------------------------------------------------------------
 #if defined MONITOR_SPEC
@@ -246,7 +263,7 @@ public monitor_think(ent)
 			#if defined MONITOR_GRAVITY || defined MONITOR_SPEC
 				static Float:gravity
 			#endif
-			#if defined MONITOR_GODMODE
+			#if defined MONITOR_GODMODE || defined MONITOR_SPEC
 				static Float:takeDamage
 			#endif
 
@@ -267,7 +284,7 @@ public monitor_think(ent)
 				id = players[i]
 				temp[0] = '^0'
 
-				if ( is_user_alive(id) )
+				if ( is_user_alive(id) && plrMonitor[id] )
 				{
 					#if defined MONITOR_HP || defined MONITOR_AP || defined MONITOR_GRAVITY || defined MONITOR_SPEED || defined MONITOR_GODMODE
 						len = 0
@@ -310,22 +327,22 @@ public monitor_think(ent)
 								#if defined MONITOR_HP || defined MONITOR_AP || defined MONITOR_GRAVITY || defined MONITOR_SPEED
 									len += formatex(temp[len], charsmax(temp) - len, "  |  ")
 								#endif
-								formatex(temp[len], charsmax(temp) - len, "GODMODE")
+								formatex(temp[len], charsmax(temp) - len, "INVINCIBLE")
 							}
 						#endif
 
 						// Sets Y location
 						#if defined REPLACE_HUD
-							set_hudmessage(255, 180, 0, 0.02, 0.97, 0, 0.0, 0.3, 0.0, 0.0)
+							set_hudmessage(255, 180, 0, 0.008, 0.97, 0, 0.0, 0.3, 0.0, 0.0)
 						#else
-							set_hudmessage(255, 180, 0, 0.02, 0.73, 0, 0.0, 0.3, 0.0, 0.0)
+							set_hudmessage(255, 180, 0, 0.008, 0.73, 0, 0.0, 0.3, 0.0, 0.0)
 						#endif
 
-						ShowSyncHudMsg(id, MonitorHudSync, "[SH]  %s", temp)
+						ShowSyncHudMsg(id, MonitorHudSync, "%s", temp)
 					#endif
 				}
 				#if defined MONITOR_SPEC
-					else
+					else if ( !is_user_alive(id) )
 					{
 						// Who is the id specing
 						specPlayer = pev(id, pev_iuser2)
@@ -339,9 +356,16 @@ public monitor_think(ent)
 						if ( specPlayerLevel < ServerMaxLevel ) {
 							formatex(temp, charsmax(temp), "/%d", sh_get_lvl_xp(specPlayerLevel+1))
 						}
+						
+						new is_godmode[16] = " "
+						pev(specPlayer, pev_takedamage, takeDamage)
+						if ( takeDamage == DAMAGE_NO && is_user_alive(specPlayer))
+						{
+							format(is_godmode, 32, "%L", id, "MONITOR_INVINCIBLE")
+						}					
 
-						set_hudmessage(255, 255, 255, 0.018, 0.9, 2, 0.05, 0.1, 0.01, 3.0)
-						ShowSyncHudMsg(id, MonitorHudSync, "[SH] Level: %d/%d  |  XP: %d%s^nHealth: %d  |  Armor: %d^nGravity: %d%%  |  Speed: %d", specPlayerLevel, ServerMaxLevel, sh_get_user_xp(specPlayer), temp, UserHealth[specPlayer], UserArmor[specPlayer], floatround(gravity*100.0), floatround(vector_length(velocity)))
+						set_hudmessage(255, 255, 255, 0.018, 0.9, 2, 0.05, 0.1, 0.01, 0.01)
+						ShowSyncHudMsg(id, MonitorHudSync, "%L", id, "MONITOR_SPEC", specPlayerLevel, ServerMaxLevel, sh_get_user_xp(specPlayer), temp, UserHealth[specPlayer], UserArmor[specPlayer], is_godmode, floatround(gravity*100.0), floatround(vector_length(velocity)))
 					}
 				#endif
 			}

@@ -37,7 +37,7 @@ public plugin_init()
 
 	// FIRE THE EVENT TO CREATE THIS SUPERHERO!
 	gHeroID = sh_create_hero(gHeroName, pcvarLevel)
-	sh_set_hero_info(gHeroID, "Invisibility", "Makes you less visible and harder to see. Only works while standing/not shooting and not zooming.")
+	sh_set_hero_info(gHeroID, "Invisibility", "Makes you less visible and harder to see. Only works while not running, not shooting and not zooming.")
 
 	// CHECK SOME BUTTONS
 	set_task(0.1, "checkButtons", _, _, _, "b")
@@ -82,7 +82,7 @@ public remInvisibility(id)
 
 	if ( gIsInvisible[id] > 0 ) {
 		sh_set_rendering(id)
-		client_print(id, print_center, "[SH]%s: You are no longer cloaked", gHeroName)
+		client_print(id, print_center, "%L", id, "INVISMAN_NO_LONGER_CLOAKED")
 	}
 
 	gIsInvisible[id] = 0
@@ -146,7 +146,7 @@ public checkButtons()
 			new alpha = get_pcvar_num(gPcvarAlpha)
 
 			if ( sysTime - delay >= gStillTime[id] ) {
-				if ( gIsInvisible[id] != 100 ) client_print(id, print_center, "[SH]%s : 100%s cloaked", gHeroName, "%")
+				if ( gIsInvisible[id] != 100 ) client_print(id, print_center, "%L", id, "INVISMAN_100_PERCENT_CLOAKED", "%")
 				gIsInvisible[id] = 100
 				setInvisibility(id, alpha)
 			}
@@ -154,7 +154,7 @@ public checkButtons()
 				new Float:prcnt = (sysTime - gStillTime[id]) / delay
 				new rPercent = floatround(prcnt * 100)
 				alpha = floatround( 255 - ((255 - alpha) * prcnt) )
-				client_print(id, print_center, "[SH]%s : %d%s cloaked", gHeroName, rPercent, "%")
+				client_print(id, print_center, "%L", id, "INVISMAN_N_PERCENT_CLOAKED", rPercent, "%")
 				gIsInvisible[id] = rPercent
 				setInvisibility(id, alpha)
 			}

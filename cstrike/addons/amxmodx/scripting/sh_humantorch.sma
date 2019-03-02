@@ -74,7 +74,7 @@ public sh_hero_key(id, heroID, key)
 	if ( key == SH_KEYDOWN ) {
 		// Ludwigs flame thrower
 		if ( pev(id, pev_waterlevel) == 3 ) {
-			sh_chat_message(id, gHeroID, "You cannot use the Flame Blast while underwater")
+			sh_chat_message(id, gHeroID, "%L", id, "HUMANTORCH_YOU_CANNOT_USE_IT_UNDER_WATER")
 			sh_sound_deny(id)
 			return
 		}
@@ -86,7 +86,7 @@ public sh_hero_key(id, heroID, key)
 			new userArmor = cs_get_user_armor(id, armorType)
 
 			if ( userArmor < armorCost ) {
-				sh_chat_message(id, gHeroID, "Flame Blasts cost %d armor point%s each", armorCost, armorCost == 1 ? "" : "s")
+				sh_chat_message(id, gHeroID, "%L", id, "HUMANTORCH_COST", armorCost)
 				sh_sound_deny(id)
 				return
 			}

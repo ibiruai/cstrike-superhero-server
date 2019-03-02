@@ -1,4 +1,4 @@
-#include <amxmod>
+#include <amxmodx>
 #include <superheromod>
 
 // Mirage - made by Mydas
@@ -76,16 +76,17 @@ public turn_invis(parm[])
 		255-floatround(step*(25.5/get_cvar_float("mirage_fadetime"))))
 	set_task(get_cvar_float("mirage_invistime"),"remove_invis",step*100+50+id,parm,2)
 	if (step==floatround(get_cvar_float("mirage_fadetime")*10)) 
-	client_print(id,print_chat,"-Turned invisible-")
+	client_print(id,print_chat,"%L", id, "MIRAGE_INVISIBLE")
 	return PLUGIN_CONTINUE
 }
 
 public remove_invis(parm[])
 {
 	new id=parm[0], step=parm[1]
+	if ( !is_user_connected(id) ) return PLUGIN_CONTINUE
 	set_user_rendering(id,kRenderFxGlowShell,0,0,0,kRenderTransAlpha,
 		floatround(step*(25.5/get_cvar_float("mirage_fadetime"))))
 	if (step==floatround(get_cvar_float("mirage_fadetime")*10)) 
-	client_print(id,print_chat,"-Visible again-")
+	client_print(id,print_chat,"%L", id, "MIRAGE_VISIBLE")
 	return PLUGIN_CONTINUE
 }

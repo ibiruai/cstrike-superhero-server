@@ -270,12 +270,15 @@ public plugin_cfg()
 			map_writeRecentList();
 		}
 	}
-
+	/*
 	if (get_pcvar_num(cvar_rtvCommands) & RTV_CMD_STANDARD)
 	{
 		register_clcmd("say rockthevote", "cmd_rockthevote", 0);
+		register_clcmd("say votemap", "cmd_rockthevote", 0);
+		register_clcmd("say /votemap", "cmd_rockthevote", 0);
+		register_clcmd("say /rtv", "cmd_rockthevote", 0);
 	}
-
+	*/
 	if (get_pcvar_num(cvar_nomPlayerAllowance))
 	{
 		register_concmd("gal_listmaps", "cmd_listmaps");
@@ -321,9 +324,7 @@ public vote_setupEnd()
 	
 	new nextMap[32];
 	if (get_pcvar_num(cvar_endOfMapVote))
-	{
-		formatex(nextMap, sizeof(nextMap)-1, "%L", LANG_SERVER, "GAL_NEXTMAP_UNKNOWN");
-	}
+		nextMap = "[not voted yed]";
 	else
 	{
 		g_mapCycle = ArrayCreate(32);
@@ -354,7 +355,7 @@ map_getNext(Array:mapArray, currentMap[], nextMap[32])
 			break;
 		}
 	}
-	ArrayGetString(mapArray, nextmapIdx, nextMap, sizeof(nextMap)-1);
+	ArrayGetString(mapArray, nextmapIdx, nextMap, sizeof(nextMap));
 	
 	return returnVal;
 }
@@ -517,14 +518,14 @@ public map_loadFillerList(filename[])
 
 public cmd_rockthevote(id)
 {
-	client_print(id, print_chat, "%L", id, "GAL_CMD_RTV");
+	client_print_color(id, print_team_grey, "%L", id, "GAL_CMD_RTV");
 	vote_rock(id);
 	return PLUGIN_CONTINUE;
 }
 
 public cmd_nominations(id)
 {
-	client_print(id, print_chat, "%L", id, "GAL_CMD_NOMS");
+	client_print_color(id, print_team_grey, "%L", id, "GAL_CMD_NOMS");
 	nomination_list(id);
 	return PLUGIN_CONTINUE;
 }
@@ -533,7 +534,14 @@ public cmd_nextmap(id)
 {
 	new map[32];
 	get_cvar_string("amx_nextmap", map, sizeof(map)-1);
-	client_print(0, print_chat, "%L %s", LANG_PLAYER, "NEXT_MAP", map);
+	
+	for ( new i = 1; i <= 32; i++ )
+		if ( is_user_connected(i) )
+		{
+			if ( equal(map, "[not voted yed]") )
+				formatex(map, sizeof(map)-1, "%L", i, "GAL_NEXTMAP_UNKNOWN");
+			client_print(i, print_chat, "%L %s", i, "NEXT_MAP", map);
+		}
 	return PLUGIN_CONTINUE;
 }
 
@@ -841,7 +849,14 @@ public map_manageEnd()
 
 		new map[MAX_MAPNAME_LEN + 1];
 		get_cvar_string("amx_nextmap", map, sizeof(map)-1);
-		client_print(0, print_chat, "%L", LANG_PLAYER, "GAL_NEXTMAP", map);
+		
+		for ( new i = 1; i <= 32; i++ )
+			if ( is_user_connected(i) )
+			{
+				if ( equal(map, "[not voted yed]") )
+					formatex(map, sizeof(map)-1, "%L", i, "GAL_NEXTMAP_UNKNOWN");
+				client_print(i, print_chat, "%L", i, "GAL_NEXTMAP", map);
+			}
 	}
 	
 	dbg_log(2, "%32s mp_timelimit: %f", "map_manageEnd(out)", get_cvar_float("mp_timelimit"));
@@ -940,7 +955,7 @@ public cmd_say(id)
 		// if the chat line contains 1 word, it could be a map or a one-word command
 		if (arg2[0] == 0) // "say [rtv|rockthe<anything>vote]"
 		{
-			if ((get_pcvar_num(cvar_rtvCommands) & RTV_CMD_SHORTHAND && equali(arg1, "rtv")) || ((get_pcvar_num(cvar_rtvCommands) & RTV_CMD_DYNAMIC && equali(arg1, "rockthe", 7) && equali(arg1[strlen(arg1)-4], "vote"))))
+			if ((get_pcvar_num(cvar_rtvCommands) & RTV_CMD_SHORTHAND && equali(arg1, "rtv")) || ((get_pcvar_num(cvar_rtvCommands) & RTV_CMD_DYNAMIC && equali(arg1, "rockthe", 7) && equali(arg1[strlen(arg1)-4], "vote"))) || equali(arg1, "/rtv") || equali(arg1, "votemap") || equali(arg1, "/votemap") || equali(arg1, "rockthevote") || equali(arg1, "/rockthevote"))
 			{
 				vote_rock(id);
 				return PLUGIN_HANDLED;
@@ -1152,7 +1167,7 @@ nomination_cancel(id, idxMap)
 			new name[32];
 			get_user_name(idNominator, name, 31);
 			
-			client_print(id, print_chat, "%L", id, "GAL_CANCEL_FAIL_SOMEONEELSE", mapName, name);
+			client_print_color(id, idNominator, "%L", id, "GAL_CANCEL_FAIL_SOMEONEELSE", mapName, name);
 		}
 		else
 		{
@@ -1190,7 +1205,7 @@ map_nominate(id, idxMap, idNominator = -1)
 	if (map_isTooRecent(mapName))
 	{
 		client_print(id, print_chat, "%L", id, "GAL_NOM_FAIL_TOORECENT", mapName);
-		client_print(id, print_chat, "%L", id, "GAL_NOM_FAIL_TOORECENT_HLP");
+		client_print_color(id, print_team_grey, "%L", id, "GAL_NOM_FAIL_TOORECENT_HLP");
 		return;
 	}
 	
@@ -1238,7 +1253,7 @@ map_nominate(id, idxMap, idNominator = -1)
 			g_nomination[id][idxNominationOpen] = idxMap;
 			g_nominationCnt++;
 			map_announceNomination(id, mapName);
-			client_print(id, print_chat, "%L", id, "GAL_NOM_GOOD_HLP");
+			client_print_color(id, print_team_grey, "%L", id, "GAL_NOM_GOOD_HLP");
 		}		
 	}
 	else if (idNominator == id)
@@ -1250,8 +1265,8 @@ map_nominate(id, idxMap, idNominator = -1)
 		new name[32];
 		get_user_name(idNominator, name, 31);
 		
-		client_print(id, print_chat, "%L", id, "GAL_NOM_FAIL_SOMEONEELSE", mapName, name);
-		client_print(id, print_chat, "%L", id, "GAL_NOM_FAIL_SOMEONEELSE_HLP");
+		client_print_color(id, idNominator, "%L", id, "GAL_NOM_FAIL_SOMEONEELSE", mapName, name);
+		client_print_color(id, print_team_grey, "%L", id, "GAL_NOM_FAIL_SOMEONEELSE_HLP");
 	}	
 }
 
@@ -1771,11 +1786,11 @@ public vote_display(arg[3])
 		// add the header
 		if (isVoteOver)
 		{
-			charCnt = formatex(voteStatus, sizeof(voteStatus)-1, "%s%L^n", CLR_YELLOW, LANG_SERVER, "GAL_RESULT");
+			charCnt = formatex(voteStatus, sizeof(voteStatus)-1, "%s%L^n", CLR_YELLOW, LANG_PLAYER, "GAL_RESULT");
 		}
 		else
 		{
-			charCnt = formatex(voteStatus, sizeof(voteStatus)-1, "%s%L^n", CLR_YELLOW, LANG_SERVER, "GAL_CHOOSE");
+			charCnt = formatex(voteStatus, sizeof(voteStatus)-1, "%s%L^n", CLR_YELLOW, LANG_PLAYER, "GAL_CHOOSE");
 		}
 
 		// add maps to the menu
@@ -1802,12 +1817,12 @@ public vote_display(arg[3])
 			if (allowExtend)
 			{
 				// add the "Extend Map" menu item.
-				charCnt += formatex(voteStatus[charCnt], sizeof(voteStatus)-1-charCnt, "^n%s%i. %s%L%s", CLR_RED, g_choiceCnt+1, CLR_WHITE, LANG_SERVER, "GAL_OPTION_EXTEND", g_currentMap, floatround(get_pcvar_float(cvar_extendmapStep)), voteTally);
+				charCnt += formatex(voteStatus[charCnt], sizeof(voteStatus)-1-charCnt, "^n%s%i. %s%L%s", CLR_RED, g_choiceCnt+1, CLR_WHITE, LANG_PLAYER, "GAL_OPTION_EXTEND", g_currentMap, floatround(get_pcvar_float(cvar_extendmapStep)), voteTally);
 			}
 			else
 			{
 				// add the "Stay Here" menu item
-				charCnt += formatex(voteStatus[charCnt], sizeof(voteStatus)-1-charCnt, "^n%s%i. %s%L%s", CLR_RED, g_choiceCnt+1, CLR_WHITE, LANG_SERVER, "GAL_OPTION_STAY", voteTally);
+				charCnt += formatex(voteStatus[charCnt], sizeof(voteStatus)-1-charCnt, "^n%s%i. %s%L%s", CLR_RED, g_choiceCnt+1, CLR_WHITE, LANG_PLAYER, "GAL_OPTION_STAY", voteTally);
 			}
 			
 			keys |= (1<<g_choiceCnt);
@@ -1819,7 +1834,7 @@ public vote_display(arg[3])
 			new cleanCharCnt = copy(g_vote, sizeof(g_vote)-1, voteStatus);
 			
 			// append a "None" option on for people to choose if they don't like any other choice
-			formatex(g_vote[cleanCharCnt], sizeof(g_vote)-1-cleanCharCnt, "^n^n%s0. %s%L", CLR_RED, CLR_WHITE, LANG_SERVER, "GAL_OPTION_NONE");
+			formatex(g_vote[cleanCharCnt], sizeof(g_vote)-1-cleanCharCnt, "^n^n%s0. %s%L", CLR_RED, CLR_WHITE, LANG_PLAYER, "GAL_OPTION_NONE");
 		}
 		
 		charCnt += formatex(voteStatus[charCnt], sizeof(voteStatus)-1-charCnt, "^n^n");
@@ -1834,7 +1849,7 @@ public vote_display(arg[3])
 		
 		if (--g_voteDuration <= 10)
 		{
-			formatex(voteFooter[charCnt], sizeof(voteFooter)-1-charCnt, "%s%L: %s%i", CLR_GREY, LANG_SERVER, "GAL_TIMELEFT", CLR_RED, g_voteDuration);
+			formatex(voteFooter[charCnt], sizeof(voteFooter)-1-charCnt, "%s%L: %s%i", CLR_GREY, LANG_PLAYER, "GAL_TIMELEFT", CLR_RED, g_voteDuration);
 		}
 	}
 	
@@ -1850,7 +1865,7 @@ public vote_display(arg[3])
 	}
 	else
 	{
-		formatex(menuDirty, sizeof(menuDirty)-1, "%s^n^n%s%L", voteStatus, CLR_YELLOW, LANG_SERVER, "GAL_VOTE_ENDED");
+		formatex(menuDirty, sizeof(menuDirty)-1, "%s^n^n%s%L", voteStatus, CLR_YELLOW, LANG_PLAYER, "GAL_VOTE_ENDED");
 	}
 
 	new menuid, menukeys;
@@ -2097,7 +2112,7 @@ public vote_expire()
 			if (get_pcvar_num(cvar_endOfMapVote))
 			{
 				new nextMap[32];
-				formatex(nextMap, sizeof(nextMap)-1, "%L", LANG_SERVER, "GAL_NEXTMAP_UNKNOWN");
+				nextMap = "[not voted yed]";
 				map_setNext(nextMap);
 			}
 
@@ -2277,7 +2292,7 @@ public vote_handleChoice(id, key)
 
 			if (get_pcvar_num(cvar_voteAnnounceChoice))
 			{
-				client_print(0, print_chat, "%L", LANG_PLAYER, "GAL_CHOICE_NONE_ALL", name);
+				client_print_color(0, id, "%L", LANG_PLAYER, "GAL_CHOICE_NONE_ALL", name);
 			}
 			else
 			{
@@ -2298,7 +2313,7 @@ public vote_handleChoice(id, key)
 
 					if (get_pcvar_num(cvar_voteAnnounceChoice))
 					{
-						client_print(0, print_chat, "%L", LANG_PLAYER, "GAL_CHOICE_EXTEND_ALL", name);
+						client_print_color(0, id, "%L", LANG_PLAYER, "GAL_CHOICE_EXTEND_ALL", name);
 					}
 					else
 					{
@@ -2312,7 +2327,7 @@ public vote_handleChoice(id, key)
 
 				if (get_pcvar_num(cvar_voteAnnounceChoice))
 				{
-					client_print(0, print_chat, "%L", LANG_PLAYER, "GAL_CHOICE_MAP_ALL", name, g_mapChoice[key]);
+					client_print_color(0, id, "%L", LANG_PLAYER, "GAL_CHOICE_MAP_ALL", name, g_mapChoice[key]);
 				}
 				else
 				{
@@ -2487,7 +2502,7 @@ public rtv_remind(param)
 	new who = param - TASKID_REMINDER;
 	
 	// let the players know how many more rocks are needed
-	client_print(who, print_chat, "%L", LANG_PLAYER, "GAL_ROCK_NEEDMORE", vote_getRocksNeeded() - g_rockedVoteCnt);
+	client_print_color(who, print_team_grey, "%L", LANG_PLAYER, "GAL_ROCK_NEEDMORE", vote_getRocksNeeded() - g_rockedVoteCnt);
 }
 
 public cmd_listmaps(id)
@@ -2684,7 +2699,7 @@ con_print(id, message[], {Float,Sql,Result,_}:...)
 	server_print(consoleMessage);
 }
 
-public client_disconnect(id)
+public client_disconnected(id)
 {
 	g_voted[id] = false;
 		
@@ -2715,7 +2730,7 @@ public client_disconnect(id)
 	}
 
 	new dbg_playerCnt = get_realplayersnum()-1;
-	dbg_log(2, "%32s dbg_playerCnt:%i", "client_disconnect()", dbg_playerCnt);
+	dbg_log(2, "%32s dbg_playerCnt:%i", "client_disconnected()", dbg_playerCnt);
 
 	if (dbg_playerCnt == 0)
 	{
@@ -2765,7 +2780,7 @@ public srv_announceEarlyVote(id)
 	if (is_user_connected(id))
 	{
 		//client_print(id, print_chat, "%L", id, "GAL_VOTE_EARLY");
-		new text[101];
+		new text[201];
 		formatex(text, sizeof(text)-1, "^x04%L", id, "GAL_VOTE_EARLY");
 		print_color(id, text);
 	}
@@ -2773,6 +2788,8 @@ public srv_announceEarlyVote(id)
 
 public srv_initEmptyCheck()
 {
+	if (get_playersnum_ex(GetPlayers_ExcludeBots) > 0) return;
+	
 	if (get_pcvar_num(cvar_emptyWait))
 	{
 		if ((get_realplayersnum()) == 0 && !get_pcvar_num(cvar_emptyCycle))
@@ -2785,6 +2802,8 @@ public srv_initEmptyCheck()
 
 srv_startEmptyCountdown()
 {
+	if (get_playersnum_ex(GetPlayers_ExcludeBots) > 0) return;
+	
 	new waitMinutes = get_pcvar_num(cvar_emptyWait);
 	if (waitMinutes)
 	{
@@ -2794,6 +2813,8 @@ srv_startEmptyCountdown()
 
 public srv_startEmptyCycle()
 {
+	if (get_playersnum_ex(GetPlayers_ExcludeBots) > 0) return;
+	
 	set_pcvar_num(cvar_emptyCycle, 1);
 	
 	// set the next map from the empty cycle list,
@@ -2832,7 +2853,7 @@ map_announceNomination(id, map[])
 	new name[32];
 	get_user_name(id, name, sizeof(name)-1);
 	
-	client_print(0, print_chat, "%L", LANG_PLAYER, "GAL_NOM_SUCCESS", name, map);
+	client_print_color(0, id, "%L", LANG_PLAYER, "GAL_NOM_SUCCESS", name, map);
 }
 
 #if AMXX_VERSION_NUM < 180
@@ -2844,15 +2865,19 @@ has_flag(id, flags[])
 
 public sort_stringsi(const elem1[], const elem2[], const array[], data[], data_size)
 {
-	return strcmp(elem1, elem2, 1);
+	return strcmp(elem1, elem2, true);
 }
 
 stock get_realplayersnum()
 {
+	/*
 	new players[32], playerCnt;
 	get_players(players, playerCnt, "ch");
 	
 	return playerCnt;
+	*/
+	
+	return get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "CT") + get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "TERRORIST");
 }
 
 stock percent(is, of)

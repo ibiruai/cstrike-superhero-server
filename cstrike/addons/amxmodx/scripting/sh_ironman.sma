@@ -126,7 +126,7 @@ public ironman_loop(id)
 					set_user_info(id, "JP", "0")
 
 					emit_sound(id, CHAN_WEAPON, gSoundJpStop, VOL_NORM, ATTN_NORM, 0, PITCH_NORM)
-					client_print(id, print_center, "You ran out of Jetpack Fuel")
+					client_print(id, print_center, "%L", id, "IRONMAN_NO_FUEL")
 					return
 				}
 
@@ -223,7 +223,7 @@ public spawn_delay(id)
 	gRegenAllowed[id] = true
 }
 //----------------------------------------------------------------------------------------------
-public client_disconnect(id)
+public client_disconnected(id)
 {
 	// stupid check but lets see
 	if ( id < 1 || id > sh_maxplayers() ) return

@@ -26,6 +26,7 @@ new pcvar_Display
 public plugin_init()
 {
 	register_plugin("Reset Score", "1.0", "Silenttt")
+	register_dictionary("resetscore.txt")
 	
 	//You may type /resetscore or /restartscore
 	register_clcmd("say /resetscore", "reset_score")
@@ -60,11 +61,11 @@ public reset_score(id)
 	{
 		new name[33]
 		get_user_name(id, name, 32)
-		client_print(0, print_chat, "%s has just reset his score", name)
+		client_print(0, print_chat, "%L", LANG_PLAYER, "Player_Reseted_Score", name)
 	}
 	else
 	{
-		client_print(id, print_chat, "You have just reset your score")
+		client_print(id, print_chat, "%L", id, "You_Reseted_Score")
 	}
 	return PLUGIN_HANDLED
 }
@@ -72,7 +73,7 @@ public reset_score(id)
 public advertise()
 {
 	set_hudmessage(255, 0, 0, -1.0, 0.20, 0, 0.2, 12.0)
-	show_hudmessage(0, "By typing /rs you can restart your deaths and kills back to 0")
+	show_hudmessage(0, "%L", LANG_PLAYER, "Reset_Score_Advertise1")
 }
 
 public client_putinserver(id)
@@ -87,6 +88,6 @@ public connectmessage(id)
 {
 	if(is_user_connected(id))
 	{
-	client_print(id, print_chat, "By typing /resetscore at any time during the game, you can reset your deaths and kills back to 0 (rather than reconnecting)")
+	client_print(id, print_chat, "%L", id, "Reset_Score_Advertise2")
 	}
 }
