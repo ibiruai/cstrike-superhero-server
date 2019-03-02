@@ -66,7 +66,7 @@ public hook_say_team(id)
 		}
 		else
 		{
-			format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_SPAMWARN", get_pcvar_num(g_SpamWarns) - SpamFound[id])
+			format(Info, charsmax(Info), "%L", id, "CT_SPAMWARN", get_pcvar_num(g_SpamWarns) - SpamFound[id])
 			WriteMessage(id, Info)
 			if(get_pcvar_num(g_Sounds))
 			{
@@ -137,7 +137,7 @@ public hook_say_team(id)
 				i_Gag[id] = SysTime + get_pcvar_num(g_SwearTime)*60
 				get_user_name(id, s_GagName[id], 31)
 				get_user_ip(id, s_GagIp[id], 31, 1)
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_SWEAR_GAG", get_pcvar_num(g_SwearTime))
+				format(Info, charsmax(Info), "%L", id, "CT_SWEAR_GAG", get_pcvar_num(g_SwearTime))
 				WriteMessage(id, Info)
 				if(get_pcvar_num(g_Log) == 1)
 				{
@@ -158,7 +158,7 @@ public hook_say_team(id)
 			}
 			else if(get_pcvar_num(g_SwearGag))
 			{
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_SWEARWARN", get_pcvar_num(g_SwearWarns) - SwearCount[id])
+				format(Info, charsmax(Info), "%L", id, "CT_SWEARWARN", get_pcvar_num(g_SwearWarns) - SwearCount[id])
 				WriteMessage(id, Info)
 				if(get_pcvar_num(g_Sounds))
 				{
@@ -173,12 +173,12 @@ public hook_say_team(id)
 	}
 	if(get_pcvar_num(g_Country))
 	{
-		get_user_ip(id, s_CountryIp, charsmax(s_CountryIp))
+		get_user_ip(id, s_CountryIp, charsmax(s_CountryIp), 1)
 		switch(get_pcvar_num(g_Country))
 		{
 			case 1:
 			{
-				geoip_country(s_CountryIp, s_Country1)
+				geoip_country(s_CountryIp, s_Country1, charsmax(s_Country))
 				format(s_Country, charsmax(s_Country), "%s", s_Country1)
 			}
 			case 2:
@@ -249,25 +249,20 @@ public hook_say_team(id)
 	}
 	if(get_pcvar_num(g_Country))
 	{
-		get_user_ip(id, s_CountryIp, charsmax(s_CountryIp))
-		if(containi(s_CountryIp, "10.") == 0)
+		get_user_ip(id, s_CountryIp, charsmax(s_CountryIp), 1)
+		if( equali(s_CountryIp, "10.", 3) || equali(s_CountryIp, "127.", 4) || equali(s_CountryIp, "172.26.", 7) || equali(s_CountryIp, "29.", 3) )
 		{
-			mLen += format(Message[mLen], charsmax(Message) - mLen, "[^x04%L^x01] ", LANG_PLAYER, "CT_LAN")
+			mLen += format(Message[mLen], charsmax(Message) - mLen, "[%L] ", LANG_PLAYER, "CT_LAN")
 			lgLen += format(p_LogMsg[lgLen], charsmax(p_LogMsg) - lgLen, "<font color=^"green^">[%L] </font>", LANG_PLAYER, "CT_LAN")
-		}
-		else if(containi(s_CountryIp, "172.") == 0)
-		{
-			mLen += format(Message[mLen], charsmax(Message) - mLen, "[^x04%L^x01] ", LANG_PLAYER, "CT_PROVIDER")
-			lgLen += format(p_LogMsg[lgLen], charsmax(p_LogMsg) - lgLen, "<font color=^"green^">[%L] </font>", LANG_PLAYER, "CT_PROVIDER")
 		}
 		else if(containi(s_Country, "err") != -1)
 		{
-			mLen += format(Message[mLen], charsmax(Message) - mLen, "[^x04%L^x01] ", LANG_PLAYER, "CT_ERROR")
+			mLen += format(Message[mLen], charsmax(Message) - mLen, "[%L] ", LANG_PLAYER, "CT_ERROR")
 			lgLen += format(p_LogMsg[lgLen], charsmax(p_LogMsg) - lgLen, "<font color=^"green^">[%L] </font>", LANG_PLAYER, "CT_ERROR")
 		}
 		else
 		{
-			mLen += format(Message[mLen], charsmax(Message) - mLen, "[^x04%s^x01] ", s_Country)
+			mLen += format(Message[mLen], charsmax(Message) - mLen, "[%s] ", s_Country)
 			lgLen += format(p_LogMsg[lgLen], charsmax(p_LogMsg) - lgLen, "<font color=^"green^">[%s] </font>", s_Country)
 		}
 	}
@@ -412,7 +407,7 @@ public hook_say_team(id)
 	}
 	if(strlen(Message) >= 192)
 	{
-		format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, LANG_PLAYER, "CT_LONGMSG")
+		format(Info, charsmax(Info), "%L", LANG_PLAYER, "CT_LONGMSG")
 		WriteMessage(id, Info)
 		return PLUGIN_HANDLED
 	}

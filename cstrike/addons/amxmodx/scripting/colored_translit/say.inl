@@ -66,7 +66,7 @@ public hook_say(id)
 		}
 		else
 		{
-			format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_SPAMWARN", get_pcvar_num(g_SpamWarns) - SpamFound[id])
+			format(Info, charsmax(Info), "%L", id, "CT_SPAMWARN", get_pcvar_num(g_SpamWarns) - SpamFound[id])
 			WriteMessage(id, Info)
 			if(get_pcvar_num(g_Sounds))
 			{
@@ -137,7 +137,7 @@ public hook_say(id)
 				i_Gag[id] = SysTime + get_pcvar_num(g_SwearTime)*60
 				get_user_name(id, s_GagName[id], 31)
 				get_user_ip(id, s_GagIp[id], 31, 1)
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_SWEAR_GAG", get_pcvar_num(g_SwearTime))
+				format(Info, charsmax(Info), "%L", id, "CT_SWEAR_GAG", get_pcvar_num(g_SwearTime))
 				WriteMessage(id, Info)
 				if(get_pcvar_num(g_Log) == 1)
 				{
@@ -158,7 +158,7 @@ public hook_say(id)
 			}
 			else if(get_pcvar_num(g_SwearGag))
 			{
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_SWEARWARN", get_pcvar_num(g_SwearWarns) - SwearCount[id])
+				format(Info, charsmax(Info), "%L", id, "CT_SWEARWARN", get_pcvar_num(g_SwearWarns) - SwearCount[id])
 				WriteMessage(id, Info)
 				if(get_pcvar_num(g_Sounds))
 				{
@@ -173,12 +173,12 @@ public hook_say(id)
 	}
 	if(get_pcvar_num(g_Country))
 	{
-		get_user_ip(id, s_CountryIp, charsmax(s_CountryIp))
+		get_user_ip(id, s_CountryIp, charsmax(s_CountryIp), 1)
 		switch(get_pcvar_num(g_Country))
 		{
 			case 1:
 			{
-				geoip_country(s_CountryIp, s_Country1)
+				geoip_country(s_CountryIp, s_Country1, charsmax(s_Country))
 				format(s_Country, charsmax(s_Country), "%s", s_Country1)
 			}
 			case 2:
@@ -233,25 +233,20 @@ public hook_say(id)
 	}
 	if(get_pcvar_num(g_Country))
 	{
-		get_user_ip(id, s_CountryIp, charsmax(s_CountryIp))
-		if(containi(s_CountryIp, "10.") == 0)
+		get_user_ip(id, s_CountryIp, charsmax(s_CountryIp), 1)
+		if( equali(s_CountryIp, "10.", 3) || equali(s_CountryIp, "127.", 4) || equali(s_CountryIp, "172.26.", 7) || equali(s_CountryIp, "29.", 3) )
 		{
-			mLen += format(Message[mLen], charsmax(Message) - mLen, "[^x04%L^x01] ", LANG_PLAYER, "CT_LAN")
+			mLen += format(Message[mLen], charsmax(Message) - mLen, "[%L] ", LANG_PLAYER, "CT_LAN")
 			lgLen += format(p_LogMsg[lgLen], charsmax(p_LogMsg) - lgLen, "<font color=^"green^">[%L] </font>", LANG_PLAYER, "CT_LAN")
-		}
-		else if(containi(s_CountryIp, "172.") == 0)
-		{
-			mLen += format(Message[mLen], charsmax(Message) - mLen, "[^x04%L^x01] ", LANG_PLAYER, "CT_PROVIDER")
-			lgLen += format(p_LogMsg[lgLen], charsmax(p_LogMsg) - lgLen, "<font color=^"green^">[%L] </font>", LANG_PLAYER, "CT_PROVIDER")
 		}
 		else if(containi(s_Country, "err") != -1)
 		{
-			mLen += format(Message[mLen], charsmax(Message) - mLen, "[^x04%L^x01] ", LANG_PLAYER, "CT_ERROR")
+			mLen += format(Message[mLen], charsmax(Message) - mLen, "[%L] ", LANG_PLAYER, "CT_ERROR")
 			lgLen += format(p_LogMsg[lgLen], charsmax(p_LogMsg) - lgLen, "<font color=^"green^">[%L] </font>", LANG_PLAYER, "CT_ERROR")
 		}
 		else
 		{
-			mLen += format(Message[mLen], charsmax(Message) - mLen, "[^x04%s^x01] ", s_Country)
+			mLen += format(Message[mLen], charsmax(Message) - mLen, "[%s] ", s_Country)
 			lgLen += format(p_LogMsg[lgLen], charsmax(p_LogMsg) - lgLen, "<font color=^"green^">[%s] </font>", s_Country)
 		}
 	}
@@ -396,7 +391,7 @@ public hook_say(id)
 	}
 	if(strlen(Message) >= 192)
 	{
-		format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, LANG_PLAYER, "CT_LONGMSG")
+		format(Info, charsmax(Info), "%L", LANG_PLAYER, "CT_LONGMSG")
 		WriteMessage(id, Info)
 		return PLUGIN_HANDLED
 	}
@@ -449,4 +444,58 @@ public hook_say(id)
 		Flood[id] = true
 	}
 	return PLUGIN_HANDLED
+}
+public client_connect(id)
+{
+	get_time("20%y.%m.%d", p_LogFileTime, charsmax(p_LogFileTime))
+	get_time("%H:%M:%S", p_LogTime, charsmax(p_LogTime))
+	if(get_pcvar_num(g_Log) && !is_user_bot(id))
+	{
+		format(p_LogDir, charsmax(p_LogDir), "%s/colored_translit", p_FilePath)
+		format(p_LogFile, charsmax(p_LogFile), "%s/chat_%s.htm", p_LogDir, p_LogFileTime)
+		if(!dir_exists(p_LogDir))
+		{
+			mkdir(p_LogDir)
+		}
+		if(!file_exists(p_LogFile))
+		{
+			format(p_LogTitle, charsmax(p_LogTitle), "<title>Colored Ctranslit Chat Log v3.0 by Sho0ter - %s</title>%s", p_LogFileTime, LOGTITLE)
+			write_file(p_LogFile, p_LogTitle)
+			write_file(p_LogFile, LOGFONT)
+		}
+		get_user_ip(id, p_LogIp, charsmax(p_LogIp), 1)
+		get_user_authid(id, p_LogSteamId, charsmax(p_LogSteamId))
+		get_user_name(id, s_Name, charsmax(s_Name))
+		geoip_country(p_LogIp, s_Country1, charsmax(s_Country1))
+		format(p_LogInfo, charsmax(p_LogInfo), "<font color=^"black^">%s &lt;%s&gt;&lt;%s&gt;</font>", p_LogTime, p_LogSteamId, p_LogIp)
+		format(p_LogMessage, charsmax(p_LogMessage), "%s - %s подключается (%s)<br>", p_LogInfo, s_Name, s_Country1)
+		write_file(p_LogFile, p_LogMessage)
+	}
+}
+public client_disconnected(id)
+{
+	get_time("20%y.%m.%d", p_LogFileTime, charsmax(p_LogFileTime))
+	get_time("%H:%M:%S", p_LogTime, charsmax(p_LogTime))
+	if(get_pcvar_num(g_Log) && !is_user_bot(id))
+	{
+		format(p_LogDir, charsmax(p_LogDir), "%s/colored_translit", p_FilePath)
+		format(p_LogFile, charsmax(p_LogFile), "%s/chat_%s.htm", p_LogDir, p_LogFileTime)
+		if(!dir_exists(p_LogDir))
+		{
+			mkdir(p_LogDir)
+		}
+		if(!file_exists(p_LogFile))
+		{
+			format(p_LogTitle, charsmax(p_LogTitle), "<title>Colored Ctranslit Chat Log v3.0 by Sho0ter - %s</title>%s", p_LogFileTime, LOGTITLE)
+			write_file(p_LogFile, p_LogTitle)
+			write_file(p_LogFile, LOGFONT)
+		}
+		get_user_ip(id, p_LogIp, charsmax(p_LogIp), 1)
+		get_user_authid(id, p_LogSteamId, charsmax(p_LogSteamId))
+		get_user_name(id, s_Name, charsmax(s_Name))
+		geoip_country(p_LogIp, s_Country1, charsmax(s_Country1))
+		format(p_LogInfo, charsmax(p_LogInfo), "<font color=^"black^">%s &lt;%s&gt;&lt;%s&gt;</font>", p_LogTime, p_LogSteamId, p_LogIp)
+		format(p_LogMessage, charsmax(p_LogMessage), "%s - %s отключается (%s)<br>", p_LogInfo, s_Name, s_Country1)
+		write_file(p_LogFile, p_LogMessage)
+	}
 }

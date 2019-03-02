@@ -9,13 +9,13 @@ stock is_user_gaged(id)
 	{
 		if(Flood[id])
 		{
-			format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_FLOOD")
+			format(Info, charsmax(Info), "%L", id, "CT_FLOOD")
 			i_Gag[id] = SysTime + get_pcvar_num(g_FloodTime)
 		}
 		else
 		{
 			i_ShowGag = i_Gag[id] - SysTime
-			format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_GAGED", i_ShowGag/60+1)
+			format(Info, charsmax(Info), "%L", id, "CT_GAGED", i_ShowGag/60+1)
 		}
 		WriteMessage(id, Info)
 		if(get_pcvar_num(g_Sounds))
@@ -33,7 +33,7 @@ stock is_user_gaged(id)
 
 stock is_empty_message(const Message[])
 {
-	if(Message[0] == ' ' || equal(Message, "") || !strlen(Message))
+	if(/*Message[0] == ' ' || */equal(Message, "") || !strlen(Message))
 	{
 		return 1
 	}
@@ -42,7 +42,7 @@ stock is_empty_message(const Message[])
 
 stock is_system_message(const Message[])
 {
-	if(Message[0] == '@' || Message[0] == '/' || Message[0] == '!')
+	if(/*Message[0] == '@' || */Message[0] == '/'/* || Message[0] == '!'*/)
 	{
 		return 1
 	}
@@ -113,10 +113,10 @@ stock is_swear_message(id, const Message[])
 			{
 				if(get_user_flags(players[j]) & ACCESS_LEVEL && is_user_connected(players[j]))
 				{
-					format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, LANG_PLAYER, "CT_CONTAIN", Swear[i-1])
+					format(Info, charsmax(Info), "%L", LANG_PLAYER, "CT_CONTAIN", Swear[i-1])
 					WriteMessage(players[j], Info)
 					console_print(players[j], "[%s] %L", PLUGIN, LANG_PLAYER, "CT_CONTAIN", Swear[i-1])
-					format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, LANG_PLAYER, "CT_SWEAR", s_Name, s_Msg)
+					format(Info, charsmax(Info), "%L", LANG_PLAYER, "CT_SWEAR", s_Name, s_Msg)
 					WriteMessage(players[j], Info)
 					console_print(players[j], "[%s] %L", PLUGIN, LANG_PLAYER, "CT_SWEAR", s_Name, s_Msg)
 				}
@@ -220,7 +220,7 @@ stock client_punish(id, type)
 				{
 					SysTime = get_systime(0)
 					i_Gag[id] = SysTime + get_pcvar_num(g_SpamActionTime) * 60
-					format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_SPAMGAG", get_pcvar_num(g_SpamActionTime))
+					format(Info, charsmax(Info), "%L", id, "CT_SPAMGAG", get_pcvar_num(g_SpamActionTime))
 					WriteMessage(id, Info)
 					Flood[id] = false
 					get_user_name(id, s_GagName[id], 31)

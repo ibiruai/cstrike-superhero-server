@@ -12,7 +12,8 @@
 
 #define is_valid_player(%1) (1 <= %1 <= 32)
 
-#define LOGTITLE "<META http-equiv=Content-Type content='text/html;charset=UTF-8'><h2 align=center>Colored Translit Chat Logger v3.0 by Sho0ter</h2><hr>"
+// #define LOGTITLE "<META http-equiv=Content-Type content='text/html;charset=UTF-8'><h2 align=center>Colored Translit Chat Logger v3.0 by Sho0ter</h2><hr>"
+#define LOGTITLE "<META http-equiv=Content-Type content='text/html;charset=UTF-8'><h2 align=center>Chat Log</h2>"
 #define LOGFONT "<font face=^"Verdana^" size=2>"
 
 #define PUNISH_CHEAT 1

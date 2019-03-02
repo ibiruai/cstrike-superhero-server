@@ -12,7 +12,7 @@ public cmd_gag(id, level, cid)
 	parse(s_Arg, s_GagPlayer, charsmax(s_GagPlayer), s_GagTime, charsmax(s_GagTime))
 	if(!is_str_num(s_GagTime))
 	{
-		format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_CMD_ERROR")
+		format(Info, charsmax(Info), "%L", id, "CT_CMD_ERROR")
 		WriteMessage(id, Info)
 		return PLUGIN_CONTINUE
 	}
@@ -25,7 +25,7 @@ public cmd_gag(id, level, cid)
 	get_user_name(gagid, s_GagTarget, charsmax(s_GagTarget))
 	if(get_user_flags(gagid) & IMMUNITY_LEVEL && get_pcvar_num(g_GagImmunity))
 	{
-		format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_IMMUNITY", s_GagTarget)
+		format(Info, charsmax(Info), "%L", id, "CT_IMMUNITY", s_GagTarget)
 		WriteMessage(id, Info)
 	}
 	else
@@ -45,14 +45,14 @@ public cmd_gag(id, level, cid)
 		{
 			case 0:
 			{
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_A0_GAG", s_GagTarget, i_GagTime)
+				format(Info, charsmax(Info), "%L", id, "CT_A0_GAG", s_GagTarget, i_GagTime)
 				WriteMessage(id, Info)
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, gagid, "CT_YOU_GAGED", i_GagTime)
+				format(Info, charsmax(Info), "%L", gagid, "CT_YOU_GAGED", i_GagTime)
 				WriteMessage(gagid, Info)
 			}
 			case 1:
 			{
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, LANG_PLAYER, "CT_A1_GAG", s_GagTarget, i_GagTime)
+				format(Info, charsmax(Info), "%L", LANG_PLAYER, "CT_A1_GAG", s_GagTarget, i_GagTime)
 				for(new player = 0; player <= get_maxplayers(); player++)
 				{
 					if(!is_user_connected(player) || player == gagid)
@@ -61,12 +61,12 @@ public cmd_gag(id, level, cid)
 					}
 					WriteMessage(player, Info)
 				}
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, gagid, "CT_YOU_GAGED", i_GagTime)
+				format(Info, charsmax(Info), "%L", gagid, "CT_YOU_GAGED", i_GagTime)
 				WriteMessage(gagid, Info)
 			}
 			case 2:
 			{
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, LANG_PLAYER, "CT_A2_GAG", s_GagAdmin, s_GagTarget, i_GagTime)
+				format(Info, charsmax(Info), "%L", LANG_PLAYER, "CT_A2_GAG", s_GagAdmin, s_GagTarget, i_GagTime)
 				for(new player = 0; player <= get_maxplayers(); player++)
 				{
 					if(!is_user_connected(player) || player == gagid)
@@ -75,7 +75,7 @@ public cmd_gag(id, level, cid)
 					}
 					WriteMessage(player, Info)
 				}
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, gagid, "CT_YOU_GAGED2", s_GagAdmin, i_GagTime)
+				format(Info, charsmax(Info), "%L", gagid, "CT_YOU_GAGED2", s_GagAdmin, i_GagTime)
 				WriteMessage(gagid, Info)
 				if(get_pcvar_num(g_Log))
 				{

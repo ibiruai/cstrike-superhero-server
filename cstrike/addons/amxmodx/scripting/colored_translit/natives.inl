@@ -84,7 +84,6 @@ public native_infomsg(id, const input[], any:...)
 		}
 		return 1
 	}
-	return 0
 }
 
 public native_get_lang(id)

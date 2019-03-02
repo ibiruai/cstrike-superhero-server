@@ -19,7 +19,7 @@ public cmd_ungag(id, level, cid)
 	get_user_name(gagid, s_GagTarget, charsmax(s_GagTarget))
 	if(i_Gag[gagid] <= SysTime)
 	{
-			format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_ALREADY", s_GagTarget)
+			format(Info, charsmax(Info), "%L", id, "CT_ALREADY", s_GagTarget)
 			WriteMessage(id, Info)
 	}
 	else
@@ -35,9 +35,9 @@ public cmd_ungag(id, level, cid)
 		{
 			case 0:
 			{
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_A0_UNGAG", s_GagTarget)
+				format(Info, charsmax(Info), "%L", id, "CT_A0_UNGAG", s_GagTarget)
 				WriteMessage(id, Info)
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, gagid, "CT_YOU_UNGAGED")
+				format(Info, charsmax(Info), "%L", gagid, "CT_YOU_UNGAGED")
 				WriteMessage(gagid, Info)
 			}
 			case 1:
@@ -51,12 +51,12 @@ public cmd_ungag(id, level, cid)
 					}
 					WriteMessage(player, Info)
 				}
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, gagid, "CT_YOU_UNGAGED")
+				format(Info, charsmax(Info), "%L", gagid, "CT_YOU_UNGAGED")
 				WriteMessage(gagid, Info)
 			}
 			case 2:
 			{
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, LANG_PLAYER, "CT_A2_UNGAG", s_GagAdmin, s_GagTarget)
+				format(Info, charsmax(Info), "%L", LANG_PLAYER, "CT_A2_UNGAG", s_GagAdmin, s_GagTarget)
 				for(new player = 0; player <= get_maxplayers(); player++)
 				{
 					if(!is_user_connected(player) || player == gagid)
@@ -65,7 +65,7 @@ public cmd_ungag(id, level, cid)
 					}
 					WriteMessage(player, Info)
 				}
-				format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, gagid, "CT_YOU_UNGAGED2", s_GagAdmin)
+				format(Info, charsmax(Info), "%L", gagid, "CT_YOU_UNGAGED2", s_GagAdmin)
 				WriteMessage(gagid, Info)
 				if(get_pcvar_num(g_Log))
 				{

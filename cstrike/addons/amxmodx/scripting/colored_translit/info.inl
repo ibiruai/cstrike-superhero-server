@@ -14,9 +14,9 @@ public ShowInfo(id)
 		{
 			return PLUGIN_CONTINUE
 		}
-		format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_INFO_RUS")
+		format(Info, charsmax(Info), "%L", id, "CT_INFO_RUS")
 		WriteMessage(id, Info)
-		format(Info, charsmax(Info), "^x01[^x04%s^x01] %L", PLUGIN, id, "CT_INFO_ENG")
+		format(Info, charsmax(Info), "%L", id, "CT_INFO_ENG")
 		WriteMessage(id, Info)
 	}
 	return PLUGIN_CONTINUE
