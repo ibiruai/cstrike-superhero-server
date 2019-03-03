@@ -3644,11 +3644,15 @@ public cl_say(id)
 	new pos
 	if ( said[pos] == '/' ) pos++
 
-	if ( equali(said[pos], "superherohelp") || equali(said[pos], "help") ) {
+	if ( equali(said[pos], "help") ) {
 		//showHelp(id)
 		set_task(0.001, "showHelp", id)
 		return PLUGIN_CONTINUE
 	}
+	else if ( equali(said[pos], "superherohelp") || equali(said[pos], "commands") || equali(said[pos], "war3help") ) {
+		showHelp(id)
+		return PLUGIN_HANDLED
+	}		
 	else if ( equali(said[pos], "herolist") ) {
 		showHeroList(id)
 		return PLUGIN_HANDLED
@@ -3673,7 +3677,7 @@ public cl_say(id)
 		showHeroes(id)
 		return PLUGIN_HANDLED
 	}
-	else if ( equali(said[pos], "clearpowers") ) {
+	else if ( equali(said[pos], "clearpowers") || equali(said[pos], "resetskills") ) {
 		if ( !get_pcvar_num(sh_alivedrop) && is_user_alive(id) ) {
 			chatMessage(id, _, "%L", id, "SHMOD_RULE_DROPALIVE")
 			return PLUGIN_HANDLED
@@ -3732,8 +3736,8 @@ public cl_say(id)
 		return PLUGIN_HANDLED
 	}
 	#endif
-	else if ( equali(said[pos], "buyxp") || equali(said[pos], "buyhp") || equali(said[pos], "buyap") || equali(said[pos], "buyfr") ) {
-		chatMessage(id, _, "%L", id, "SHMOD_SH_MERCHANT_NOT_INSTALLED")
+	else if ( equali(said[pos], "buyxp") || equali(said[pos], "buyhp") || equali(said[pos], "buyap") || equali(said[pos], "buyfr") || equali(said[pos], "tome") ) {
+		chatMessage(id, _, "%L", id, "SHMOD_SH_MERCHANT_NOT_INSTALLED", said[pos])
 		return PLUGIN_HANDLED
 	}
 	else if ( containi(said, "powers") != -1 || containi(said, "superhero") != -1 ) {

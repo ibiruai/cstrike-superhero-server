@@ -144,7 +144,7 @@ SHMOD_MOTD_MYHEROES_LIST = Ваши герои:^n^n
 SHMOD_MOTD_HEROLIST_TEXT1 = СОВЕТ: Детальная информация о способностях доступна в /help.^n^n
 SHMOD_MOTD_HEROLIST_TEXT2 = Герои:^n
 
-SHMOD_SH_MERCHANT_NOT_INSTALLED = Superhero Merchant не установлен на этом сервере
+SHMOD_SH_MERCHANT_NOT_INSTALLED = Команда %s недоступна на этом сервере
 
 MENU_MM_TITLE = \yМеню SuperHero Mod\w
 MENU_MM_SHOWMENU = Выбор способностей
@@ -349,7 +349,7 @@ SHMOD_MOTD_MYHEROES_LIST = Your Heroes Are:^n^n
 SHMOD_MOTD_HEROLIST_TEXT1 = TIP: Use "herolist" in the console for better output and searchability.^nTIP: Say /help to learn more details about heroes.^n^n
 SHMOD_MOTD_HEROLIST_TEXT2 = Installed Heroes:^n^n
 
-SHMOD_SH_MERCHANT_NOT_INSTALLED = Superhero Merchant is not installed on the server
+SHMOD_SH_MERCHANT_NOT_INSTALLED = The %s command is not available on the server
 
 MENU_MM_TITLE = \ySuperHero Mod menu\w
 MENU_MM_SHOWMENU = Select powers
