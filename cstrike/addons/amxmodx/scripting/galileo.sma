@@ -355,7 +355,7 @@ map_getNext(Array:mapArray, currentMap[], nextMap[32])
 			break;
 		}
 	}
-	ArrayGetString(mapArray, nextmapIdx, nextMap, sizeof(nextMap));
+	ArrayGetString(mapArray, nextmapIdx, nextMap, sizeof(nextMap)-1);
 	
 	return returnVal;
 }
@@ -2780,7 +2780,7 @@ public srv_announceEarlyVote(id)
 	if (is_user_connected(id))
 	{
 		//client_print(id, print_chat, "%L", id, "GAL_VOTE_EARLY");
-		new text[201];
+		new text[101];
 		formatex(text, sizeof(text)-1, "^x04%L", id, "GAL_VOTE_EARLY");
 		print_color(id, text);
 	}
@@ -2870,14 +2870,14 @@ public sort_stringsi(const elem1[], const elem2[], const array[], data[], data_s
 
 stock get_realplayersnum()
 {
-	/*
 	new players[32], playerCnt;
 	get_players(players, playerCnt, "ch");
 	
 	return playerCnt;
-	*/
+	/*
 	
 	return get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "CT") + get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "TERRORIST");
+	*/
 }
 
 stock percent(is, of)
