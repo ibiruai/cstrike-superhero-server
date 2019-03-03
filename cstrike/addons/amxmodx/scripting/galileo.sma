@@ -1786,11 +1786,11 @@ public vote_display(arg[3])
 		// add the header
 		if (isVoteOver)
 		{
-			charCnt = formatex(voteStatus, sizeof(voteStatus)-1, "%s%L^n", CLR_YELLOW, LANG_PLAYER, "GAL_RESULT");
+			charCnt = formatex(voteStatus, sizeof(voteStatus)-1, "%s%L^n", CLR_YELLOW, LANG_SERVER, "GAL_RESULT");
 		}
 		else
 		{
-			charCnt = formatex(voteStatus, sizeof(voteStatus)-1, "%s%L^n", CLR_YELLOW, LANG_PLAYER, "GAL_CHOOSE");
+			charCnt = formatex(voteStatus, sizeof(voteStatus)-1, "%s%L^n", CLR_YELLOW, LANG_SERVER, "GAL_CHOOSE");
 		}
 
 		// add maps to the menu
@@ -1817,12 +1817,12 @@ public vote_display(arg[3])
 			if (allowExtend)
 			{
 				// add the "Extend Map" menu item.
-				charCnt += formatex(voteStatus[charCnt], sizeof(voteStatus)-1-charCnt, "^n%s%i. %s%L%s", CLR_RED, g_choiceCnt+1, CLR_WHITE, LANG_PLAYER, "GAL_OPTION_EXTEND", g_currentMap, floatround(get_pcvar_float(cvar_extendmapStep)), voteTally);
+				charCnt += formatex(voteStatus[charCnt], sizeof(voteStatus)-1-charCnt, "^n%s%i. %s%L%s", CLR_RED, g_choiceCnt+1, CLR_WHITE, LANG_SERVER, "GAL_OPTION_EXTEND", g_currentMap, floatround(get_pcvar_float(cvar_extendmapStep)), voteTally);
 			}
 			else
 			{
 				// add the "Stay Here" menu item
-				charCnt += formatex(voteStatus[charCnt], sizeof(voteStatus)-1-charCnt, "^n%s%i. %s%L%s", CLR_RED, g_choiceCnt+1, CLR_WHITE, LANG_PLAYER, "GAL_OPTION_STAY", voteTally);
+				charCnt += formatex(voteStatus[charCnt], sizeof(voteStatus)-1-charCnt, "^n%s%i. %s%L%s", CLR_RED, g_choiceCnt+1, CLR_WHITE, LANG_SERVER, "GAL_OPTION_STAY", voteTally);
 			}
 			
 			keys |= (1<<g_choiceCnt);
@@ -1834,7 +1834,7 @@ public vote_display(arg[3])
 			new cleanCharCnt = copy(g_vote, sizeof(g_vote)-1, voteStatus);
 			
 			// append a "None" option on for people to choose if they don't like any other choice
-			formatex(g_vote[cleanCharCnt], sizeof(g_vote)-1-cleanCharCnt, "^n^n%s0. %s%L", CLR_RED, CLR_WHITE, LANG_PLAYER, "GAL_OPTION_NONE");
+			formatex(g_vote[cleanCharCnt], sizeof(g_vote)-1-cleanCharCnt, "^n^n%s0. %s%L", CLR_RED, CLR_WHITE, LANG_SERVER, "GAL_OPTION_NONE");
 		}
 		
 		charCnt += formatex(voteStatus[charCnt], sizeof(voteStatus)-1-charCnt, "^n^n");
@@ -1849,7 +1849,7 @@ public vote_display(arg[3])
 		
 		if (--g_voteDuration <= 10)
 		{
-			formatex(voteFooter[charCnt], sizeof(voteFooter)-1-charCnt, "%s%L: %s%i", CLR_GREY, LANG_PLAYER, "GAL_TIMELEFT", CLR_RED, g_voteDuration);
+			formatex(voteFooter[charCnt], sizeof(voteFooter)-1-charCnt, "%s%L: %s%i", CLR_GREY, LANG_SERVER, "GAL_TIMELEFT", CLR_RED, g_voteDuration);
 		}
 	}
 	
@@ -1865,7 +1865,7 @@ public vote_display(arg[3])
 	}
 	else
 	{
-		formatex(menuDirty, sizeof(menuDirty)-1, "%s^n^n%s%L", voteStatus, CLR_YELLOW, LANG_PLAYER, "GAL_VOTE_ENDED");
+		formatex(menuDirty, sizeof(menuDirty)-1, "%s^n^n%s%L", voteStatus, CLR_YELLOW, LANG_SERVER, "GAL_VOTE_ENDED");
 	}
 
 	new menuid, menukeys;
