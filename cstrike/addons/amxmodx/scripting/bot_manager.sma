@@ -4,26 +4,30 @@
 #include <fakemeta>
 
 #define MAXSLOTS		32
-#define BOTS_TRESHOLD	4	// Количество игроков, при котором подботы покинут сервер
-#define SPEC_TRESHOLD	18	// Количество игроков, при котором боты-зрители покинут сервер
-#define MAXBOTS			3
 #define MAXSPEC			3
 
 #if defined MAXSPEC
 new bool:bot_on[MAXSPEC], bot_id[MAXSPEC]
-// Имена ваших ботов-зрителей
+// The names of the spectating bots
 new const szname_bot[MAXSPEC][33] = {
 	"Website: http://evileye.eu.org/",
 	"Email me: evileye@firemail.cc",
 	"IP address: 95.142.47.100"
 }
-// IP адрес вашего сервера
+// Server IP address
 new const serverIP[] = "95.142.47.100"
 #endif
+
+new pcvarMaxBots, pcvarBotsTreshold, pcvarSpecTreshold
+new bots_treshold
 
 public plugin_init()
 {
 	register_plugin("Bot Manager", "1.0", "Evileye")
+	
+	pcvarMaxBots = register_cvar("bm_maxbots", "3")				// Max amount of podbots
+	pcvarBotsTreshold = register_cvar("bm_bots_treshold", "4")	// This amount of players => no podbots on the server
+	pcvarSpecTreshold = register_cvar("bm_spec_treshold", "18")	// This amount of players => no spectating bots on the server
 	
 	register_logevent("logevent_round_start", 2, "1=Round_Start")
 	register_logevent("logevent_round_end", 2, "1=Round_End")
@@ -35,13 +39,14 @@ public plugin_init()
 
 humans_num()
 {
-	// Получим количество людей в обеих командах
+	// How many human players are in the both teams?
 	return ( get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "CT") + get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "TERRORIST") )
 }
 
 public logevent_round_start()
 {
-	new bots_num = clamp(BOTS_TRESHOLD - humans_num(), 0, MAXBOTS)
+	bots_treshold = get_pcvar_num(pcvarBotsTreshold)
+	new bots_num = clamp(bots_treshold - humans_num(), 0, get_pcvar_num(pcvarMaxBots))
 	
 	if ( get_cvar_num("pb_maxbots") != bots_num )
 	{
@@ -59,12 +64,12 @@ public logevent_round_start()
 
 public logevent_round_end()
 {
-	// Конец раунда. Проверим баланс команд.
+	// The end of the round. We are checking whether teams are equal.
 	
-	if (humans_num() >= BOTS_TRESHOLD)	// Ботов на сервере нет.
+	if (humans_num() >= bots_treshold)	// No podbots are on the server
 		return
 	
-	// Подсчитаем количество CT и T
+	// Team counting
 	new players[MAXSLOTS], num, numCT, numT, i
 	numCT = 0
 	numT  = 0
@@ -78,8 +83,8 @@ public logevent_round_end()
         }
 	}
 	
-	if ( numCT + numT != 4 || numCT == numT ) // Игроков не 4 или команды равны?
-		return								  // Тогда ничего не делаем.
+	if ( (numCT + numT) % 2 == 1 || numCT == numT )
+		return
 	
 	new CsTeams:teamFrom, CsTeams:teamTo
 	if ( numCT < numT )
@@ -93,23 +98,23 @@ public logevent_round_end()
 		teamTo = CS_TEAM_T
 	}
 	
-	// Найдём бота, которого будем перемещать
+	// We need to find a bot to transfer
 	new bot_id = 0
 	for (i = 0; i < num; i++)
 	{
 		if ( is_user_bot(players[i]) && cs_get_user_team(players[i]) == teamFrom )
 		{	
 			bot_id = players[i]
-			// Если бот мёртв, то прекращаем поиски - Мы нашли лучшего кандидата
+			// A dead bot is the best choice, no need to look for further
 			if ( !is_user_alive(bot_id) )
 				break
 		}
 	}
 
 	if ( bot_id == 0 )
-		return // Не получилось найти бота
+		return
 	
-	// Выполняем перемещение
+	// Transferring the bot
 	cs_set_user_team(bot_id, teamTo)
 }
 
@@ -125,35 +130,35 @@ spectators_check(bots_num)
 {
 	new spectating_bots_req, spectating_bots_real, i
 	
-	// Сколько ботов-зрителей требуется?
-	new slots_available = clamp(SPEC_TRESHOLD - get_playersnum_ex(GetPlayers_IncludeConnecting), 0, MAXSPEC)
-	spectating_bots_req = clamp(MAXBOTS - bots_num, 0, slots_available)
+	// How many spectating bots do we need?
+	new slots_available = clamp(get_pcvar_num(pcvarSpecTreshold) - get_playersnum_ex(GetPlayers_IncludeConnecting), 0, MAXSPEC)
+	spectating_bots_req = clamp(get_pcvar_num(pcvarMaxBots) - bots_num, 0, slots_available)
 
-	// Сколько ботов-зрителей на самом деле?
+	// How many spectating bots are on the server?
 	spectating_bots_real = get_playersnum_ex(GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "SPECTATOR")
 	
-	if (spectating_bots_req == spectating_bots_real) // Ботов-зрителей именно столько, сколько нужно?
-		return										 // Тогда продолжать не нужно.
+	if (spectating_bots_req == spectating_bots_real) // Do we already have needed amount of spectating bots?
+		return
 	
-	// Добавим недостающих
+	// Add some spectating bots
 	for (i = 0; i < spectating_bots_req; i++)
 		bot_spectator_add(i)
 	
-	// Уберём лишних
+	// Remove some spectating bots
 	for (i = spectating_bots_req; i < MAXSPEC; i++)
 		bot_spectator_remove(i)
 	
-	// Сколько ботов-зрителей на самом деле?
+	// How many spectating bots are on the server?
 	spectating_bots_real = get_playersnum_ex(GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "SPECTATOR")
 	
-	if (spectating_bots_real <= spectating_bots_req) // Количество ботов-зрителей не превышает ожидаемого?
-		return										 // Тогда продолжать не нужно.
+	if (spectating_bots_real <= spectating_bots_req) // If there are no unnecessary spectating bots
+		return										 // then do nothing.
 		
 	bot_spectator_remove_all()
 }
 bot_spectator_remove_all()
 {
-	// Убираем всех ботов-зрителей с сервера командой kick
+	// Kick all spectating bots from the server
 	new bots_spectators[MAXSLOTS], num, name[35], id
 	get_players_ex(bots_spectators, num, GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "SPECTATOR")
 	for (new i = 0; i < num; i++)
