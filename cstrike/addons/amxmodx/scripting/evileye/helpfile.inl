@@ -24,9 +24,9 @@ public create_helpfile_html_en(type)
 		thefile = fopen("addons/amxmodx/data/website-motd/help.en.html", "w")
 	
 	if (type)
-		fputs(thefile, "<!DOCTYPE html><html lang='en'><head><meta charset = 'UTF-8'><title>Evileye's SuperHero Server</title><link rel='stylesheet' type='text/css' href='../../css/style.css'></head><body><div class='wrapper'><p class='languages'>English | <a href='../../ru/help'>Русский</a></p><h1>SuperHero Mod Help</h1><p><a href='..'>Back to the main page</a></p>")
+		fputs(thefile, "<!DOCTYPE html><html lang='en'><head><meta charset = 'UTF-8'><title>Evileye.eu.org SuperHero Server</title><link rel='stylesheet' type='text/css' href='../../css/style.css'></head><body><div class='wrapper'><p class='languages'>English | <a href='../../ru/help'>Русский</a></p><h1>SuperHero Mod Help</h1><p><a href='..'>Back to the main page</a></p>")
 	else
-		fputs(thefile, "<html lang='en'><head><meta charset = 'UTF-8'><title>Evileye's SuperHero Server</title><link rel='stylesheet' type='text/css' href='./style.css'></head><body><div class='wrapper'>")
+		fputs(thefile, "<html lang='en'><head><meta charset = 'UTF-8'><title>Evileye.eu.org SuperHero Server</title><link rel='stylesheet' type='text/css' href='./style.css'></head><body><div class='wrapper'>")
 	
 	fputs(thefile, "<p>As you kill opponents you gain Experience Points (XP). The higher the level of the person you kill the more XP you get. Once you have accumulated enough for a level up you will be able to choose a hero. The starting point is level 0 and you cannot select any heroes on this level.</p><p>Contents:</p><ol><li><a href='#commands'>Say commands</a></li><li><a href='#howtouse'>How to use powers?</a></li><li><a href='#powers'>List of superpowers</a></li><li><a href='#links'>Links</a></li></ol><h2 id='commands'>Say commands</h2><hr><p>Press [ <strong>I</strong> ] or say <strong>/shmenu</strong> to open the main menu. Most of things above are available from the main menu, so there is no need to remember any of those say commands.</p><table><tr><td>say /help</td><td>This help page</td></tr><tr><td>say /showmenu</td><td>Displays Select Super Power menu</td></tr><tr><td>say /herolist</td><td>Lets you see <a href='#herolist'>a list of heroes and powers</a> (you can also use ^"herolist^" in the console)</td></tr><tr><td>say /myheroes</td><td>Displays your heroes</td></tr><tr><td>say /clearpowers</td><td>Clears ALL powers</td></tr><tr><td>say /drop &lt;hero&gt;</td><td>Drop one power so you can pick another</td></tr><tr><td>say /whohas &lt;hero&gt;</td><td>Shows you who has a particular hero</td></tr><tr><td>say /playerskills [@ALL|@CT|@T|name]</td><td>Shows you what heroes other players have chosen</td></tr><tr><td>say /playerlevels [@ALL|@CT|@T|name]</td><td>Shows you what levels other players are</td></tr><tr><td>say /automenu</td><td>Enable/Disable auto-show of Select Super Power menu</td></tr><tr><td>say /helpon</td><td>Enable HUD Help message (enabled by default)</td></tr><tr><td>say /helpoff</td><td>Disable HUD Help message</td></tr></table><h2 id='howtouse'>How to use powers?</h2><hr>")
 	
@@ -187,10 +187,10 @@ public create_helpfile_html_en(type)
 
 	}
 	
-	fputs(thefile, "<h2 id='links'>Links</h2><hr><p>Website: <a href='http://evileye.eu.org/'>http://evileye.eu.org/</a></p><p>Feel free to email me: evileye@firemail.cc</p><p>SuperHero Mod Sub-forum on Alliedmods.net: <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
+	fputs(thefile, "<h2 id='links'>Links</h2><hr><p>Website: <a href='http://evileye.eu.org/'>http://evileye.eu.org/</a></p><p>Feel free to email me: evileye@fi<span style='display:none'>a</span>remail.cc</p><p>SuperHero Mod Sub-forum on Alliedmods.net: <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
 	
 	if (type)
-		fputs(thefile, "<p class='center'>еmаil: evileye at fi<span style='display: none'>a</span>remail dot cc</p></div></body></html>")
+		fputs(thefile, "<p class='center'>еmаil: evileye@fi<span style='display:none'>a</span>remail.cc</p></div></body></html>")
 	else
 		fputs(thefile, "</div></body></html>")
 	
@@ -211,9 +211,9 @@ public create_helpfile_html_ru(type)
 		
 	
 	if (type)
-		fputs(thefile, "<!DOCTYPE html><html lang='ru'><head><meta charset = 'UTF-8'><title>Evileye's SuperHero Server</title><link rel='stylesheet' type='text/css' href='../../css/style.css'></head><body><div class='wrapper'><p class='languages'><a href='../../en/help'>English</a> | Русский</p><h1>Информация о моде</h1><p><a href='..'>Вернуться на главную</a></p>")
+		fputs(thefile, "<!DOCTYPE html><html lang='ru'><head><meta charset = 'UTF-8'><title>Evileye.eu.org SuperHero Server</title><link rel='stylesheet' type='text/css' href='../../css/style.css'></head><body><div class='wrapper'><p class='languages'><a href='../../en/help'>English</a> | Русский</p><h1>Информация о моде</h1><p><a href='..'>Вернуться на главную</a></p>")
 	else
-		fputs(thefile, "<html lang='ru'><head><meta charset = 'UTF-8'><title>Evileye's SuperHero Server</title><link rel='stylesheet' type='text/css' href='./style.css'></head><body><div class='wrapper'>")
+		fputs(thefile, "<html lang='ru'><head><meta charset = 'UTF-8'><title>Evileye.eu.org SuperHero Server</title><link rel='stylesheet' type='text/css' href='./style.css'></head><body><div class='wrapper'>")
 	
 	fputs(thefile, "<p>Убивая противников и выполняя цели карты, вы зарабатываете очки опыта. Чем выше уровень игрока, которого вы одолели, тем больше очков опыта вы заработаете. Набрав достаточное количество опыта и получив новый уровень, вы сможете выбрать очередную способность. Стартовый уровень - нулевой, и вы не можете иметь суперспособности, будучи на этом уровне.</p><p>Содержание:</p><ol><li><a href='#commands'>Команды чата</a></li><li><a href='#howtouse'>Как пользоваться способностями?</a></li><li><a href='#powers'>Список способностей</a></li><li><a href='#links'>Ссылки</a></li></ol><h2 id='commands'>Команды чата</h2><hr><p>Чтобы открыть главное меню, нажмите клавишу [ <strong>I</strong> ] или напишите в чат <strong>/shmenu</strong>. Многие из вещей, перечисленных ниже, также доступны из главного меню, и вам нет необходимости запоминать эти команды.</p><table><tr><td>say /help</td><td>Эта справочная страница</td></tr><tr><td>say /showmenu</td><td>Меню выбора способностей</td></tr><tr><td>say /herolist</td><td><a href='#herolist'>Список способностей</a> (вы также можете использовать команду ^"herolist^" в консоли)</td></tr><tr><td>say /myheroes</td><td>Список взятых вами способностей</td></tr><tr><td>say /clearpowers</td><td>Сбрасывает все ваши способности</td></tr><tr><td>say /drop &lt;hero&gt;</td><td>Сбрасывает одну вашу способность</td></tr><tr><td>say /whohas &lt;hero&gt;</td><td>Показывает вам, у кого есть указанная способность</td></tr><tr><td>say /playerskills [@ALL|@CT|@T|name]</td><td>Показывает вам, какие способности выбраны другими игроками</td></tr><tr><td>say /playerlevels [@ALL|@CT|@T|name]</td><td>Показывает вам, какого уровня другие игроки</td></tr><tr><td>say /automenu</td><td>Включить/выключить автоматическое появление меню выбора способностей</td></tr><tr><td>say /helpon</td><td>Отобразить справочное HUD сообщение</td></tr><tr><td>say /helpoff</td><td>Скрыть справочное HUD сообщение</td></tr></table><h2 id='howtouse'>Как пользоваться способностями?</h2><hr>")
 	
@@ -374,10 +374,10 @@ public create_helpfile_html_ru(type)
 
 	}
 	
-	fputs(thefile, "<h2 id='links'>Ссылки</h2><hr><p>Сайт сервера: <a href='http://evileye.eu.org/'>http://evileye.eu.org/</a></p><p>Вы можете написать мне на почту, если хотите связаться со мной. Вот мой адрес электронной почты: evileye@firemail.cc</p><p>Подфорум SuperHero Mod на Alliedmods.net (не имеет отношения к этому серверу): <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
+	fputs(thefile, "<h2 id='links'>Ссылки</h2><hr><p>Сайт сервера: <a href='http://evileye.eu.org/'>http://evileye.eu.org/</a></p><p>Вы можете написать мне на почту, если хотите связаться со мной. Вот мой адрес электронной почты: evileye@fi<span style='display:none'>a</span>remail.cc</p><p>Подфорум SuperHero Mod на Alliedmods.net (не имеет отношения к этому серверу): <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
 	
 	if (type)
-		fputs(thefile, "<p class='center'>еmаil: evileye at fi<span style='display: none'>a</span>remail dot cc</p></div></body></html>")
+		fputs(thefile, "<p class='center'>еmаil: evileye@fi<span style='display:none'>a</span>remail.cc</p></div></body></html>")
 	else
 		fputs(thefile, "</div></body></html>")
 	

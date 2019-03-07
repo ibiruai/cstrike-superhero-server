@@ -4,14 +4,15 @@
 #include <fakemeta>
 
 #define MAXSLOTS		32
-#define BOT_TRESHOLD	4
+#define BOTS_TRESHOLD	4	// Количество игроков, при котором подботы покинут сервер
+#define SPEC_TRESHOLD	18	// Количество игроков, при котором боты-зрители покинут сервер
 #define MAXBOTS			3
-#define MAXSPECS		3
+#define MAXSPEC			3
 
-#if defined MAXSPECS
-new bool:bot_on[MAXSPECS], bot_id[MAXSPECS]
+#if defined MAXSPEC
+new bool:bot_on[MAXSPEC], bot_id[MAXSPEC]
 // Имена ваших ботов-зрителей
-new const szname_bot[MAXSPECS][33] = {
+new const szname_bot[MAXSPEC][33] = {
 	"Website: http://evileye.eu.org/",
 	"Email me: evileye@firemail.cc",
 	"IP address: 95.142.47.100"
@@ -27,7 +28,7 @@ public plugin_init()
 	register_logevent("logevent_round_start", 2, "1=Round_Start")
 	register_logevent("logevent_round_end", 2, "1=Round_End")
 	
-	#if defined MAXSPECS
+	#if defined MAXSPEC
 	register_event("TextMsg", "event_game_restart", "a", "2=#Game_Commencing", "2=#Game_will_restart_in")
 	#endif
 }
@@ -40,7 +41,7 @@ humans_num()
 
 public logevent_round_start()
 {
-	new bots_num = clamp(BOT_TRESHOLD - humans_num(), 0, MAXBOTS)
+	new bots_num = clamp(BOTS_TRESHOLD - humans_num(), 0, MAXBOTS)
 	
 	if ( get_cvar_num("pb_maxbots") != bots_num )
 	{
@@ -48,7 +49,7 @@ public logevent_round_start()
 		set_cvar_num("pb_minbots", bots_num)
 	}
 		
-	#if defined MAXSPECS
+	#if defined MAXSPEC
 	spectators_check(bots_num)
 	#endif
 	
@@ -60,8 +61,8 @@ public logevent_round_end()
 {
 	// Конец раунда. Проверим баланс команд.
 	
-	if (humans_num() >= 3)	// Работает плагин PTB.
-		return							// Не будем ему мешать.
+	if (humans_num() >= BOTS_TRESHOLD)	// Ботов на сервере нет.
+		return
 	
 	// Подсчитаем количество CT и T
 	new players[MAXSLOTS], num, numCT, numT, i
@@ -112,21 +113,22 @@ public logevent_round_end()
 	cs_set_user_team(bot_id, teamTo)
 }
 
-#if defined MAXSPECS
+#if defined MAXSPEC
 public event_game_restart()
 {
 	bot_spectator_remove_all()	
 }
 #endif
 
-#if defined MAXSPECS
+#if defined MAXSPEC
 spectators_check(bots_num)
 {
 	new spectating_bots_req, spectating_bots_real, i
 	
 	// Сколько ботов-зрителей требуется?
-	spectating_bots_req = clamp(MAXBOTS - bots_num, 0, MAXSPECS)
-	
+	new slots_available = clamp(SPEC_TRESHOLD - get_playersnum_ex(GetPlayers_IncludeConnecting), 0, MAXSPEC)
+	spectating_bots_req = clamp(MAXBOTS - bots_num, 0, slots_available)
+
 	// Сколько ботов-зрителей на самом деле?
 	spectating_bots_real = get_playersnum_ex(GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "SPECTATOR")
 	
@@ -138,7 +140,7 @@ spectators_check(bots_num)
 		bot_spectator_add(i)
 	
 	// Уберём лишних
-	for (i = spectating_bots_req; i < MAXSPECS; i++)
+	for (i = spectating_bots_req; i < MAXSPEC; i++)
 		bot_spectator_remove(i)
 	
 	// Сколько ботов-зрителей на самом деле?
@@ -152,14 +154,19 @@ spectators_check(bots_num)
 bot_spectator_remove_all()
 {
 	// Убираем всех ботов-зрителей с сервера командой kick
-	new bots_spectators[MAXSLOTS], num, name[33]
+	new bots_spectators[MAXSLOTS], num, name[35], id
 	get_players_ex(bots_spectators, num, GetPlayers_ExcludeHuman | GetPlayers_MatchTeam, "SPECTATOR")
 	for (new i = 0; i < num; i++)
 	{
-		get_user_name(bots_spectators[i], name, 32)
+		id = bots_spectators[i]
+		
+		if ( id < 1 || id > MAXSLOTS || !is_user_connected(id) )
+			continue
+		
+		get_user_name(id, name, charsmax(name))
 		server_cmd("kick ^"%s^"", name)
 	}
-	for (new i = 0; i < MAXSPECS; i++)
+	for (new i = 0; i < MAXSPEC; i++)
 	{
 		bot_on[i] = false
 		bot_id[i] = 0
@@ -191,6 +198,9 @@ bot_spectator_add(n)
 }
 bot_spectator_remove(n)
 {
+	if ( bot_id[n] < 1 || bot_id[n] > MAXSLOTS || !is_user_connected(bot_id[n]) )
+		return
+		
 	bot_on[n] = false
 	bot_id[n] = 0
 	server_cmd("kick ^"%s^"", szname_bot[n])	
