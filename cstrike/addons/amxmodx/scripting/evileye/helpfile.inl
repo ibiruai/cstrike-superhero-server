@@ -187,7 +187,7 @@ public create_helpfile_html_en(type)
 
 	}
 	
-	fputs(thefile, "<h2 id='links'>Links</h2><hr><p>Website: <a href='http://evileye.eu.org/'>http://evileye.eu.org/</a></p><p>Feel free to email me: evileye@fi<span style='display:none'>a</span>remail.cc</p><p>SuperHero Mod Sub-forum on Alliedmods.net: <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
+	fputs(thefile, "<h2 id='links'>Links</h2><hr><p>Website: <a href='http://evileye.eu.org/'>http://evileye.eu.org/</a></p><p>Git repository: <a href='https://github.com/ibiruai/cstrike-superhero-server'>https://github.com/ibiruai/cstrike-superhero-server</a></p><p>Feel free to email me: evileye@fi<span style='display:none'>a</span>remail.cc</p><p>SuperHero Mod Sub-forum on Alliedmods.net (not affiliated with the server): <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
 	
 	if (type)
 		fputs(thefile, "<p class='center'>еmаil: evileye@fi<span style='display:none'>a</span>remail.cc</p></div></body></html>")
@@ -374,7 +374,7 @@ public create_helpfile_html_ru(type)
 
 	}
 	
-	fputs(thefile, "<h2 id='links'>Ссылки</h2><hr><p>Сайт сервера: <a href='http://evileye.eu.org/'>http://evileye.eu.org/</a></p><p>Вы можете написать мне на почту, если хотите связаться со мной. Вот мой адрес электронной почты: evileye@fi<span style='display:none'>a</span>remail.cc</p><p>Подфорум SuperHero Mod на Alliedmods.net (не имеет отношения к этому серверу): <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
+	fputs(thefile, "<h2 id='links'>Ссылки</h2><hr><p>Сайт сервера: <a href='http://evileye.eu.org/'>http://evileye.eu.org/</a></p><p>Git-репозиторий: <a href='https://github.com/ibiruai/cstrike-superhero-server'>https://github.com/ibiruai/cstrike-superhero-server</a></p><p>Вы можете написать мне на почту, если хотите связаться со мной. Вот мой адрес электронной почты: evileye@fi<span style='display:none'>a</span>remail.cc</p><p>Подфорум SuperHero Mod на Alliedmods.net (не имеет отношения к этому серверу): <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
 	
 	if (type)
 		fputs(thefile, "<p class='center'>еmаil: evileye@fi<span style='display:none'>a</span>remail.cc</p></div></body></html>")

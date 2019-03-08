@@ -16,10 +16,10 @@ It contains AMXX plugins which are used on the server. Some of the plugins are l
   * [WalkGuard](https://forums.alliedmods.net/showthread.php?t=55245) allows to create invisible blocks to prevent players from sitting on top of a map
   * [Colored Translit](https://c-s.net.ua/forum/topic25056.html) is a multipurpose tool for a chat
   * [Ptahhotep's Team Balancer](https://forums.alliedmods.net/showthread.php?t=26598)
-  * [LongJump Enabler](https://forums.alliedmods.net/showthread.php?t=108382) makes LongJump Module usable in Counter-Strike 1.6 (one of heroes gives it)
+  * [LongJump Enabler](https://forums.alliedmods.net/showthread.php?t=108382) makes LongJump Module usable in Counter-Strike 1.6 (one of the heroes gives it)
   * [AimBot Detection](https://forums.alliedmods.net/showthread.php?t=77821)
   * These were made for the server: No footsteps while walking (usually, you emit footsteps even with +speed if you move fast, but this plugin fixes it and makes Shift useful again), Hints (displays greetings, hints, language menu for new players), and Bot manager.
-  
+
 #### Heroes (SuperHero Mod)
   * [Some of preinstalled ones](https://forums.alliedmods.net/showthread.php?t=76081)
   * [Alien](https://forums.alliedmods.net/showthread.php?t=30082)
@@ -40,7 +40,7 @@ It contains AMXX plugins which are used on the server. Some of the plugins are l
   * [Catwoman](https://forums.alliedmods.net/showthread.php?t=34742)
   * [Electro](https://forums.alliedmods.net/showthread.php?t=30095)
   * [Jubilee](https://forums.alliedmods.net/showthread.php?t=30592)
-  * These were made for the server: [Orc](https://forums.alliedmods.net/showthread.php?t=314199) (Equipment Reincarnation from Warcraft3 XP), Blink (Teleport from War3ft), Cho'Gath, Freeman, and Bomberman V2.
-  
+  * These were made for the server: [Orc](https://forums.alliedmods.net/showthread.php?t=314199) (Equipment Reincarnation from [Warcraft3 XP](https://forums.alliedmods.net/showthread.php?t=15345)), Blink (Teleport from [Warcraft 3 Frozen Throne](https://forums.alliedmods.net/showthread.php?p=3158)), Cho'Gath, Freeman (it does the same what [Frogger](https://forums.alliedmods.net/showthread.php?t=33644) does), and Bomberman V2. You can check the description of the heroes [on the website](http://evileye.eu.org/help/), and try them [on the server](steam://connect/95.142.47.100:27015).
+
 ### How can I get original files?
 Check the 'original' branch or use the links above.
