@@ -98,7 +98,7 @@ public hook_say(id)
 	ReplaceSwear(charsmax(s_Msg), s_Msg)
 	if(get_pcvar_num(g_Translit) && !IgnoreFound)
 	{
-		get_user_info(id, "translit", s_Info, charsmax(s_Info))
+		get_user_info(id, "translit_ee", s_Info, charsmax(s_Info))
 		if(equal(s_Info, "1") || get_pcvar_num(g_AutoRus) == 2)
 		{
 			for(new i; i < i_MaxSimbols; i++)

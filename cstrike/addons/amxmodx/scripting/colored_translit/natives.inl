@@ -94,7 +94,7 @@ public native_get_lang(id)
 		return 0
 	}
 	new s_Inf[2]
-	get_user_info(id, "translit", s_Inf, charsmax(s_Inf))
+	get_user_info(id, "translit_ee", s_Inf, charsmax(s_Inf))
 	return str_to_num(s_Inf)
 }
 
