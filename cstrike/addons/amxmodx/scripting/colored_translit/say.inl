@@ -63,8 +63,9 @@ public hook_say(id)
 		{
 			SpamFound[id] = 0
 			client_punish(id, PUNISH_SPAM)
+			return PLUGIN_HANDLED
 		}
-		else
+		else if(SpamFound[id]-1 >= get_pcvar_num(g_SpamForgive))
 		{
 			format(Info, charsmax(Info), "%L", id, "CT_SPAMWARN", get_pcvar_num(g_SpamWarns) - SpamFound[id])
 			WriteMessage(id, Info)
@@ -72,8 +73,8 @@ public hook_say(id)
 			{
 				client_cmd(id, "spk buttons/blip2")
 			}
+			return PLUGIN_HANDLED
 		}
-		return PLUGIN_HANDLED
 	}
 	if(get_pcvar_num(g_Ignore) && is_ignored_message(s_Msg))
 	{
@@ -431,9 +432,7 @@ public hook_say(id)
 			write_file(p_LogFile, p_LogTitle)
 			write_file(p_LogFile, LOGFONT)
 		}
-		get_user_ip(id, p_LogIp, charsmax(p_LogIp), 1)
-		get_user_authid(id, p_LogSteamId, charsmax(p_LogSteamId))
-		format(p_LogInfo, charsmax(p_LogInfo), "<font color=^"black^">%s &lt;%s&gt;&lt;%s&gt;</font>", p_LogTime, p_LogSteamId, p_LogIp)
+		format(p_LogInfo, charsmax(p_LogInfo), "<font color=^"black^">%s</font>", p_LogTime)
 		format(p_LogMessage, charsmax(p_LogMessage), "%s - %s<br>", p_LogInfo, p_LogMsg)
 		write_file(p_LogFile, p_LogMessage)
 	}
@@ -467,8 +466,8 @@ public client_connect(id)
 		get_user_authid(id, p_LogSteamId, charsmax(p_LogSteamId))
 		get_user_name(id, s_Name, charsmax(s_Name))
 		geoip_country(p_LogIp, s_Country1, charsmax(s_Country1))
-		format(p_LogInfo, charsmax(p_LogInfo), "<font color=^"black^">%s &lt;%s&gt;&lt;%s&gt;</font>", p_LogTime, p_LogSteamId, p_LogIp)
-		format(p_LogMessage, charsmax(p_LogMessage), "%s - %s подключается (%s)<br>", p_LogInfo, s_Name, s_Country1)
+		format(p_LogInfo, charsmax(p_LogInfo), "<font color=^"black^">%s</font>", p_LogTime)
+		format(p_LogMessage, charsmax(p_LogMessage), "%s - %s подключается &lt;%s&gt;&lt;%s&gt;&lt;%s&gt;<br>", p_LogInfo, s_Name, s_Country1, p_LogIp, p_LogSteamId)
 		write_file(p_LogFile, p_LogMessage)
 	}
 }
@@ -490,12 +489,9 @@ public client_disconnected(id)
 			write_file(p_LogFile, p_LogTitle)
 			write_file(p_LogFile, LOGFONT)
 		}
-		get_user_ip(id, p_LogIp, charsmax(p_LogIp), 1)
-		get_user_authid(id, p_LogSteamId, charsmax(p_LogSteamId))
 		get_user_name(id, s_Name, charsmax(s_Name))
-		geoip_country(p_LogIp, s_Country1, charsmax(s_Country1))
-		format(p_LogInfo, charsmax(p_LogInfo), "<font color=^"black^">%s &lt;%s&gt;&lt;%s&gt;</font>", p_LogTime, p_LogSteamId, p_LogIp)
-		format(p_LogMessage, charsmax(p_LogMessage), "%s - %s отключается (%s)<br>", p_LogInfo, s_Name, s_Country1)
+		format(p_LogInfo, charsmax(p_LogInfo), "<font color=^"black^">%s</font>", p_LogTime)
+		format(p_LogMessage, charsmax(p_LogMessage), "%s - %s отключается<br>", p_LogInfo, s_Name)
 		write_file(p_LogFile, p_LogMessage)
 	}
 }

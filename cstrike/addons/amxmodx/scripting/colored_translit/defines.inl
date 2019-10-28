@@ -124,6 +124,7 @@ new g_GagImmunity
 new g_Spam
 new g_SpamImmunity
 new g_SpamWarns
+new g_SpamForgive
 new g_SpamAction
 new g_SpamActionTime
 new g_Cheat

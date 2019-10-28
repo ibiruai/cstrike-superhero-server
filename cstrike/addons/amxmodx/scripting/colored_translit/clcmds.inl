@@ -8,8 +8,8 @@ public cmd_rus(id)
 	{
 		return PLUGIN_CONTINUE
 	}
-	//client_cmd(id, "setinfo ^"translit_ee^" ^"1^"")
-	set_user_info(id, "translit_ee", "1")
+	client_cmd(id, "setinfo ^"translit^" ^"1^"")
+	set_user_info(id, "translit", "1")
 	format(Info, charsmax(Info), "%L", id, "CT_RUS")
 	WriteMessage(id, Info)
 	if(get_pcvar_num(g_Sounds))
@@ -25,8 +25,8 @@ public cmd_eng(id)
 	{
 		return PLUGIN_CONTINUE
 	}
-	//client_cmd(id, "setinfo ^"translit_ee^" ^"0^"")
-	set_user_info(id, "translit_ee", "0")
+	client_cmd(id, "setinfo ^"translit^" ^"0^"")
+	set_user_info(id, "translit", "0")
 	format(Info, charsmax(Info), "%L", id, "CT_ENG")
 	WriteMessage(id, Info)
 	if(get_pcvar_num(g_Sounds))

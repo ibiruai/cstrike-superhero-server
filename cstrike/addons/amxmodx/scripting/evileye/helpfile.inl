@@ -101,7 +101,7 @@ public create_helpfile_html_en(type)
 			fputs(thefile, sss)			
 		} else if ( equal(gSuperHeros[x][hero], "Human Torch") )
 		{
-			format(sss, STR_LENGTH, "<p><span class='property'>Cost:</span> %d AP</p><p><span class='property'>How many blasts to burn one victim:</span> %d</p><p><span class='property'>Damage:</span> %d</p>", get_cvar_num("htorch_numburns"), get_cvar_num("htorch_armorcost"), get_cvar_num("htorch_burndamage"))
+			format(sss, STR_LENGTH, "<p><span class='property'>Cost:</span> %d AP</p><p><span class='property'>How many blasts to burn one victim:</span> %d</p><p><span class='property'>Damage:</span> %d</p>", get_cvar_num("htorch_armorcost"), get_cvar_num("htorch_numburns"), get_cvar_num("htorch_burndamage"))
 			fputs(thefile, sss)			
 		} else if ( equal(gSuperHeros[x][hero], "Iron Man") )
 		{
@@ -288,7 +288,7 @@ public create_helpfile_html_ru(type)
 			fputs(thefile, sss)			
 		} else if ( equal(gSuperHeros[x][hero], "Human Torch") )
 		{
-			format(sss, STR_LENGTH, "<p><span class='property'>Стоимость выстрела:</span> %d AP</p><p><span class='property'>Количество выстрелов, чтобы убить жертву:</span> %d</p><p><span class='property'>Урон:</span> %d</p>", get_cvar_num("htorch_numburns"), get_cvar_num("htorch_armorcost"), get_cvar_num("htorch_burndamage"))
+			format(sss, STR_LENGTH, "<p><span class='property'>Стоимость выстрела:</span> %d AP</p><p><span class='property'>Количество выстрелов, чтобы убить жертву:</span> %d</p><p><span class='property'>Урон:</span> %d</p>", get_cvar_num("htorch_armorcost"), get_cvar_num("htorch_numburns"), get_cvar_num("htorch_burndamage"))
 			fputs(thefile, sss)			
 		} else if ( equal(gSuperHeros[x][hero], "Iron Man") )
 		{
