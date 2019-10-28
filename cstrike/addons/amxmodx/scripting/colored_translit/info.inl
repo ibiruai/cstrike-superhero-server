@@ -6,7 +6,7 @@ public ShowInfo(id)
 {
 	if(get_pcvar_num(g_AutoRus) == 1)
 	{
-		client_cmd(id, "setinfo ^"translit^" ^"1^"")
+		set_user_info(id, "translit_ee", "1")
 	}
 	if(get_pcvar_num(g_ShowInfo) == 1 && get_pcvar_num(g_AutoRus) != 2)
 	{
