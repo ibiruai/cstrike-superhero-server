@@ -88,21 +88,24 @@ public add_bullets()
 			case CSW_P90 : ca = 50;
 			}
 			
-			new currentAmmo = cs_get_weapon_ammo(get_pdata_cbase( player, 373 ))
-			new newAmmo = currentAmmo+get_pcvar_num(pcvarAmmoToAdd)
-			
-			//This checks if ca is higher or the equal to the new ammo which will be set
-			if (newAmmo <= ca)
-			{
+			new weaponEnt = get_pdata_cbase( player, 373 )
+			if(weaponEnt > 0) {
+				new currentAmmo = cs_get_weapon_ammo(weaponEnt)
+				new newAmmo = currentAmmo+get_pcvar_num(pcvarAmmoToAdd)
 				
-				//Now lets set the new ammo!
-				cs_set_weapon_ammo(get_pdata_cbase( player, 373 ), newAmmo)
-			}
-			//what if ca = 30, and new ammo is bigger than the max? then new ammo will be 32 in a 30 max clip weapon??
-			else
-			{
-				//Then we just set the max bullets into the gun!
-				cs_set_weapon_ammo(get_pdata_cbase( player, 373 ), ca)
+				//This checks if ca is higher or the equal to the new ammo which will be set
+				if (newAmmo <= ca)
+				{
+					
+					//Now lets set the new ammo!
+					cs_set_weapon_ammo(get_pdata_cbase( player, 373 ), newAmmo)
+				}
+				//what if ca = 30, and new ammo is bigger than the max? then new ammo will be 32 in a 30 max clip weapon??
+				else
+				{
+					//Then we just set the max bullets into the gun!
+					cs_set_weapon_ammo(get_pdata_cbase( player, 373 ), ca)
+				}
 			}
 		}
 	}

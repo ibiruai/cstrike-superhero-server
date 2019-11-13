@@ -6,4 +6,6 @@
 //fy_pool_day
 //cs_mansion
 //de_dust2_2x2
+awp_india
 de_dust2
+aim_map

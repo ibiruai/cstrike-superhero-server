@@ -3,11 +3,8 @@
 // It works like Anubis and Advanced Bullet Damage, but damage dealt with superpowers is also shown!
 // Player can enable and disable this feature with shmenu
 #define MY_ANUBIS 1			// 1 - Enabled, 0 - Disabled
-// Spectators see damage. IT DOESN'T WORK PROPERLY.
 #define DEFAULT_HEALTH 125	// 100 - Default
-// You can use hudmessage for displaying status information
-// It may be usefull if I'm going to start CS CZ server
-// When default way of showing status message is used in CS CZ, the message is in the center of the screen
+// You can use hudmessage for displaying status information for those who have hud_centerid 1
 #define MESSAGE_LENGTH 64
 #define STATUS_HUDMESSAGE 1	// 1 - Enabled, 0 - Disabled
 // You can see active powers info (cooldown, etc) in your status information
@@ -21,7 +18,7 @@
 #define HTML_HELPFILE_CREATION 1
 
 #define SH_FLAG_NODMGDISPLAY	(1<<4)
-#define SH_FLAG_HUDMSGSTATUS	(1<<5)
+// #define SH_FLAG_HUDMSGSTATUS	(1<<5)
 #define SH_FLAG_SPIDEYSTYLE		(1<<6)
 
 /* AMX Mod X script.
@@ -411,6 +408,7 @@
 #if STATUS_HUDMESSAGE
 	new statusHudSync
 	new statusMessage[SH_MAXSLOTS+1][MESSAGE_LENGTH]
+	new bool:isHudCenteridNonzero[SH_MAXSLOTS+1]
 #endif
 
 #if ACTIVE_POWERS_INFO
@@ -1114,7 +1112,7 @@ public loopMain()
 		#endif
 		
 		#if STATUS_HUDMESSAGE
-			if ( gPlayerFlags[id] & SH_FLAG_HUDMSGSTATUS )
+			if ( isHudCenteridNonzero[id] )
 				showStatusMessage(id)
 		#endif
 	}
@@ -2329,8 +2327,19 @@ public cl_superpowermenu(id)
 	menuSuperPowers(id, 0)
 }
 //----------------------------------------------------------------------------------------------
+#if STATUS_HUDMESSAGE
+public check_hud_centerid( id , const cvar[], const value[])
+{
+	isHudCenteridNonzero[id] = !equali(value, "0");		
+}
+#endif
+//----------------------------------------------------------------------------------------------
 public ham_PlayerSpawn_Post(id)
 {
+	#if STATUS_HUDMESSAGE
+	if (is_user_connected(id) && !is_user_bot(id))
+		query_client_cvar(id, "hud_centerid", "check_hud_centerid")
+	#endif
 	if ( !get_pcvar_num(sv_superheros) ) return HAM_IGNORED
 
 	// The very first Ham_Spawn on a user will happen when he is
@@ -2830,7 +2839,7 @@ public msg_StatusText()
 writeStatusMessage(id, const message[MESSAGE_LENGTH])
 {
 	#if STATUS_HUDMESSAGE
-	if ( gPlayerFlags[id] & SH_FLAG_HUDMSGSTATUS )
+	if ( isHudCenteridNonzero[id] )
 		statusMessage[id] = message;
 	else {
 	#endif
@@ -4798,40 +4807,7 @@ public client_putinserver(id)
 	if ( gPlayerFlags[id] & SH_FLAG_SPIDEYSTYLE )
 		set_user_info(id, "hookstyle", "3")
 	#endif
-	
-	#if STATUS_HUDMESSAGE
-	if ( is_user_steam(id) )
-	{
-		// set_bit(g_bIsSteam, id);		
-	}
-	else
-	{
-		//reset_bit(g_bIsSteam, id);
-		
-		if ( !(gPlayerFlags[id] & SH_FLAG_HUDMSGSTATUS) )
-			gPlayerFlags[id] ^= SH_FLAG_HUDMSGSTATUS
-	}
-	#endif
 }
-//----------------------------------------------------------------------------------------------
-#if STATUS_HUDMESSAGE
-stock bool:is_user_steam(id)
-{
-	static dp_pointer;
-	
-	if(dp_pointer || (dp_pointer = get_cvar_pointer("dp_r_id_provider")))
-	{
-		server_cmd("dp_clientinfo %d", id);
-		server_exec();
-		return (get_pcvar_num(dp_pointer) == 2) ? true : false;
-	}
-	
-	new szAuthid[34];
-	get_user_authid(id, szAuthid, charsmax(szAuthid));
-	
-	return (containi(szAuthid, "LAN") < 0);
-}
-#endif
 //----------------------------------------------------------------------------------------------
 public czbotHookHam(id)
 {
@@ -6005,11 +5981,11 @@ public SettingsMenu(id)
 		formatex(string, 128, "%L", id, "MENU_AUTOMENU_YES")
 	menu_additem(menu, string, "", 0);
 	
-	if ( gPlayerFlags[id] & SH_FLAG_HUDMSGSTATUS )
+	/* if ( gPlayerFlags[id] & SH_FLAG_HUDMSGSTATUS )
 		formatex(string, 128, "%L", id, "MENU_HUDMSGSTATUS_ALT")
 	else
 		formatex(string, 128, "%L", id, "MENU_HUDMSGSTATUS_DEF")
-	menu_additem(menu, string, "", 0);
+	menu_additem(menu, string, "", 0); */
 
 	menu_setprop(menu, MPROP_EXIT, MEXIT_ALL);
 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\w");
@@ -6089,7 +6065,7 @@ public mh_SettingsMenu(id, menu, item)
 			
 			SettingsMenu(id);
 		}
-		case 6:
+		/* case 6:
 		{
 			// Toggle SH_FLAG_HUDMSGSTATUS
 			new flagStatus[30]
@@ -6101,7 +6077,7 @@ public mh_SettingsMenu(id, menu, item)
 			gPlayerFlags[id] ^= SH_FLAG_HUDMSGSTATUS
 
 			SettingsMenu(id);
-		}
+		} */
 	}
 
 	menu_destroy(menu);

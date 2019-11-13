@@ -30,10 +30,11 @@ dm_aztec_maso2
 dm_aztec_maso3
 // dm_dusty
 de_dust2_long
-// big_city2
 // aim_2mansion
 de_tuscan
 fy_snow
 // 1337_ak47
 aim_headshot
-// $1000$
+$1000$
+awp_india
+aim_map
