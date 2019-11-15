@@ -47,7 +47,7 @@ snake_cooldown 20		//Cooldown between uses of health ration
 // GLOBAL VARIABLES
 new gHeroName[] = "Snake"
 new bool:gHasSnakePower[SH_MAXSLOTS+1]
-new gHealPoints, gMaxHealth
+new gHealPoints
 new const gSnakeSound[] = "items/medshot4.wav"
 
 #if SEND_COOLDOWN
@@ -104,7 +104,6 @@ public plugin_init()
 	shSetMaxArmor(gHeroName, "snake_armor")
 
 	gHealPoints = get_cvar_num("snake_healpoints")
-	gMaxHealth = get_cvar_num("snake_health")
 }
 //----------------------------------------------------------------------------------------------
 public plugin_precache()
@@ -193,7 +192,7 @@ public snake_kd()
 		return
 	}
 
-	shAddHPs(id, gHealPoints, gMaxHealth)
+	sh_add_hp(id, gHealPoints)
 	emit_sound(id, CHAN_AUTO, gSnakeSound, VOL_NORM, ATTN_NORM, 0, PITCH_LOW)
 	snake_glow(id)
 	set_task(0.7, "snake_unglow", id * 10000 + 2874)

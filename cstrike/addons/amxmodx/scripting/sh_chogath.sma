@@ -126,8 +126,10 @@ public chogath_death()
 {
 	new attacker = read_data(1)
 	new victim = read_data(2)
+	new WeaponName[20]
+	read_data(4, WeaponName, 19)
 	
-	if ( !gHasChogath[attacker] ||  get_user_weapon(attacker) != 29 || attacker == victim ) return // 29 - knife 
+	if ( !gHasChogath[attacker] || !equali(WeaponName, "knife") || attacker == victim ) return
 	
 	new attackerName[33], victimName[33]	
 	get_user_name(attacker, attackerName, 32)
