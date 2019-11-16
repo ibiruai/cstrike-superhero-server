@@ -16,6 +16,9 @@
 #define HEROES_LANGUAGES 1
 // Create help.html
 #define HTML_HELPFILE_CREATION 1
+// Bots use powers
+#define BOTS_USE_POWERS 1
+#define PLAYGROUND 1
 
 #define SH_FLAG_NODMGDISPLAY	(1<<4)
 // #define SH_FLAG_HUDMSGSTATUS	(1<<5)
@@ -582,6 +585,14 @@ new const gTeamName[4][] =  {
 	#include "evileye/helpfile.inl"
 #endif
 
+#if BOTS_USE_POWERS
+	#include "evileye/bots_use_powers.inl"
+#endif
+
+#if PLAYGROUND
+	#include "evileye/playground.inl"
+#endif
+
 //----------------------------------------------------------------------------------------------
 public plugin_init()
 {
@@ -792,6 +803,14 @@ public plugin_init()
 	// Load the config file here and again later
 	// Initial load for core configs
 	loadConfig()
+	
+	#if BOTS_USE_POWERS
+	bup_init()
+	#endif
+	
+	#if PLAYGROUND
+	playground_init()
+	#endif
 }
 //----------------------------------------------------------------------------------------------
 public plugin_precache()
@@ -4806,6 +4825,9 @@ public client_putinserver(id)
 	
 	if ( gPlayerFlags[id] & SH_FLAG_SPIDEYSTYLE )
 		set_user_info(id, "hookstyle", "3")
+	#endif
+	#if STATUS_HUDMESSAGE
+	isHudCenteridNonzero[id] = true
 	#endif
 }
 //----------------------------------------------------------------------------------------------
