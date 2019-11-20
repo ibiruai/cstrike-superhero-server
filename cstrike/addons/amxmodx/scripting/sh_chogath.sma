@@ -107,6 +107,9 @@ public newSpawn(id)
 public chogath_healthOnSpawn(array[])
 {
 	new id = array[0]
+	
+	if (!is_user_connected(id)) return
+	
 	new hitPoints = array[1]
 	#if SHMOD_EDIT
 	if (!array[2])

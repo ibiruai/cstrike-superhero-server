@@ -60,10 +60,13 @@ public bup_damage(victim) {
 	new attacker = get_user_attacker(victim)
 	new parameters[2]
 	
-	if (is_user_bot(victim) && is_user_alive(victim) && get_user_health(victim) < 80 &&	BotSnake[victim] != 0 && !SnakeCooldown[victim] && random_num(1, 6) > 2) {
+	if (is_user_bot(victim) && is_user_alive(victim) && get_user_health(victim) < 80 &&	BotSnake[victim] != 0 && !SnakeCooldown[victim]) {
 		parameters[0] = victim
 		parameters[1] = BotSnake[victim]
-		set_task(0.5, "press_button_with_delay", victim, parameters, 2)
+		if (random_num(1, 6) > 2)
+			set_task(0.3, "press_button_with_delay", victim, parameters, 2)
+		else
+			set_task( random_num(1, 6) * 1.0 , "press_button_with_delay", victim, parameters, 2)
 	}
 	
 	if (!is_user_bot(attacker) || get_user_health(victim) <= 0 )
@@ -72,13 +75,13 @@ public bup_damage(victim) {
 	if (BotBass[attacker] != 0 && random_num(1, 6) > 4) {
 		parameters[0] = attacker
 		parameters[1] = BotBass[attacker]
-		set_task(0.7, "press_button_with_delay", attacker, parameters, 2)		
+		set_task(0.3, "press_button_with_delay", attacker, parameters, 2)		
 	} 
 	if (BotElectro[attacker] != 0 && !BotElectroActivated[attacker]&& !ElectroCooldown[victim]  && random_num(1, 6) > 2) {
 		parameters[0] = attacker
 		parameters[1] = BotElectro[attacker]
-		set_task(1.2, "press_button_with_delay", attacker, parameters, 2)
-		set_task( random_num(4, 8) * 1.0 , "press_button_with_delay", BOTELECTRO_TASKID + attacker, parameters, 2)
+		set_task( random_num(3, 15) * 0.1 , "press_button_with_delay", attacker, parameters, 2)
+		set_task( random_num(4,  8) * 1.0 , "press_button_with_delay", BOTELECTRO_TASKID + attacker, parameters, 2)
 	}
 }
 //----------------------------------------------------------------------------------------------

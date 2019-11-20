@@ -203,11 +203,14 @@ bot_spectator_add(n)
 }
 bot_spectator_remove(n)
 {
-	if ( bot_id[n] < 1 || bot_id[n] > MAXSLOTS || !is_user_connected(bot_id[n]) )
-		return
-		
+	new id = bot_id[n]
+	
+	if ( id < 1 || id > MAXSLOTS || !is_user_connected(id) || !is_user_bot(id) )
+		return	
+	
+	server_cmd("kick #%d", id)
+	
 	bot_on[n] = false
 	bot_id[n] = 0
-	server_cmd("kick ^"%s^"", szname_bot[n])	
 }
 #endif
