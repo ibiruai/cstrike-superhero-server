@@ -21,8 +21,8 @@
 #define PLAYGROUND 1
 
 #define SH_FLAG_NODMGDISPLAY	(1<<4)
-// #define SH_FLAG_HUDMSGSTATUS	(1<<5)
-#define SH_FLAG_SPIDEYSTYLE		(1<<6)
+#define SH_FLAG_HUDMSGSTATUS	(1<<5) // not used
+#define SH_FLAG_SPIDEYSTYLE		(1<<6) // not used
 
 /* AMX Mod X script.
 *
@@ -4823,8 +4823,9 @@ public client_putinserver(id)
 	#if COOL_MENUS
 	backToMenu[id] = false
 	
-	if ( gPlayerFlags[id] & SH_FLAG_SPIDEYSTYLE )
-		set_user_info(id, "hookstyle", "3")
+	// delete these later
+	if ( gPlayerFlags[id] & SH_FLAG_SPIDEYSTYLE ) gPlayerFlags[id] ^= SH_FLAG_SPIDEYSTYLE
+	if ( gPlayerFlags[id] & SH_FLAG_HUDMSGSTATUS ) gPlayerFlags[id] ^= SH_FLAG_HUDMSGSTATUS
 	#endif
 	#if STATUS_HUDMESSAGE
 	isHudCenteridNonzero[id] = true
@@ -5982,7 +5983,12 @@ public SettingsMenu(id)
 	formatex(string, 128, "%L", id, "MENU_SET_HOOK_COLOR")
 	menu_additem(menu, string, "", 0);
 	
-	if ( gPlayerFlags[id] & SH_FLAG_SPIDEYSTYLE )
+	new playername[33], str[20], array[4]
+	get_user_name(id, playername, 32)
+	if ( fvault_get_data("vault_spiderman", playername, str, charsmax(str)) )
+		ExplodeString(str, array)
+	
+	if ( array[3] == 3 )
 		formatex(string, 128, "%L", id, "MENU_SET_HOOK_BAT")
 	else
 		formatex(string, 128, "%L", id, "MENU_SET_HOOK_SPIDER")
@@ -6045,18 +6051,35 @@ public mh_SettingsMenu(id, menu, item)
 		case 1: HookColorMenu(id)
 		case 2:
 		{
-			// Toggle SH_FLAG_SPIDEYSTYLE
-			if ( gPlayerFlags[id] & SH_FLAG_SPIDEYSTYLE )
+			new playername[33], vaultdata[16], str[20], array[4]
+			get_user_name(id, playername, 32)
+			
+			array[0] = 250
+			array[1] = 250
+			array[2] = 250
+			array[3] = 0
+			if ( fvault_get_data("vault_spiderman", playername, str, charsmax(str)) )
+				ExplodeString(str, array)
+			
+			if ( array[3] == 0 )
 			{
-				chatMessage(id, _, "%L", id, "MENU_OPTION_SPIDERMAN")
-				set_user_info(id, "hookstyle", "2")
+				chatMessage(id, _, "%L", id, "MENU_OPTION_BATGIRL")
+				array[3] = 3
 			}
 			else
 			{
-				chatMessage(id, _, "%L", id, "MENU_OPTION_BATGIRL")
-				set_user_info(id, "hookstyle", "3")
+				chatMessage(id, _, "%L", id, "MENU_OPTION_SPIDERMAN")
+				array[3] = 0				
 			}
-			gPlayerFlags[id] ^= SH_FLAG_SPIDEYSTYLE
+			
+			format(vaultdata, 15, "%i %i %i %i", array[0], array[1], array[2], array[3])
+			fvault_pset_data("vault_spiderman", playername, vaultdata)
+			
+			if ( callfunc_begin("spiderman_settings_changed", "sh_spiderman.amxx") == 1 ) 
+			{
+				callfunc_push_int(id)
+				callfunc_end()
+			}
 			
 			SettingsMenu(id);
 		}
@@ -6255,7 +6278,7 @@ public mh_HookColorMenu(id, menu, item)
 		{0, 255, 255},		// Light Blue
 		{0, 0, 255},		// Blue
 		{255, 0, 255},		// Purple
-		{255, 255, 255}     // White
+		{250, 250, 250}     // White
 	}
 	
 	new colorName[8][24] = {
@@ -6268,13 +6291,18 @@ public mh_HookColorMenu(id, menu, item)
 		"MENU_COLOR_PURPLE",
 		"MENU_COLOR_WHITE"
 	}
-	
-	new playername[33], vaultdata[16], newColor[40]
+
+	new playername[33], vaultdata[16], newColor[40], str[20], array[4]
 	get_user_name(id, playername, 32)
-	format(vaultdata, 15, "%i %i %i", color[item][0], color[item][1], color[item][2])
-	fvault_pset_data("vault_hookcolor", playername, vaultdata)
+	
+	array[3] = 0 // web style, 0 is default
+	if ( fvault_get_data("vault_spiderman", playername, str, charsmax(str)) )
+		ExplodeString(str, array)
+	
+	format(vaultdata, 15, "%i %i %i %i", color[item][0], color[item][1], color[item][2], array[3])
+	fvault_pset_data("vault_spiderman", playername, vaultdata)
     
-	if ( callfunc_begin("hookcolor_update", "sh_spiderman.amxx") == 1 ) 
+	if ( callfunc_begin("spiderman_settings_changed", "sh_spiderman.amxx") == 1 ) 
     {
         callfunc_push_int(id)
         callfunc_end()
@@ -6339,6 +6367,28 @@ public mh_LanguageMenu(id, key)
 	return PLUGIN_HANDLED	
 }
 //----------------------------------------------------------------------------------------------
+// https://forums.alliedmods.net/showpost.php?p=1253124&postcount=8
+ExplodeString ( const string[], output[], olen = sizeof output )
+{
+    new len = strlen( string ); // We retrieve the length of the current string passed.
+    
+    if ( !len )  { return 0; } // If the string is empty we stop there.
+
+    new i, c, j, count;
+    new number[ 12 ];
+    
+    do
+    {
+        while ( string[ i ] == ' ' ) i++; // One or more spaces can be used between 2 numbers, so we move forward until we find a number.
+        while ( ( number[ j++ ] = c = string[ i++ ] ) && c != ' ' ) {} // We loop and save the number found until the next space found or end of string.
+
+        output[ count++ ] = str_to_num( number ); // We convert the number saved previously into a number and we stored in output at the slot count.
+        j = 0;
+    }
+    while ( i < len && count < olen ) // We should looping while we have not cross the string length.
+    
+    return count;
+}
 #endif
 
 

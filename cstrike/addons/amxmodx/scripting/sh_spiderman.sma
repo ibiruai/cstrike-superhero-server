@@ -21,11 +21,8 @@ spiderman_maxhooks 60		//Max ammout of hooks allowed (-1 is an unlimited ammount
 //---------- User Changeable Defines --------//
 
 
-// 1 = players are allowed to change their bass beam color 0 = players aren't allowed
-#define PLAYER_COLOR 1
-
-// 1 = players are allowed to change their hook style 0 = players aren't allowed
-#define PLAYER_STYLE 1
+// 1 = players are allowed to change their web color and style, 0 = players aren't allowed
+#define PLAYER_SETTINGS 1
 
 
 //------- Do not edit below this point ------//
@@ -50,10 +47,10 @@ new gSpriteWeb
 new pCvarMoveAcc, pCvarReelSpeed, pCvarHookStyle
 new pCvarMaxHooks, pCvarTeamColored, pCvarSvGravity
 
-#if PLAYER_COLOR
-new bool:plrColorSet[SH_MAXSLOTS+1] = false
+#if PLAYER_SETTINGS
+new bool:plrSettings[SH_MAXSLOTS+1] = false
+new bool:plrBatgirl[SH_MAXSLOTS+1]
 new plrColor[SH_MAXSLOTS+1][3]
-new plrHookStyle[SH_MAXSLOTS+1]
 #endif
 //----------------------------------------------------------------------------------------------
 public plugin_init()
@@ -140,11 +137,12 @@ public sh_hero_key(id, heroID, key)
 
 			emit_sound(id, CHAN_STATIC, gSoundWeb, VOL_NORM, ATTN_NORM, 0, PITCH_NORM)
 
-			#if PLAYER_STYLE
-				parm[1] = plrHookStyle[id]
-			#else
-				parm[1] = get_pcvar_num(pCvarHookStyle)
+			#if PLAYER_SETTINGS
+			if ( plrBatgirl[id] )
+				parm[1] = 3 // 3 = Batgirl
+			else
 			#endif
+				parm[1] = get_pcvar_num(pCvarHookStyle)
 
 			set_task(HOOK_DELTA_T, "spiderman_check_web", id, parm, 2, "b")
 		}
@@ -307,10 +305,11 @@ beamentpoint(id)
 			case CS_TEAM_T: rgb = {255, 0, 0}
 			case CS_TEAM_CT: rgb = {0, 0, 255}
 		}
-	} else if ( plrColorSet[id] )
-	{
+	} 
+	#if PLAYER_SETTINGS
+	else if ( plrSettings[id] )
 		rgb = plrColor[id]
-	}
+	#endif
 
 	message_begin(MSG_BROADCAST, SVC_TEMPENTITY)
 	write_byte(TE_BEAMENTPOINT)
@@ -358,56 +357,37 @@ public client_disconnected(id)
 	remove_task(id)
 }
 //----------------------------------------------------------------------------------------------
-#if PLAYER_COLOR || PLAYER_STYLE
+#if PLAYER_SETTINGS
 public client_connect(id)
 {
-	#if PLAYER_COLOR
-	plrColorSet[id] = hookcolor(id)
-	#endif
-	
-	#if PLAYER_STYLE
-	plrHookStyle[id] = hookstyle(id)
-	#endif
+	check_settings(id)
 }
 //----------------------------------------------------------------------------------------------
-#if PLAYER_COLOR
-public hookcolor_update(id)
+public spiderman_settings_changed(id)
 {
-	plrColorSet[id] = hookcolor(id)
+	check_settings(id)
 }
-#endif
-//----------------------------------------------------------------------------------------------	
-#if PLAYER_STYLE
-public client_infochanged(id)
-{
-	plrHookStyle[id] = hookstyle(id)
-}
-#endif
 //----------------------------------------------------------------------------------------------
-bool:hookcolor(id)
+public check_settings(id)
 {
-	new string[16], playername[33]
+	new str[20], playername[33], array[4]
 	
 	get_user_name(id, playername, 32)
-	if ( fvault_get_data("vault_hookcolor", playername, string, 15) )
+	if ( fvault_get_data("vault_spiderman", playername, str, charsmax(str)) )
 	{
-		ExplodeString(string, plrColor[id])
-		
-		return true
+		ExplodeString(str, array)
+		plrColor[id][0] = array[0]
+		plrColor[id][1] = array[1]
+		plrColor[id][2] = array[2]
+		if ( array[3] == 3 ) // 3 = Batgirl
+			plrBatgirl[id] = true
+		else
+			plrBatgirl[id] = false
+		plrSettings[id] = true
+	} else {
+		plrBatgirl[id] = false
+		plrSettings[id] = false
 	}
-	return false
-}
-//----------------------------------------------------------------------------------------------
-hookstyle(id)
-{
-	new string[16]
-	new count, style[1]
-	get_user_info(id, "hookstyle", string, 16)	
-	count = ExplodeString(string, style)
-	if ( !count || count && ( style[0] < 1 || style[0] > 3 ) )		// Style should be set with 1 number
-		return get_pcvar_num(pCvarHookStyle)
-		
-	return style[0]
 }
 //----------------------------------------------------------------------------------------------
 // https://forums.alliedmods.net/showpost.php?p=1253124&postcount=8
@@ -433,4 +413,3 @@ ExplodeString ( const string[], output[], olen = sizeof output )
     return count;
 }
 #endif
-//----------------------------------------------------------------------------------------------
