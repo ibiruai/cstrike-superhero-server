@@ -16,9 +16,10 @@ new const szname_bot[MAXSPEC][33] = {
 }
 // Server IP address
 new const serverIP[] = "95.142.47.100"
+new pcvarSpecTreshold
 #endif
 
-new pcvarMaxBots, pcvarBotsTreshold, pcvarSpecTreshold
+new pcvarMaxBots, pcvarBotsTreshold
 new bots_treshold
 
 public plugin_init()
@@ -27,12 +28,12 @@ public plugin_init()
 	
 	pcvarMaxBots = register_cvar("bm_maxbots", "3")				// Max amount of podbots
 	pcvarBotsTreshold = register_cvar("bm_bots_treshold", "4")	// This amount of players => no podbots on the server
-	pcvarSpecTreshold = register_cvar("bm_spec_treshold", "18")	// This amount of players => no spectating bots on the server
 	
 	register_logevent("logevent_round_start", 2, "1=Round_Start")
 	register_logevent("logevent_round_end", 2, "1=Round_End")
 	
 	#if defined MAXSPEC
+	pcvarSpecTreshold = register_cvar("bm_spec_treshold", "18")	// This amount of players => no spectating bots on the server
 	register_event("TextMsg", "event_game_restart", "a", "2=#Game_Commencing", "2=#Game_will_restart_in")
 	#endif
 }
@@ -53,13 +54,13 @@ public logevent_round_start()
 		set_cvar_num("pb_maxbots", bots_num)
 		set_cvar_num("pb_minbots", bots_num)
 	}
+	
+	if ( get_cvar_num("pb_maxbots") == 0 )
+		server_cmd("pb removebots")
 		
 	#if defined MAXSPEC
 	spectators_check(bots_num)
 	#endif
-	
-	if ( bots_num == 0 )
-		server_cmd("pb removebots")
 }
 
 public logevent_round_end()
@@ -123,9 +124,7 @@ public event_game_restart()
 {
 	bot_spectator_remove_all()	
 }
-#endif
 
-#if defined MAXSPEC
 spectators_check(bots_num)
 {
 	new spectating_bots_req, spectating_bots_real, i
