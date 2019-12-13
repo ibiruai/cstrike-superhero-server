@@ -1,4 +1,4 @@
-#define DICT_HEROES		41	// Ammount of heroes
+#define DICT_HEROES		42	// Ammount of heroes
 #define DICT_LANGUAGES	1	// Ammount of languages available
 #define DICT_RU			0	// Number of Russian language
 
@@ -105,6 +105,10 @@ new const heroDictionary[DICT_HEROES][1 + DICT_LANGUAGES * 2][256] = {
 		"Поток пламени", "Поджигайте своих врагов"
 	},
 	{
+		"Janna",
+	//	"Healing Grenades", "Heal your teammates with healing grenades",
+		"Лечебные гранаты", "Лечите ваших союзников лечебными гранатами"
+	},	{
 		"Jubilee",
 	//	"Pink Shades", "Use Shades for protection from bright flashes",
 		"Солнцезащитные очки", "Используйте солнцезащитные очки, чтобы защититься от ярких вспышек"

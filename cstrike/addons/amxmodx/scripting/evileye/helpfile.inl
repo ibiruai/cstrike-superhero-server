@@ -91,6 +91,10 @@ public create_helpfile_html_en(type)
 		{
 			format(sss, STR_LENGTH, "<p><span class='property'>Damage multiplier:</span> %.2f</p><p><span class='property'>HE grenades delivery:</span> every %d%s</p>", get_cvar_float("goblin_grenademult"), get_cvar_num("goblin_grenadetimer"), tsec)
 			fputs(thefile, sss)			
+		} else if ( equal(gSuperHeros[x][hero], "Janna") )
+		{
+			format(sss, STR_LENGTH, "<p><span class='property'>Heal:</span> %d HP</p><p><span class='property'>Duration:</span> %d%s</p><p><span class='property'>Smoke grenades delivery:</span> every %d%s</p>", get_cvar_num("janna_healpoints"), get_cvar_num("janna_healtime"), tsec, get_cvar_num("janna_grenadetimer"), tsec)
+			fputs(thefile, sss)			
 		} else if ( equal(gSuperHeros[x][hero], "Jubilee") )
 		{
 			format(sss, STR_LENGTH, "<p><span class='property'>Shades wearing time:</span> %d%s</p><p><span class='property'>Cooldown:</span> %d%s</p><p><span class='property'>Flashbangs delivery:</span> each %d%s</p>", get_cvar_num("jubilee_time"),  tsec, get_cvar_num("jubilee_cooldown"), tsec, get_cvar_num("jubilee_flash"), tsec)
@@ -277,6 +281,10 @@ public create_helpfile_html_ru(type)
 		} else if ( equal(gSuperHeros[x][hero], "Hobgoblin") )
 		{
 			format(sss, STR_LENGTH, "<p><span class='property'>Множитель урона:</span> %.2f</p><p><span class='property'>Выдача осколочных гранат:</span> каждые %d%s</p>", get_cvar_float("goblin_grenademult"), get_cvar_num("goblin_grenadetimer"), tsec)
+			fputs(thefile, sss)			
+		} else if ( equal(gSuperHeros[x][hero], "Janna") )
+		{
+			format(sss, STR_LENGTH, "<p><span class='property'>Лечение:</span> %d HP</p><p><span class='property'>Время действия:</span> %d%s</p><p><span class='property'>Выдача дымовых гранат:</span> каждые %d%s</p>", get_cvar_num("janna_healpoints"), get_cvar_num("janna_healtime"), tsec, get_cvar_num("janna_grenadetimer"), tsec)
 			fputs(thefile, sss)			
 		} else if ( equal(gSuperHeros[x][hero], "Jubilee") )
 		{
