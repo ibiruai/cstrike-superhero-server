@@ -38,3 +38,4 @@ aim_headshot
 $1000$
 awp_india
 aim_map
+de_inferno_2x2

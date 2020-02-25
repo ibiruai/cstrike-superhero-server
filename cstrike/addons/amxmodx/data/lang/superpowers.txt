@@ -48,7 +48,7 @@ INVISMAN_N_PERCENT_CLOAKED = Invisible Man : %d%s маскировка
 
 IRONMAN_NO_FUEL = У вас кончилось топливо для реактивного ранца
 
-MIRAGE_INVISIBLE = -Вас невидно-
+MIRAGE_INVISIBLE = -Вас не видно-
 MIRAGE_VISIBLE = -Вас снова видно-
 
 MYSTIQUE_YOU_LOOK_LIKE_AN_ENEMY = %s - Вы выглядите как боец %s
@@ -233,8 +233,8 @@ CATWOMAN_NO_FREE_SPAWN_SPOT = No opening to sneak through.
 CATWOMAN_YOU_SNUCK_INTO = You snuck into the enemy base.
 CATWOMAN_YOU_HAVE_TAKEN_OFF_OUTFIT = You have taken off your sneaking outfit.
 
-CHOGATH_FEAST = %s has eaten %s and gained %d HPs
-CHOGATH_FEAST_MAX = %s has eaten %s
+CHOGATH_FEAST = %s ate %s and got %d bonus health
+CHOGATH_FEAST_MAX = %s ate %s
 
 DEMOMAN_MINE_LIMIT_REACHED = Maximum Mine limit of %d reached
 DEMOMAN_YOU_MUST_PLANT_ON_A_WALL = You must plant the tripmine on a wall
