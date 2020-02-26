@@ -1,5 +1,5 @@
 ### What is it?
-I created this repository for my convenience to track edits I make to plugins and configs on [my Counter-Strike 1.6 SuperHero server](https://www.evileye.eu.org).
+I created this repository for my convenience to track edits I make to plugins and configs on [my Counter-Strike 1.6 SuperHero server](https://ibiruai.github.io/).
 
 ### How do I run a server using this?
 First of all, you'll need [SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD) to install HLDS, and [Metamod](http://metamod.org) to [install](https://wiki.alliedmods.net/Installing_AMX_Mod_X_Manually) [AMX Mod X 1.9](https://www.amxmodx.org/downloads-new.php). When you installed all important stuff, copy the files manually to your HLDS directory and [compile the plugins](https://wiki.alliedmods.net/Compiling_Plugins_(AMX_Mod_X)).
@@ -40,7 +40,7 @@ It contains AMXX plugins which are used on the server. Some of the plugins are l
   * [Catwoman](https://forums.alliedmods.net/showthread.php?t=34742)
   * [Electro](https://forums.alliedmods.net/showthread.php?t=30095)
   * [Jubilee](https://forums.alliedmods.net/showthread.php?t=30592)
-  * These were made for the server: [Orc](https://forums.alliedmods.net/showthread.php?t=314199) (Equipment Reincarnation from [Warcraft3 XP](https://forums.alliedmods.net/showthread.php?t=15345)), Blink (Teleport from [Warcraft 3 Frozen Throne](https://forums.alliedmods.net/showthread.php?p=3158)), Cho'Gath, Freeman (it does the same what [Frogger](https://forums.alliedmods.net/showthread.php?t=33644) does), and Bomberman V2. You can check the description of the heroes [on the website](https://www.evileye.eu.org/help/), and try them [on the server](steam://connect/95.142.47.100:27015).
+  * These were made for the server: [Orc](https://forums.alliedmods.net/showthread.php?t=314199) (Equipment Reincarnation from [Warcraft3 XP](https://forums.alliedmods.net/showthread.php?t=15345)), Blink (Teleport from [Warcraft 3 Frozen Throne](https://forums.alliedmods.net/showthread.php?p=3158)), Cho'Gath, Freeman (it does the same what [Frogger](https://forums.alliedmods.net/showthread.php?t=33644) does), and Bomberman V2. You can check the description of the heroes [on the website](https://ibiruai.github.io/help/), and try them [on the server](steam://connect/95.142.47.100:27015).
 
 ### How can I get original files?
 Check the 'original' branch or use the links above.
