@@ -169,7 +169,7 @@ public fw_SetModel(ent, model[]) {
 	
 	if (equali(model, SMOKEGRENADE_MODEL)) {// smoke grenade
 		new id = pev(ent, pev_owner)
-		if (!gHasJanna[id] || !is_user_alive(id)) // not yet thrown
+		if (!gHasJanna[id] || !is_user_connected(id)) // not yet thrown
 			return FMRES_IGNORED;
 			
 		set_pev(ent, pev_nextthink, 99999.0); // prevent it from exploding
@@ -186,9 +186,9 @@ public fw_SetModel(ent, model[]) {
 //----------------------------------------------------------------------------------------------
 public check_origin(ent, old_origin[3])
 {
-	new id = pev(ent, pev_owner)
 	if (!is_valid_ent(ent))
 		return
+	new id = pev(ent, pev_owner)
 	
 	new origin[3]
 	pev(ent, pev_origin, origin)
@@ -263,7 +263,7 @@ public Healing_Grenade_Think(ent)
 	}
 	
 	//Entity should be destroyed because livetime is over
-	if (pev(ent, pev_ltime) < halflife_time() || !is_user_alive(id))
+	if (pev(ent, pev_ltime) < halflife_time() || !is_user_connected(id))
 	{
 		remove_entity(ent)
 		return PLUGIN_CONTINUE

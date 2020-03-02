@@ -1,4 +1,4 @@
-#define DICT_HEROES		42	// Ammount of heroes
+#define DICT_HEROES		43	// Ammount of heroes
 #define DICT_LANGUAGES	1	// Ammount of languages available
 #define DICT_RU			0	// Number of Russian language
 
@@ -48,6 +48,11 @@ new const heroDictionary[DICT_HEROES][1 + DICT_LANGUAGES * 2][256] = {
 		"Cho'Gath",
 	//	"Feast", "Get Extra HP by killing enemies with a knife",
 		"Пожирание", "Зарабатывайте HP, убивая врагов ножом"
+	},
+	{
+		"Chell",
+	//	"Portal Gun", "Press R holding knife to get Portal Gun",
+		"Портальная пушка", "Нажмите R с ножом в руках, чтобы взять портальную пушку"
 	},
 	{
 		"Daredevil",

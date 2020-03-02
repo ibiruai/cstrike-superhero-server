@@ -28,6 +28,8 @@ CATWOMAN_NO_FREE_SPAWN_SPOT = Нет возможности пробраться
 CATWOMAN_YOU_SNUCK_INTO = Вы пробрались на базу противника
 CATWOMAN_YOU_HAVE_TAKEN_OFF_OUTFIT = Вы сбросили свою маскировку
 
+CHELL_INSTRUCTION = Выберите нож и нажмите R, чтобы достать портальную пушку
+
 CHOGATH_FEAST = %s пожирает %s и разрастается на %d HP
 CHOGATH_FEAST_MAX = %s пожирает %s
 
@@ -232,6 +234,8 @@ BOMBERMAN_YOU_ACTIVATE = You turned on %s's toy bomb
 CATWOMAN_NO_FREE_SPAWN_SPOT = No opening to sneak through.
 CATWOMAN_YOU_SNUCK_INTO = You snuck into the enemy base.
 CATWOMAN_YOU_HAVE_TAKEN_OFF_OUTFIT = You have taken off your sneaking outfit.
+
+CHELL_INSTRUCTION = Select knife and press R to get Portal Gun
 
 CHOGATH_FEAST = %s ate %s and got %d bonus health
 CHOGATH_FEAST_MAX = %s ate %s
