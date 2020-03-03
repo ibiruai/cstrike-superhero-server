@@ -18,7 +18,6 @@ freeman_level 0
 new gHeroID
 new const gHeroName[] = "Freeman"
 new bool:gHasFreemanPower[SH_MAXSLOTS+1]
-new bool:gHasCrowbar[SH_MAXSLOTS+1]	// You will have a regular knife if you have a shield
 
 //----------------------------------------------------------------------------------------------
 public plugin_init()
@@ -75,19 +74,21 @@ public sh_client_spawn(id)
 public giveCrowbar(id) {
 	if (  !is_user_alive(id) || !gHasFreemanPower[id] )
 		return PLUGIN_CONTINUE
-	
-	if ( get_user_weapon(id) != 29 || cs_get_user_shield(id) ) // Not a knife or Player has a shield
-		return PLUGIN_CONTINUE
 
+	new szWeapon[128]
+	pev(id, pev_viewmodel2, szWeapon, charsmax(szWeapon))  
+	if (!equali(szWeapon, "models/v_knife.mdl") || cs_get_user_shield(id)) // Not a knife or with shield
+		return PLUGIN_CONTINUE		
+	
 	set_pev(id, pev_viewmodel, engfunc(EngFunc_AllocString, "models/v_crowbar.mdl"))
 	set_pev(id, pev_weaponmodel, engfunc(EngFunc_AllocString, "models/p_crowbar.mdl"))
-	
-	gHasCrowbar[id] = true
 	
 	return PLUGIN_CONTINUE
 }//----------------------------------------------------------------------------------------------
 public removeCrowbar(id) {
-	if ( get_user_weapon(id) != 29 ) // Not a knife
+	new szWeapon[128]
+	pev(id, pev_viewmodel2, szWeapon, charsmax(szWeapon)) 
+	if (!equali(szWeapon, "models/v_crowbar.mdl")) // Not a crowbar
 		return PLUGIN_CONTINUE
 
 	set_pev(id, pev_viewmodel, engfunc(EngFunc_AllocString, "models/v_knife.mdl"))
@@ -100,11 +101,13 @@ public fw_emitsound(id, channel, sample[], Float:volume, Float:attenuation, fFla
 	if ( !is_user_connected(id) )
 		return FMRES_IGNORED
 	
-	if ( cs_get_user_shield(id) ) // Player has a shield
-		gHasCrowbar[id] = false
-	
-	if ( !gHasFreemanPower[id] || !gHasCrowbar[id] )
+	if ( !gHasFreemanPower[id] )
 		return FMRES_IGNORED
+	
+	new szWeapon[128]
+	pev(id, pev_viewmodel2, szWeapon, charsmax(szWeapon))
+	if (!equali(szWeapon, "models/v_crowbar.mdl")) // Not a crowbar
+		return PLUGIN_CONTINUE
 		
 	if ( equal(sample, "weapons/knife_slash1.wav") )
 	{ 
@@ -148,4 +151,14 @@ public fw_emitsound(id, channel, sample[], Float:volume, Float:attenuation, fFla
 	}
 	
 	return FMRES_IGNORED
-}	
+}
+//----------------------------------------------------------------------------------------------
+// CreateMultiForward check for another hero to see if user has the hero
+public sh_has_crowbar(id)
+{
+    if ( gHasFreemanPower[id] )
+        return 4
+
+    return 3
+}
+//---------------------------------------------------------------------------------------------- 

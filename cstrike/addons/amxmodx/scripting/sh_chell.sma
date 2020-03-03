@@ -40,6 +40,7 @@ new gHeroID
 new const gHeroName[]= "Chell"
 new bool:gHasChell[SH_MAXSLOTS+1]
 new freezetime = false
+new CrowbarForward
 
 new const g_sPortalModel[] = "models/shmod/portal.mdl"
 new const g_sPortalGunModelV[] = "models/shmod/v_portalgun.mdl"
@@ -66,15 +67,13 @@ new g_idPortalGunModelV
 new g_idPortalModel
 
 #define SET_PORTAL_GUN_ANIM(%0,%1) g_iPortalWeaponAnim[%0] = %1
-new g_iPortalWeaponAnim[MAX_PLAYERS]
+new g_iPortalWeaponAnim[SH_MAXSLOTS+1]
 
 #define VISIBLE_PORTAL_GUN(%0)	g_iPlayerData[%0][1]
-new g_iPlayerData[MAX_PLAYERS][2]
+new g_iPlayerData[SH_MAXSLOTS+1][2]
 
 new g_idSparksSpriteBlue, g_idSparksSpriteOrange
-
-new g_iMaxplayers
-
+/*
 public plugin_natives() {
 	register_native("pg_give", "@native_give", 0)
 	register_native("pg_remove", "@native_remove", 0)
@@ -82,7 +81,7 @@ public plugin_natives() {
 	register_native("pg_is_in_hand", "@native_is_visible_portal_gun", 0)
 	register_native("pg_delete_portal", "@native_hide_portal", 0)
 }
-
+*/
 public plugin_precache() {
 	g_idPortalModel = precache_model(g_sPortalModel)
 	g_idPortalGunModelV = precache_model(g_sPortalGunModelV)
@@ -112,8 +111,6 @@ public plugin_init() {
 	g_pStringPortalGunModelV = engfunc(EngFunc_AllocString, g_sPortalGunModelV)
 	g_pStringPortalGunModelP = engfunc(EngFunc_AllocString, g_sPortalGunModelP)
 	
-	g_iMaxplayers = get_maxplayers()
-	
 	register_event("HLTV", "@event_hltv", "a", "1=0", "2=0")
 	
 	RegisterHam(Ham_Item_Deploy, "weapon_knife", "@knife_deploy_p", 1)
@@ -124,6 +121,38 @@ public plugin_init() {
 	
 	register_forward(FM_CmdStart, "FwdCmdStart")
 	register_logevent("@round_start", 2, "1=Round_Start")
+	CrowbarForward = CreateMultiForward("sh_has_crowbar", ET_CONTINUE, FP_CELL)
+}
+
+bool:has_crowbar(id)
+{
+	if ( !shModActive() || !is_user_alive(id) )
+		return false
+
+	new bool:hasCrowbar
+	new functionReturn
+
+	ExecuteForward(CrowbarForward, functionReturn, id)
+
+	// Forward will return the highest value, don't return 1 or 2 in function cause of return handled or handled_main
+	// and 0 is used by continue and invalid return, so can't return a bool either.
+	switch(functionReturn)
+	{
+		case 0:
+		{
+			debugMessage("Function sh_has_crowbar not found! No plugin found with the function.", 0, 1)
+		}
+		case 3:
+		{
+			hasCrowbar = false
+		}
+		case 4:
+		{
+			hasCrowbar = true
+		}
+	}
+
+	return hasCrowbar
 }
 
 public sh_hero_init(id, heroID, mode)
@@ -138,11 +167,11 @@ public sh_hero_init(id, heroID, mode)
 			sh_chat_message(id, gHeroID, "%L", id, "CHELL_INSTRUCTION")
 		}
 		case SH_HERO_DROP: {
-			gHasChell[id] = false
 			VISIBLE_PORTAL_GUN(id) = 0
 			portal_remove_pair(id)			
 			if(is_user_alive(id) && VISIBLE_PORTAL_GUN(id) && get_user_weapon(id) == CSW_KNIFE)
 				ExecuteHamB(Ham_Item_Deploy, get_pdata_cbase(id, m_pActiveItem))
+			gHasChell[id] = false
 		}
 	}
 
@@ -151,9 +180,23 @@ public sh_hero_init(id, heroID, mode)
 
 public sh_client_spawn(id)
 {
-	if ( gHasChell[id] && !VISIBLE_PORTAL_GUN(id) ) {
+	if ( !gHasChell[id] )
+		return
+	
+	if ( !VISIBLE_PORTAL_GUN(id) )
+	{
 		sh_chat_message(id, gHeroID, "%L", id, "CHELL_INSTRUCTION")
 	}
+	else
+	{
+		set_task(0.1, "on_spawn", id) //sh_orc.amxx
+	}
+}
+
+public on_spawn(id)
+{
+	if(is_user_alive(id) && VISIBLE_PORTAL_GUN(id) && get_user_weapon(id) == CSW_KNIFE)
+		ExecuteHamB(Ham_Item_Deploy, get_pdata_cbase(id, m_pActiveItem))
 }
 
 public plugin_end() {
@@ -168,7 +211,7 @@ public client_disconnected(id) {
 }
 
 @event_hltv() {
-	for(new i = 1; i <= g_iMaxplayers; i++)
+	for(new i = 1; i <= SH_MAXSLOTS; i++)
 		if (is_user_connected(i) && portal_is_set_pair(i)) 
 			portal_close(i, PORTAL_ALL)
 	freezetime = true
@@ -183,11 +226,22 @@ public client_disconnected(id) {
 		return HAM_IGNORED
 	
 	new id = pev(gun, pev_owner)
-	if(!pev_valid(id))
+	if(!pev_valid(id) || !gHasChell[id])
 		return HAM_IGNORED
 	
 	if(!VISIBLE_PORTAL_GUN(id))
+	{
+		if (!has_crowbar(id))
+			return HAM_IGNORED
+		
+		if (get_user_weapon(id) == CSW_KNIFE && !cs_get_user_shield(id))
+		{
+			set_pev(id, pev_viewmodel, engfunc(EngFunc_AllocString, "models/v_crowbar.mdl"))
+			set_pev(id, pev_weaponmodel, engfunc(EngFunc_AllocString, "models/p_crowbar.mdl"))
+		}
+		
 		return HAM_IGNORED
+	}
 	
 	set_pev_string(id, pev_viewmodel2, g_pStringPortalGunModelV)
 	set_pev_string(id, pev_weaponmodel2, g_pStringPortalGunModelP)
@@ -201,13 +255,13 @@ public client_disconnected(id) {
 	static id
 	id = pev(gun, pev_owner)
 	
-	if(!(0 < id <= g_iMaxplayers))
+	if(!(0 < id <= SH_MAXSLOTS))
 		return HAM_IGNORED
 	
 	if(!VISIBLE_PORTAL_GUN(id))
 		return HAM_IGNORED
 	
-	static Float:nextAttackTime[MAX_PLAYERS]
+	static Float:nextAttackTime[SH_MAXSLOTS+1]
 	if(nextAttackTime[id] > get_gametime())
 		return HAM_SUPERCEDE
 	
@@ -228,6 +282,9 @@ public client_disconnected(id) {
 		angle_vector(angle, ANGLEVECTOR_FORWARD, normal)
 		
 		new portalBox[portalBox_t]
+		
+		if (freezetime)
+			goto error
 		
 		// test surface
 		if(!portalBox_create(originEyes, normal, id, portalBox))
@@ -284,8 +341,6 @@ public client_disconnected(id) {
 }
 
 @portal_touch(portal, toucher) {
-	if (freezetime)
-		return
 	static portal2
 	portal2 = pev(portal, pev_owner)
 	
@@ -320,9 +375,9 @@ public FwdCmdStart(id, uc_handle)
 	Button = get_uc(uc_handle, UC_Buttons);
 	OldButtons = pev(id, pev_oldbuttons);
 
-	if((Button & IN_RELOAD) && !(OldButtons & IN_RELOAD))
+	if((Button & IN_RELOAD) && !(OldButtons & IN_RELOAD) && get_user_weapon(id) == CSW_KNIFE)
 	{
-		static Float:nextDeployTime[MAX_PLAYERS]
+		static Float:nextDeployTime[SH_MAXSLOTS+1]
 		if(nextDeployTime[id] > get_gametime())
 			return
 		
@@ -335,7 +390,7 @@ public FwdCmdStart(id, uc_handle)
 		return
 	}	
 }
-
+/*
 @native_give() {
 	new id = get_param(1)
 	
@@ -388,9 +443,9 @@ public FwdCmdStart(id, uc_handle)
 	
 	return 1
 }
-
+*/
 __get_portal_gun_shoot_anim(id) {
-	static sendAnim[MAX_PLAYERS] = {4, ...}
+	static sendAnim[SH_MAXSLOTS+1] = {4, ...}
 	if(sendAnim[id] > 7)
 		sendAnim[id] = 4
 	return sendAnim[id]++
