@@ -151,6 +151,10 @@ public create_helpfile_html_en(type)
 		{
 			format(sss, STR_LENGTH, "<p><span class='property'>Damage:</span> %d</p><p><span class='property'>Required time for victim to escape:</span> %d%s</p>", get_cvar_num("scorpion_uppercutdmg"), get_cvar_num("scorpion_escapetime"), tsec)
 			fputs(thefile, sss)		
+		} else if ( equal(gSuperHeros[x][hero], "Ainz Ooal Gown") )
+		{
+			format(sss, STR_LENGTH, "<p><span class='property'>Cost:</span> $%d</p>", get_cvar_num("ainz_cost"))
+			fputs(thefile, sss)		
 		} else if ( equal(gSuperHeros[x][hero], "Phoenix") )
 		{
 			format(sss, STR_LENGTH, "<p><span class='property'>Max explosion damage:</span> %d</p><p><span class='property'>Cooldown:</span> %d%s</p>", get_cvar_num("phoenix_maxdamage"), get_cvar_num("phoenix_cooldown"), tsec)
@@ -338,6 +342,10 @@ public create_helpfile_html_ru(type)
 		} else if ( equal(gSuperHeros[x][hero], "Scorpion") )
 		{
 			format(sss, STR_LENGTH, "<p><span class='property'>Урон:</span> %d</p><p><span class='property'>Время, требуемое жертве на побег:</span> %d%s</p>", get_cvar_num("scorpion_uppercutdmg"), get_cvar_num("scorpion_escapetime"), tsec)
+			fputs(thefile, sss)		
+		} else if ( equal(gSuperHeros[x][hero], "Ainz Ooal Gown") )
+		{
+			format(sss, STR_LENGTH, "<p><span class='property'>Стоимость:</span> $%d</p>", get_cvar_num("ainz_cost"))
 			fputs(thefile, sss)		
 		} else if ( equal(gSuperHeros[x][hero], "Phoenix") )
 		{

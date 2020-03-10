@@ -1,9 +1,14 @@
-#define DICT_HEROES		43	// Ammount of heroes
+#define DICT_HEROES		44	// Ammount of heroes
 #define DICT_LANGUAGES	1	// Ammount of languages available
 #define DICT_RU			0	// Number of Russian language
 
 new dictionaryRelation[SH_MAXHEROS]
 new const heroDictionary[DICT_HEROES][1 + DICT_LANGUAGES * 2][256] = {
+	{
+		"Ainz Ooal Gown",
+	//	"Resurrection Wand", "Use Resurrection Wand to revive players",
+		"Палочка воскрешения", "Воскрешайте игроков Палочкой воскрешения"
+	},
 	{
 		"Alien",
 	//	"Alien Vision", "Get Alien Vision and Invisibility - You can use only knife",
