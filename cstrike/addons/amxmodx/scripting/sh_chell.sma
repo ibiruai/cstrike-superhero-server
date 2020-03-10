@@ -182,21 +182,21 @@ public sh_client_spawn(id)
 {
 	if ( !gHasChell[id] )
 		return
-	
+
 	if ( !VISIBLE_PORTAL_GUN(id) )
-	{
 		sh_chat_message(id, gHeroID, "%L", id, "CHELL_INSTRUCTION")
-	}
 	else
-	{
 		set_task(0.1, "on_spawn", id) //sh_orc.amxx
-	}
 }
 
 public on_spawn(id)
 {
 	if(is_user_alive(id) && VISIBLE_PORTAL_GUN(id) && get_user_weapon(id) == CSW_KNIFE)
-		ExecuteHamB(Ham_Item_Deploy, get_pdata_cbase(id, m_pActiveItem))
+	{
+		new weapon = get_pdata_cbase(id, m_pActiveItem)
+		if(pev_valid(weapon))
+			ExecuteHamB(Ham_Item_Deploy, weapon)
+	}
 }
 
 public plugin_end() {
@@ -212,8 +212,12 @@ public client_disconnected(id) {
 
 @event_hltv() {
 	for(new i = 1; i <= SH_MAXSLOTS; i++)
-		if (is_user_connected(i) && portal_is_set_pair(i)) 
-			portal_close(i, PORTAL_ALL)
+		if (is_user_connected(i) && portal_is_set_pair(i))
+		{
+			//portal_close(i, PORTAL_ALL)
+			portal_remove_pair(i)
+			portal_create_pair(i)
+		}
 	freezetime = true
 }
 
