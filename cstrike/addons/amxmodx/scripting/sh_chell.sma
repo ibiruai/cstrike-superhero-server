@@ -348,11 +348,22 @@ public client_disconnected(id) {
 	static portal2
 	portal2 = pev(portal, pev_owner)
 	
-	// This plugin and WalkGuard are not friends
 	static classname[33]
 	pev(toucher, pev_classname, classname, 32)
-	if (equal(classname, "walkguardzone"))
+	if (equal(classname, "walkguardzone")) // WalkGuard plugin 
 		return
+	if (equal(classname, "func_ladder") || equal(classname, "func_buyzone")) // de_rats
+		return
+	/*
+	these are not to go through portal too
+	func_wall
+	fake_corpse?
+	func_pushable
+	trigger_push
+	func_breakable
+	func_water
+	trigger_hurt
+	*/
 	
 	if(!pev_valid(portal2))
 		return

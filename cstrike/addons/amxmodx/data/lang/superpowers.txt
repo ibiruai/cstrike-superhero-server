@@ -1,7 +1,7 @@
 [ru]
 AINZ_NO_MONEY = Недостаточно средств, необходимо $%i
-AINZ_NO_DEAD_PLAYER = Нет мёртвых игроков поблизости
-AINZ_POWER_USED = %s использует палочку воскрешения, чтобы воскресить %s!
+AINZ_NO_DEAD_PLAYER = Нет подходящих целей поблизости
+AINZ_POWER_USED = %s использует Палочку воскрешения, чтобы воскресить %s!
 
 BASS_NOSHOTS = Bass - Нет снарядов
 BASS_SHOTS_LEFT_N = Bass : Осталось %d выстрелов
@@ -210,8 +210,8 @@ MENU_OTHER = Другой
 
 
 [en]
-AINZ_NO_MONEY = You need at least $%i to use this
-AINZ_NO_DEAD_PLAYER = No dead players to revive
+AINZ_NO_MONEY = You need $%i to use this
+AINZ_NO_DEAD_PLAYER = No valid targets nearby
 AINZ_POWER_USED = %s used Resurrection Wand to revive %s!
 
 BASS_NOSHOTS = No Bass Shots Left
