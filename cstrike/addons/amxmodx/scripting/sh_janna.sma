@@ -10,7 +10,9 @@ janna_healtime 5.0		    //Amount of time health given
 
 */
 
-// v1.0 - Evileye - I was using parts of code of Diablo mod (N1ghtmr1, Miczu, GuTeK, Onyke, Feanaro, hitmany), Hobgoblin ({HOJ} Batman, JTP10181), and Gambit (Vectren, vittu)
+// I was using parts of code of Diablo mod (N1ghtmr1, Miczu, GuTeK, Onyke, Feanaro, hitmany),
+// Hobgoblin ({HOJ} Batman, JTP10181), and Gambit (Vectren, vittu)
+// --evileye <https://ibiruai.github.io>
 
 #include <amxmodx>
 #include <superheromod>

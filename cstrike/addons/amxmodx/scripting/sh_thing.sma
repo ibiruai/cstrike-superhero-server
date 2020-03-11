@@ -14,8 +14,11 @@ Thing_weapon_percent 0.25	// Percent chance to ignore bullets
 Thing_knife_percent 1.00	// Percent chance to ignore knife hits (headshots always hit)
 --------------------------------------------------------------------------------------------------*/
 
-// 26 dec 2018 - Evileye - Attacker sees a hudmessage if victim ignored damage (SHOW_HUDMESSAGE_TO_ATTACKER 1)
-// Also you can't ignore grenades anymore
+// 26 Dec 2018
+// Attackers see a hudmessage if a victim ignored damage.
+// Set SHOW_HUDMESSAGE_TO_ATTACKER to 1.
+// Also, you can't ignore grenades and trigger_hurt anymore.
+// --evileye <https://ibiruai.github.io>
 
 //---------- User Changeable Defines --------//
 
@@ -65,7 +68,9 @@ public Thing_damage(id)
   new damage = read_data(2)
   new weapon, bodypart, attacker = get_user_attacker(id,weapon,bodypart)
   
-  // Grenade is not a bullet or a knife hit
+  // Damage dealt by something that is not a player is not to be ignored.
+  if (!is_user_connected(attacker)) return PLUGIN_CONTINUE
+  // A grenade is not a bullet or a knife hit.
   if (weapon == CSW_HEGRENADE) return PLUGIN_CONTINUE
 
   new randNum = random_num(0, 100 )

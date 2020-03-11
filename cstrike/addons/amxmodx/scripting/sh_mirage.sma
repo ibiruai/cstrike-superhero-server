@@ -72,6 +72,7 @@ public mirage_loop()
 public turn_invis(parm[])
 {
 	new id=parm[0], step=parm[1]
+	if ( !is_user_connected(id) ) return PLUGIN_CONTINUE
 	set_user_rendering(id,kRenderFxGlowShell,8,8,8,kRenderTransAlpha,
 		255-floatround(step*(25.5/get_cvar_float("mirage_fadetime"))))
 	set_task(get_cvar_float("mirage_invistime"),"remove_invis",step*100+50+id,parm,2)

@@ -1,6 +1,6 @@
 // Chell - Portal Gun
 // based on Portal Gun plugin from here https://next21.ru/2013/04/%D0%BF%D0%BB%D0%B0%D0%B3%D0%B8%D0%BD-portal-gun/
-// ported by ibiruai
+// --evileye <https://ibiruai.github.io>
 
 /* CVARS - copy and paste to shconfig.cfg
 
@@ -73,15 +73,7 @@ new g_iPortalWeaponAnim[SH_MAXSLOTS+1]
 new g_iPlayerData[SH_MAXSLOTS+1][2]
 
 new g_idSparksSpriteBlue, g_idSparksSpriteOrange
-/*
-public plugin_natives() {
-	register_native("pg_give", "@native_give", 0)
-	register_native("pg_remove", "@native_remove", 0)
-	register_native("pg_is_have", "@native_is_has", 0)
-	register_native("pg_is_in_hand", "@native_is_visible_portal_gun", 0)
-	register_native("pg_delete_portal", "@native_hide_portal", 0)
-}
-*/
+
 public plugin_precache() {
 	g_idPortalModel = precache_model(g_sPortalModel)
 	g_idPortalGunModelV = precache_model(g_sPortalGunModelV)
@@ -398,67 +390,16 @@ public FwdCmdStart(id, uc_handle)
 		
 		VISIBLE_PORTAL_GUN(id) = !VISIBLE_PORTAL_GUN(id)
 		
-		ExecuteHamB(Ham_Item_Deploy, get_pdata_cbase(id, m_pActiveItem))
+		new weapon = get_pdata_cbase(id, m_pActiveItem)
+		if(pev_valid(weapon))
+			ExecuteHamB(Ham_Item_Deploy, weapon)
 		
 		nextDeployTime[id] = get_gametime() + GUN_DEPLOY_DELAY
 		
 		return
 	}	
 }
-/*
-@native_give() {
-	new id = get_param(1)
-	
-	if(gHasChell[id])
-		return 0
-	
-	portal_create_pair(id)
-	gHasChell[id] = true
-	VISIBLE_PORTAL_GUN(id) = 0
-	
-	return 1
-}
 
-@native_remove() {
-	new id = get_param(1)
-	
-	if(!gHasChell[id])
-		return 0
-	
-	portal_remove_pair(id)
-	gHasChell[id] = false
-	VISIBLE_PORTAL_GUN(id) = 0
-	
-	return 1
-}
-
-@native_is_has() {
-	return gHasChell[get_param(1)]
-}
-
-@native_is_visible_portal_gun() {
-	return VISIBLE_PORTAL_GUN(get_param(1))
-}
-
-@native_hide_portal() {
-	new id = get_param(1)
-	new type = get_param(2)
-	
-	if(type == 's') {
-		portal_close(id, PORTAL_1)
-	}
-	else if(type == 'e') {
-		portal_close(id, PORTAL_2)
-	}
-	else if(type == 'a') {
-		portal_close(id, PORTAL_ALL)
-	}
-	else
-		return 0
-	
-	return 1
-}
-*/
 __get_portal_gun_shoot_anim(id) {
 	static sendAnim[SH_MAXSLOTS+1] = {4, ...}
 	if(sendAnim[id] > 7)
