@@ -2802,8 +2802,6 @@ public srv_initEmptyCheck()
 
 srv_startEmptyCountdown()
 {
-	if (get_playersnum_ex(GetPlayers_ExcludeBots) > 0) return;
-	
 	new waitMinutes = get_pcvar_num(cvar_emptyWait);
 	if (waitMinutes)
 	{
@@ -2813,7 +2811,11 @@ srv_startEmptyCountdown()
 
 public srv_startEmptyCycle()
 {
-	if (get_playersnum_ex(GetPlayers_ExcludeBots) > 0) return;
+	if (get_playersnum_ex(GetPlayers_ExcludeBots) > 0)
+	{
+		g_isUsingEmptyCycle = false;
+		return;
+	}
 	
 	set_pcvar_num(cvar_emptyCycle, 1);
 	
