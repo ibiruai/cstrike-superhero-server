@@ -529,7 +529,7 @@ new gSHConfigDir[128], gBanFile[128], gSHConfig[128], gHelpMotd[128], gHelpMotd_
 //PCVARs
 new sv_superheros, sh_adminaccess, sh_alivedrop, sh_autobalance, sh_objectivexp
 new sh_cmdprojector, sh_debug_messages, sh_endroundsave, sh_hsmult, sh_loadimmediate, sh_lvllimit
-new sh_maxbinds, sh_maxpowers, sh_menumode, sh_mercyxp, sh_mercyxpmode, sh_minlevel
+new sh_maxbinds, sh_maxpowers, sh_menumode, sh_mercyxp, sh_mercyxpmode, sh_buyxp, sh_minlevel
 new sh_savexp, sh_saveby, sh_xpsavedays, sh_minplrsbhxp, sh_reloadmode, sh_blockvip, sh_ffa
 new mp_friendlyfire, sv_maxspeed, sv_lan, bot_quota
 
@@ -641,6 +641,7 @@ public plugin_init()
 	sh_menumode = register_cvar("sh_menumode", "1")
 	sh_mercyxp = register_cvar("sh_mercyxp", "0")
 	sh_mercyxpmode = register_cvar("sh_mercyxpmode", "1")
+	sh_buyxp = register_cvar("sh_buyxp", "2000")
 	sh_minlevel = register_cvar("sh_minlevel", "0")
 	sh_savexp = register_cvar("sh_savexp", "1")
 	sh_saveby = register_cvar("sh_saveby", "1")
@@ -3755,7 +3756,7 @@ public cl_say(id)
 		return PLUGIN_CONTINUE
 	}
 	#if COOL_MENUS
-	else if ( equali(said[pos], "shmenu") ) {
+	else if ( equali(said[pos], "shmenu") || equali(said[pos], "menu") ) {
 		MainMenu(id)
 		//return PLUGIN_HANDLED
 	}
@@ -3764,9 +3765,14 @@ public cl_say(id)
 		return PLUGIN_HANDLED
 	}
 	#endif
-	else if ( equali(said[pos], "buyxp") || equali(said[pos], "buyhp") || equali(said[pos], "buyap") || equali(said[pos], "buyfr") || equali(said[pos], "tome") ) {
-		chatMessage(id, _, "%L", id, "SHMOD_SH_MERCHANT_NOT_INSTALLED", said[pos])
-		return PLUGIN_HANDLED
+	else if ( equali(said[pos], "buyxp") || equali(said[pos], "tome") ) {
+		new buyxp = get_pcvar_num(sh_buyxp)
+		if (gPlayerXP[id] < buyxp) {
+			localAddXP(id, buyxp)
+			chatMessage(id, _, "%L", id, "SHMOD_BUYXP_OK", buyxp)
+		} else {
+			chatMessage(id, _, "%L", id, "SHMOD_BUYXP_NO", said[pos])
+		}
 	}
 	else if ( containi(said, "powers") != -1 || containi(said, "superhero") != -1 ) {
 		chatMessage(id, _, "%L", id, "SHMOD_HELP_HINT")

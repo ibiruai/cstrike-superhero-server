@@ -150,7 +150,8 @@ SHMOD_MOTD_MYHEROES_LIST = Ваши герои:^n^n
 SHMOD_MOTD_HEROLIST_TEXT1 = СОВЕТ: Детальная информация о способностях доступна в /help.^n^n
 SHMOD_MOTD_HEROLIST_TEXT2 = Герои:^n
 
-SHMOD_SH_MERCHANT_NOT_INSTALLED = Команда %s недоступна на этом сервере
+SHMOD_BUYXP_OK = Вы получили %d XP в подарок
+SHMOD_BUYXP_NO = Команда %s недоступна на вашем уровне
 
 MENU_MM_TITLE = \yМеню SuperHero Mod\w
 MENU_MM_SHOWMENU = Выбор способностей
@@ -361,7 +362,8 @@ SHMOD_MOTD_MYHEROES_LIST = Your Heroes Are:^n^n
 SHMOD_MOTD_HEROLIST_TEXT1 = TIP: Use "herolist" in the console for better output and searchability.^nTIP: Say /help to learn more details about heroes.^n^n
 SHMOD_MOTD_HEROLIST_TEXT2 = Installed Heroes:^n^n
 
-SHMOD_SH_MERCHANT_NOT_INSTALLED = The %s command is not available on the server
+SHMOD_BUYXP_OK = You got %d XP as a gift
+SHMOD_BUYXP_NO = The %s command is not available on your level
 
 MENU_MM_TITLE = \ySuperHero Mod menu\w
 MENU_MM_SHOWMENU = Select powers
