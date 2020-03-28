@@ -1,0 +1,5 @@
+[ru]
+ANTISPAM_REQUEST = ^3[Анти-спам]^1 Пожалуйста, не повторяйте одно сообщение много раз.
+
+[en]
+ANTISPAM_REQUEST = ^3[Anti-spam]^1 Please do not repeat one message many times.
