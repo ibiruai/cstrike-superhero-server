@@ -49,6 +49,7 @@ Help page: <https://ibiruai.github.io/help/>
 [Colored Translit](https://c-s.net.ua/forum/topic25056.html), 
 [Ptahhotep's Team Balancer](https://forums.alliedmods.net/showthread.php?t=26598), 
 [LongJump Enabler](https://forums.alliedmods.net/showthread.php?t=108382),
+[Anti-ChatSpam](https://forums.alliedmods.net/showthread.php?p=808026),
 No footsteps while walking, Hints, Bot Manager
   
 **Heroes**
