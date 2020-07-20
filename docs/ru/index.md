@@ -1,6 +1,7 @@
 ---
 layout: default
 language: ru
+path-to-root: ..
 ---
 
 {% include languages.html %}
@@ -13,7 +14,7 @@ Evileye.eu.org SuperHero Server — CS 1.6 сервер с SuperHero модом.
 
 Для входа введите **connect 95.142.47.100:27015** в консоли игры или [присоединитесь через Steam](steam://connect/95.142.47.100:27015).
 
-Получайте опыт за убийство противников и поднимайтесь в уровне. С каждым уровнем вы сможете выбрать новую способность. Прочитайте [Информацию о моде](help), чтобы узнать больше.
+Получайте опыт за убийство противников и поднимайтесь в уровне. С каждым уровнем вы сможете выбрать новую способность. Прочитайте [Информацию о моде](help/index.html), чтобы узнать больше.
 
 GitHub: <https://github.com/ibiruai/cstrike-superhero-server>
 
@@ -25,7 +26,7 @@ GitHub: <https://github.com/ibiruai/cstrike-superhero-server>
 
 ## Состояние сервера
 
-[![](https://cache.gametracker.com/server_info/95.142.47.100:27015/b_560_95_1.png)](https://www.gametracker.com/server_info/95.142.47.100:27015/){: .gametracker }
+[![Текущее состояние сервера](https://cache.gametracker.com/server_info/95.142.47.100:27015/b_560_95_1.png)](https://www.gametracker.com/server_info/95.142.47.100:27015/){: .gametracker }
 
 ## Комментарии
 

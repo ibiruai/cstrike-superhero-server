@@ -5,11 +5,12 @@
 	{{ comment[1].message | markdownify }}	
 </div>
 {% endfor %}
-<form method="POST" action="{{ site.staticman-url }}">
+<p>{{ site[page.language].comments-disabled }}</p>
+<!-- <form method="POST" action="{{ site.staticman-url }}">
 	<input name="options[redirect]" type="hidden" value="{{ page.url | absolute_url }}">
 	<p>{{ site[page.language].comments-name }}
 	<br><input name="fields[name]" type="text"></p>
 	<p>{{ site[page.language].comments-message }}
 	<br><textarea name="fields[message]"></textarea></p>
 	<p><button type="submit">{{ site[page.language].comments-send }}</button></p>
-</form>
+</form> -->

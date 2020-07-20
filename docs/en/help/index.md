@@ -2,13 +2,14 @@
 layout: default
 title: SuperHero Mod Help
 language: en
+path-to-root: ../..
 ---
 
 {% include languages.html %}
 
 # SuperHero Mod Help
 
-[Back to the main page](..)
+[Back to the main page](../index.html)
 
 As you kill opponents you gain Experience Points (XP). The higher the level of the person you kill the more XP you get. Once you have accumulated enough for a level up you will be able to choose a hero. The starting point is level 0 and you cannot select any heroes on this level.
 

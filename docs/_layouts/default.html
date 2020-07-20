@@ -5,21 +5,21 @@
 	<meta charset="UTF-8">
 	<meta name="description" content="{{ site[page.language].description }}">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-	<link rel="stylesheet" href="/css/style.css">
+	<link rel="shortcut icon" type="image/x-icon" href="{{ page.path-to-root }}/favicon.ico">
+	<link rel="stylesheet" href="{{ page.path-to-root }}/css/style.css">
 	<title>{{ page.title }}{% if page.title %} - {% endif %}{{ site.title }}</title>
 	{% if page.url-to-redirect-to %}
 	<script>
 	  var language = window.navigator.userLanguage || window.navigator.language;
 	  if (language.indexOf('ru') > -1) {
-		document.location.href = '{{ page.url-to-redirect-to.ru }}';
+		document.location.href = '{{ page.url-to-redirect-to.ru }}/index.html';
 	  } else {
-		document.location.href = '{{ page.url-to-redirect-to.en }}';
+		document.location.href = '{{ page.url-to-redirect-to.en }}/index.html';
 	  }
 	</script>
 	
 	<noscript>
-		<meta http-equiv="refresh" content="0; url={{ page.url-to-redirect-to.en }}">
+		<meta http-equiv="refresh" content="0; url={{ page.url-to-redirect-to.en }}/index.html">
 	</noscript>
 	{% endif %}
 </head>
@@ -28,8 +28,8 @@
 <div id="wrapper">
 {% if page.url-to-redirect-to %}
 <noscript>
-	<p><a href="{{ page.url-to-redirect-to.en }}">In English</a></p>
-	<p><a href="{{ page.url-to-redirect-to.ru }}">На русском языке</a></p>
+	<p><a href="{{ page.url-to-redirect-to.en }}/index.html">In English</a></p>
+	<p><a href="{{ page.url-to-redirect-to.ru }}/index.html">На русском языке</a></p>
 </noscript>
 {% else %}{{ content }}{% endif %}
 </div>
