@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="description" content="This is Counter-Strike 1.6 server with SuperHero mod. Kill your opponents to gain XP and level up. Every level you'll be able to pick a new superpower.">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="../../favicon.ico">
+	<link rel="stylesheet" href="../../css/style.css">
+	<title>SuperHero Mod Help - Evileye.eu.org SuperHero Server</title>
+	
+</head>
+<body>
+
+<div id="wrapper">
+<p class="languages">English | <a href="../../ru/help/index.html">Русский</a></p>
+
+<h1 id="superhero-mod-help">SuperHero Mod Help</h1>
+
+<p><a href="../index.html">Back to the main page</a></p>
+
+<p>As you kill opponents you gain Experience Points (XP). The higher the level of the person you kill the more XP you get. Once you have accumulated enough for a level up you will be able to choose a hero. The starting point is level 0 and you cannot select any heroes on this level.</p>
+
+<p>Contents:</p>
+
+<ol>
+  <li><a href="#say-commands">Say commands</a></li>
+  <li><a href="#how-to-use-powers">How to use powers?</a></li>
+  <li><a href="#list-of-powers">List of powers</a></li>
+</ol>
+
+<h2 id="say-commands">Say commands</h2>
+
+<p>Press [ <strong>I</strong> ] or say <strong>/shmenu</strong> to open the main menu. Most of things below are available from the main menu, so there is no need to remember any of those say commands.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>say /help</td>
+      <td>This help page</td>
+    </tr>
+    <tr>
+      <td>say /showmenu</td>
+      <td>Displays Select Super Power menu</td>
+    </tr>
+    <tr>
+      <td>say /herolist</td>
+      <td>Lets you see <a href="#list-of-powers">a list of heroes and powers</a> (you can also use "herolist" in the console)</td>
+    </tr>
+    <tr>
+      <td>say /myheroes</td>
+      <td>Displays your heroes</td>
+    </tr>
+    <tr>
+      <td>say /clearpowers</td>
+      <td>Clears ALL powers</td>
+    </tr>
+    <tr>
+      <td>say /drop &lt;hero&gt;</td>
+      <td>Drop one power so you can pick another</td>
+    </tr>
+    <tr>
+      <td>say /whohas &lt;hero&gt;</td>
+      <td>Shows you who has a particular hero</td>
+    </tr>
+    <tr>
+      <td>say /playerskills [@ALL|@CT|@T|name]</td>
+      <td>Shows you what heroes other players have chosen</td>
+    </tr>
+    <tr>
+      <td>say /playerlevels [@ALL|@CT|@T|name]</td>
+      <td>Shows you what levels other players are</td>
+    </tr>
+    <tr>
+      <td>say /automenu</td>
+      <td>Enable/Disable auto-show of Select Super Power menu</td>
+    </tr>
+    <tr>
+      <td>say /helpon</td>
+      <td>Enable HUD Help message (enabled by default)</td>
+    </tr>
+    <tr>
+      <td>say /helpoff</td>
+      <td>Disable HUD Help message</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="how-to-use-powers">How to use powers?</h2>
+
+<p><span class="passive-power">Passive powers</span> are used automatically. To use <span class="active-power">active powers</span> you have to bind a key to +power#. In order to bind a key, you must open your console and use the bind command: bind "key" "command". In this case, the command is "+power#". Here are some examples:</p>
+
+<ul>
+  <li>bind f +power1</li>
+  <li>bind mouse3 +power2</li>
+</ul>
+
+<p>You can have only up to 3 <span class="active-power">active powers</span>. You can have 10 superpowers in total (you get one slot each level).</p>
+
+<h2 id="list-of-powers">List of powers</h2>
+
+<h3 id="punisher">Punisher - Bullets are added to your current mag!</h3>
+<p><span class="passive-power">Passive power: </span>You get more bullets into your current mag!</p>
+<h3 id="wolverine">Wolverine - Auto-Heal</h3>
+<p><span class="passive-power">Passive power: </span>HP Regeneration.</p>
+<p><span class="property">Health regenerated per second: </span>3 HP</p>
+<h3 id="orc">Orc - Equipment Reincarnation</h3>
+<p><span class="passive-power">Passive power: </span>You will get all of your equipment in your next life.</p>
+<h3 id="captain-america">Captain America - Super Shield</h3>
+<p><span class="passive-power">Passive power: </span></p>
+<h3 id="domino">Domino - Even the Odds</h3>
+<p><span class="passive-power">Passive power: </span>Do more Gun Damage to Higher Levels, the larger the difference the more damage.</p>
+<p><span class="property">Max damage multiplier: </span>1.5</p>
+<p><em>Damage multiplier = (Victim level - Attacker level) / Victim level</em></p>
+<h3 id="daredevil">Daredevil - Radar Sense</h3>
+<p><span class="passive-power">Passive power: </span>ESP Rings show you when other players are approaching.</p>
+<h3 id="dracula">Dracula - Vampiric Drain</h3>
+<p><span class="passive-power">Passive power: </span>Gain HP by attacking players.</p>
+<p><span class="property">Life steal: </span>15%</p>
+<h3 id="chell">Chell - Portal Gun</h3>
+<p><span class="passive-power">Passive power: </span>Press R holding knife to get Portal Gun.</p>
+<h3 id="hobgoblin">Hobgoblin - Hobgoblin Grenades</h3>
+<p><span class="passive-power">Passive power: </span>Extra Nade Damage/Refill Nade.</p>
+<p><span class="property">Damage multiplier: </span>1.75</p>
+<p><span class="property">HE grenades delivery: </span>every 7 seconds</p>
+<h3 id="mario">Mario - Mulitple Jumps</h3>
+<p><span class="passive-power">Passive power: </span>You can now jump in the air for a certain amount of times!</p>
+<p><span class="property">Additional jumps: </span>2000</p>
+<h3 id="human-torch">Human Torch - Flame Blast</h3>
+<p><span class="active-power">Active power: </span>Ignite your enemies on fire with a Flame Blast.</p>
+<p><span class="property">Cost: </span>3 AP</p>
+<p><span class="property">How many blasts to burn one victim: </span>3</p>
+<p><span class="property">Damage: </span>40</p>
+<h3 id="iron-man">Iron Man - Rocket Pack</h3>
+<p><span class="active-power">Active power: </span>Rocket Jetpack - use +power key to take off.</p>
+<p><span class="property">Cost per second: </span>1 AP</p>
+<p><span class="property">Armor: </span>150 AP</p>
+<p><span class="property">Armor regenerated per second while not using: </span>1 AP</p>
+<h3 id="shadowcat">Shadowcat - Walk Through Walls</h3>
+<p><span class="active-power">Active power: </span>Can Walk Through Walls for Short Time - GET STUCK AND YOU'LL BE AUTO-SLAIN!</p>
+<p><span class="property">Noclip time: </span>6 seconds</p>
+<p><span class="property">Cooldown: </span>30 seconds</p>
+<h3 id="spider-man">Spider-Man - Web Swing</h3>
+<p><span class="active-power">Active power: </span>Shoot Web to Swing - Jump Reels In, Duck Reels Out.</p>
+<h3 id="mystique">Mystique - Morph into Enemy</h3>
+<p><span class="active-power">Active power: </span>Press the +power key to shapeshift into the Enemy.</p>
+<h3 id="freeman">Freeman - Long Jump Module</h3>
+<p><span class="passive-power">Passive power: </span>Get Crowbar and Long Jump Module.</p>
+<h3 id="black-panther">Black Panther - Silent Boots</h3>
+<p><span class="passive-power">Passive power: </span>Your boots have Vibranium soles that absorb sound.</p>
+<h3 id="superman">Superman - Reduced Gravity</h3>
+<p><span class="passive-power">Passive power: </span>You can jump higher.</p>
+<p><span class="property">Gravity: </span>65%</p>
+<h3 id="the-tick">The Tick - No Fall Damage</h3>
+<p><span class="passive-power">Passive power: </span>SPOOOON! Take no damage from falling.</p>
+<h3 id="invisible-man">Invisible Man - Invisibility</h3>
+<p><span class="passive-power">Passive power: </span>Makes you less visible and harder to see. Only works while not running, not shooting and not zooming.</p>
+<p><span class="property">Invisibility: </span>68%</p>
+<h3 id="psylocke">Psylocke - Psychic Detection</h3>
+<p><span class="passive-power">Passive power: </span>Recieve a telepathic warning when an enemy is near.</p>
+<p><span class="property">Required level: </span>3</p>
+<p><span class="property">Distance: </span>50 meters</p>
+<h3 id="xavier">Xavier - Team Detection</h3>
+<p><span class="passive-power">Passive power: </span>Detect what team a player is on by a glowing trail.</p>
+<p><span class="property">Required level: </span>3</p>
+<h3 id="snake">Snake - Health Rations</h3>
+<p><span class="active-power">Active power: </span>Health Rations on +power key use.</p>
+<p><span class="property">Required level: </span>3</p>
+<p><span class="property">Heal: </span>35 HP</p>
+<p><span class="property">Cooldown: </span>20 seconds</p>
+<h3 id="demolition-man">Demolition Man - Tripmines</h3>
+<p><span class="active-power">Active power: </span>Unlimited Tripmines - Limited ammount that can be planted at once.</p>
+<p><span class="property">Required level: </span>3</p>
+<p><span class="property">Max damage: </span>150</p>
+<p><span class="property">Max ammount of mines at once: </span>4</p>
+<p><span class="property">Mine health: </span>200 HP</p>
+<h3 id="explosion">Explosion - Explosion</h3>
+<p><span class="passive-power">Passive power: </span>Blows up when killed!</p>
+<p><span class="property">Required level: </span>3</p>
+<p><span class="property">Damage: </span>35</p>
+<h3 id="mirage">Mirage - Delusion</h3>
+<p><span class="passive-power">Passive power: </span>Turn invisible for a short time when someone aims at you.</p>
+<p><span class="property">Required level: </span>3</p>
+<p><span class="property">Cooldown: </span>6 seconds</p>
+<h3 id="blink">Blink - Teleportation</h3>
+<p><span class="active-power">Active power: </span>Teleport to where you are currently aiming at.</p>
+<p><span class="property">Required level: </span>4</p>
+<p><span class="property">Cooldown: </span>18 seconds</p>
+<h3 id="cho-gath">Cho'Gath - Feast</h3>
+<p><span class="passive-power">Passive power: </span>Get Extra HP by killing enemies with a knife.</p>
+<p><span class="property">Required level: </span>4</p>
+<p><span class="property">Bonus health per stack: </span>10 HP</p>
+<p><span class="property">Max bonus health: </span>50 HP</p>
+<p><em>You'll loose your extra health on map change.</em></p>
+<h3 id="catwoman">Catwoman - Sneak Into Enemies Base</h3>
+<p><span class="passive-power">Passive power: </span>Chance Of Sneaking Into Enemies Base.</p>
+<p><span class="property">Required level: </span>4</p>
+<p><span class="property">Chance per round: </span>17%</p>
+<h3 id="janna">Janna - Healing Grenades</h3>
+<p><span class="passive-power">Passive power: </span>Heal your team with healing grenades.</p>
+<p><span class="property">Required level: </span>4</p>
+<p><span class="property">Heal: </span>30 HP</p>
+<p><span class="property">Duration: </span>5 seconds</p>
+<p><span class="property">Smoke grenades delivery: </span>every 20 seconds</p>
+<h3 id="alien">Alien - Alien Vision</h3>
+<p><span class="passive-power">Passive power: </span>Get Alien Vision and Invisibility - You can use only knife.</p>
+<p><span class="property">Required level: </span>5</p>
+<p><span class="property">Invisibility: </span>85%</p>
+<h3 id="bass">Bass - Uber Energy Beam</h3>
+<p><span class="active-power">Active power: </span>Press the +power key to fire your beam cannon.</p>
+<p><span class="property">Required level: </span>5</p>
+<p><span class="property">Laser ammo: </span>5</p>
+<p><span class="property">Damage: </span>36 − 100</p>
+<h3 id="thing">Thing - Rock Skin</h3>
+<p><span class="passive-power">Passive power: </span>Chance to ignore bullets and knife hits.</p>
+<p><span class="property">Required level: </span>5</p>
+<p><span class="property">Chance to ignore a bullet: </span>12%</p>
+<p><span class="property">Chance to ignore a knife hit: </span>10%</p>
+<h3 id="electro">Electro - Chain Lightning</h3>
+<p><span class="active-power">Active power: </span>Powerful Lightning Attack that can hurt Multiple Enemies.</p>
+<p><span class="property">Required level: </span>6</p>
+<p><span class="property">Cooldown: </span>35 seconds</p>
+<p><span class="property">Max damage toward each enemy: </span>30</p>
+<h3 id="jubilee">Jubilee - Pink Shades</h3>
+<p><span class="active-power">Active power: </span>Use Shades for protection from bright flashes.</p>
+<p><span class="property">Required level: </span>6</p>
+<p><span class="property">Shades wearing time: </span>3 seconds</p>
+<p><span class="property">Cooldown: </span>20 seconds</p>
+<p><span class="property">Flashbangs delivery: </span>each 10 seconds</p>
+<h3 id="scorpion">Scorpion - Get Over Here!</h3>
+<p><span class="active-power">Active power: </span>Hold +power key to Harpoon and Drag opponents to you.</p>
+<p><span class="property">Required level: </span>7</p>
+<p><span class="property">Damage: </span>15</p>
+<p><span class="property">Required time for victim to escape: </span>6 seconds</p>
+<h3 id="ainz-ooal-gown">Ainz Ooal Gown - Resurrection Wand</h3>
+<p><span class="active-power">Active power: </span>Use Resurrection Wand to revive players</p>
+<p><span class="property">Required level: </span>7</p>
+<p><span class="property">Cost: </span>$1500</p>
+<h3 id="bomberman">Bomberman - Toy Bombs</h3>
+<p><span class="active-power">Active power: </span>Press +power button to plant a toy bomb.</p>
+<p><span class="property">Required level: </span>7</p>
+<h3 id="phoenix">Phoenix - Re-Birth</h3>
+<p><span class="passive-power">Passive power: </span>As the Phoenix you shall Rise Again from your Burning Ashes.</p>
+<p><span class="property">Required level: </span>8</p>
+<p><span class="property">Max explosion damage: </span>30</p>
+<p><span class="property">Cooldown: </span>600 seconds</p>
+<h3 id="poison-ivy">Poison Ivy - Infect Poison</h3>
+<p><span class="passive-power">Passive power: </span>Infect the enemy with your Poisoned Bullets or Poisoned Knife.</p>
+<p><span class="property">Required level: </span>8</p>
+<p><span class="property">Damage per second: </span>2</p>
+<h3 id="grandmaster">Grandmaster - Revive Dead</h3>
+<p><span class="passive-power">Passive power: </span>Utilize cosmic life force to Revive one Dead Teammate.</p>
+<p><span class="property">Required level: </span>8</p>
+<p><span class="property">Cooldown: </span>45 seconds</p>
+<h3 id="bishop">Bishop - Absorb Energy</h3>
+<p><span class="active-power">Active power: </span>Absorb Damage and use it with your weapons! Or release all energy to deal even more damage.</p>
+<p><span class="property">Required level: </span>10</p>
+<p><span class="property">Absorptivity: </span>25% x Weapon damage taken</p>
+<p><span class="property">Damage multiplier: </span>30% x Absorbed damage</p>
+<p><span class="property">Blast damage: </span>100% x Absorbed damage</p>
+
+<p style="margin-top: 15px"><a href="..">Back to the main page</a></p>
+
+</div>
+
+</body>
+</html>
