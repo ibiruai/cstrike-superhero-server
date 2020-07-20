@@ -10,9 +10,9 @@
 new bool:bot_on[MAXSPEC], bot_id[MAXSPEC]
 // The names of the spectating bots
 new const szname_bot[MAXSPEC][33] = {
-	"Website: http://evileye.eu.org/",
-	"Email me: evileye@firemail.cc",
-	"IP address: 95.142.47.100"
+	"Spectator 1",
+	"Spectator 2",
+	"Spectator 3"
 }
 // Server IP address
 new const serverIP[] = "95.142.47.100"
