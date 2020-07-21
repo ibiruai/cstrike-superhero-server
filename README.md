@@ -11,9 +11,9 @@ Things I did
 - [x] Ported heroes no other SuperHero Mod server has yet
 - [x] Scorpion doesn't hold a target forever, no footsteps with Shift pressed, and minor things like that
 
-Website: <https://ibiruai.github.io/>
+Website: <https://ibiruai.github.io/cstrike-superhero-server/>
 
-Help page: <https://ibiruai.github.io/help/>
+Help page: <https://ibiruai.github.io/cstrike-superhero-server/help/>
 
 
 ## What does someone need to run a Counter-Strike 1.6 server with plugins
@@ -84,4 +84,4 @@ Bomberman V2,
 Janna (Healing totem from [Diablo Mod](https://github.com/hitmany/cs-1.6-diablo-2)),
 Chell ([Portal Gun](https://next21.ru/2013/04/%D0%BF%D0%BB%D0%B0%D0%B3%D0%B8%D0%BD-portal-gun/))
 
-Check descriptions of the heroes on my website: <https://ibiruai.github.io/help/>
+Check descriptions of the heroes on my website: <https://ibiruai.github.io/cstrike-superhero-server/help/>
