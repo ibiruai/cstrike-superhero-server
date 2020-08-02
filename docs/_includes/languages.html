@@ -1,5 +1,0 @@
-{%- if page.language == "ru" -%}
-<p class="languages"><a href="{{ page.path-to-root }}{{ page.url | replace: '/ru/', '/en/' }}index.html">English</a> | Русский</p>
-{%- else -%}
-<p class="languages">English | <a href="{{ page.path-to-root }}{{ page.url | replace: '/en/', '/ru/' }}index.html">Русский</a></p>
-{%- endif -%}

@@ -13,7 +13,7 @@ en:
   description2: You will get all of your equipment in your next life.
 - name: Captain America
   description1: Super Shield
-  prop:
+  properties:
   - pname: Passive power
     pdesc: Random Invincibility.
   - pname: Chance per second

@@ -1,5 +1,5 @@
 {%- for power in site.data.herolist[page.language] -%}
-  <h3 id="{{ power.name | slugify }}">{{ power.name }} - {{ power.description1 }}</h3>
+  <h4 id="{{ power.name | slugify }}">{{ power.name }} - {{ power.description1 }}</h4>
   {%- if power.active -%}
     <p><span class="active-power">{{ site[page.language].active-power }}: </span>{{ power.description2 }}</p>
   {%- else -%}
