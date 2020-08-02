@@ -5,8 +5,6 @@
 	<meta charset="UTF-8">
 	<meta name="description" content="{{ site[page.language].description }}">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
-	<link rel="stylesheet" href="../css/style.css">
 	<title>{{ page.title }}{% if page.title %} - {% endif %}{{ site.title }}</title>
 	{% if page.url-to-redirect-to %}
 	<script>
@@ -21,6 +19,9 @@
 	<noscript>
 		<meta http-equiv="refresh" content="0; url={{ page.url-to-redirect-to.en }}/index.html">
 	</noscript>
+    {% else %}
+	<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+	<link rel="stylesheet" href="../css/style.css">
 	{% endif %}
 </head>
 <body>
