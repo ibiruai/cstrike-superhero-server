@@ -13,9 +13,6 @@ Things I did
 
 Website: <https://ibiruai.github.io/cstrike-superhero-server/>
 
-Help page: <https://ibiruai.github.io/cstrike-superhero-server/help/>
-
-
 ## What does someone need to run a Counter-Strike 1.6 server with plugins
 
 1. [The Steam Console Client or SteamCMD][SteamCMD] is a command-line version of the Steam client. It allows to install and update a dedicated server using a command-line interface.
@@ -84,4 +81,4 @@ Bomberman V2,
 Janna (Healing totem from [Diablo Mod](https://github.com/hitmany/cs-1.6-diablo-2)),
 Chell ([Portal Gun](https://next21.ru/2013/04/%D0%BF%D0%BB%D0%B0%D0%B3%D0%B8%D0%BD-portal-gun/))
 
-Check descriptions of the heroes on my website: <https://ibiruai.github.io/cstrike-superhero-server/help/>
+Check descriptions of the heroes on the website: <https://ibiruai.github.io/cstrike-superhero-server/>
