@@ -46,7 +46,8 @@ Website: <https://ibiruai.github.io/cstrike-superhero-server/>
 [Colored Translit](https://c-s.net.ua/forum/topic25056.html),
 [Ptahhotep's Team Balancer](https://forums.alliedmods.net/showthread.php?t=26598),
 [LongJump Enabler](https://forums.alliedmods.net/showthread.php?t=108382),
-[Anti-ChatSpam](https://forums.alliedmods.net/showthread.php?p=808026),
+[Anti-ChatSpam](https://forums.alliedmods.net/showthread.php?t=90414),
+[Sentry Guns](https://forums.alliedmods.net/showthread.php?t=78632),
 No footsteps while walking, Hints, Bot Manager
 
 **Heroes**

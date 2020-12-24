@@ -52,7 +52,8 @@ public sh_client_death(dead)
 public gmaster_respawn(dead)
 {
 	if ( !sh_is_active() || !sh_is_inround() ) return
-	if ( !is_user_connected(dead) || is_user_alive(dead) ) return
+	if ( !is_user_connected(dead) || is_user_alive(dead) ||
+	        cs_get_user_team(dead) == CS_TEAM_SPECTATOR ) return
 	if ( get_gametime() - gDeathTime[dead] - get_pcvar_float(gPcvarRespawnTime) > 1 ) return
 
 	new players[SH_MAXSLOTS], playerCount, gmaster
