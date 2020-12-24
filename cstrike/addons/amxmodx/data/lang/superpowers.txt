@@ -255,7 +255,7 @@ DEMOMAN_DETONATED = Your mine has detonated
 DEMOMAN_DETONATED_BY_PLAYER = %s detonated your mine
 DEMOMAN_DETONATED_BY_YOU = You detonated your mine
 
-GRANDMASTER_POWER_USED = %s used cosmic life force to Revive Dead Teammate %s!
+GRANDMASTER_POWER_USED = %s used cosmic life force to revive %s!
 
 HUMANTORCH_YOU_CANNOT_USE_IT_UNDER_WATER = You cannot use the Flame Blast while underwater
 HUMANTORCH_COST = Flame Blasts cost %d armor points each

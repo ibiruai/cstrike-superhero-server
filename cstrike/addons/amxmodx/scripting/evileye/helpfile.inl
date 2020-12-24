@@ -165,7 +165,8 @@ public create_helpfile_html_en(type)
 			fputs(thefile, sss)		
 		} else if ( equal(gSuperHeros[x][hero], "Grandmaster") )
 		{
-			format(sss, STR_LENGTH, "<p><span class='property'>Cooldown:</span> %d%s</p>", get_cvar_num("gmaster_cooldown"), tsec)
+			// format(sss, STR_LENGTH, "<p><span class='property'>Cooldown:</span> %d%s</p>", get_cvar_num("gmaster_cooldown"), tsec)
+			format(sss, STR_LENGTH, "<p><span class='property'>Respawn time:</span> %d%s</p>", get_cvar_num("gmasterv2_respawntime"), tsec)
 			fputs(thefile, sss)		
 		} else if ( equal(gSuperHeros[x][hero], "Mario") )
 		{
@@ -357,7 +358,8 @@ public create_helpfile_html_ru(type)
 			fputs(thefile, sss)		
 		} else if ( equal(gSuperHeros[x][hero], "Grandmaster") )
 		{
-			format(sss, STR_LENGTH, "<p><span class='property'>Откат:</span> %d%s</p>", get_cvar_num("gmaster_cooldown"), tsec)
+			// format(sss, STR_LENGTH, "<p><span class='property'>Откат:</span> %d%s</p>", get_cvar_num("gmaster_cooldown"), tsec)
+			format(sss, STR_LENGTH, "<p><span class='property'>Время воскрешения:</span> %d%s</p>", get_cvar_num("gmasterv2_respawntime"), tsec)
 			fputs(thefile, sss)		
 		} else if ( equal(gSuperHeros[x][hero], "Mario") )
 		{
