@@ -1,0 +1,29 @@
+[ru]
+SENTRY_WAIT = Подождите, прежде чем строить ещё одно орудие
+SENTRY_BUILDING_NO_MONEY = Недостаточно денег, чтобы построить орудие (нужно $%d)
+SENTRY_BUILDING_FAILED = Не получилось поставить орудие
+SENTRY_ALLY_BUILT = %s строит орудие в %d юнитах от вас
+SENTRY_DETONATED = Ваше орудие взорвалось!
+SENTRY_CANNOT_BE_UPGRADED = Это орудие не может быть улучшено
+SENTRY_CANNOT_BE_UPGRADED_TEAM = Вы не можете улучшать орудия противника
+SENTRY_UPGRADING_NO_MONEY = Недостаточно денег, чтобы улучшить орудие (нужно $%d)
+SENTRY_ALLY_UPGRADED = %s улучшает ваше орудие до уровня %d
+SENTRY_AD = ^1 * На этом сервере вы можете строить пушки! Напишите ^3sentryhelp^1, чтобы узнать больше
+SENTRY_HUD_COST_1 = ^n(Подойдите, чтобы улучшить орудие до уровня %d за $%d)
+SENTRY_HUD_COST_2 = ^n(Цена улучшения: $%d)
+SENTRY_HUD_INFO = Прочность: %d/%d^nПрочность основания: %d/%d^nУровень: %d%s
+
+[en]
+SENTRY_WAIT Please wait a little before building another sentry gun
+SENTRY_BUILDING_NO_MONEY = You don't have enough money to build a sentry gun ($%d needed)
+SENTRY_BUILDING_FAILED = Sorry, we couldn't place a sentry gun for you
+SENTRY_ALLY_BUILT = %s has built a sentry gun %d units away from you
+SENTRY_DETONATED = Your sentry gun detonated!
+SENTRY_CANNOT_BE_UPGRADED = This sentry gun cannot be upgraded
+SENTRY_CANNOT_BE_UPGRADED_TEAM = You can only upgrade your own team's sentry guns
+SENTRY_UPGRADING_NO_MONEY = You don't have enough money to upgrade this sentry gun ($%d needed)
+SENTRY_ALLY_UPGRADED = %s upgraded your sentry gun to level %d
+SENTRY_AD = ^1 * In this server you can build sentries! For help on how to bind the necessary buttons, say ^3sentryhelp
+SENTRY_HUD_COST_1 = ^n(Run into me to upgrade me to level %d for $%d)
+SENTRY_HUD_COST_2 = ^n(Upgrade cost: $%d)
+SENTRY_HUD_INFO = Health: %d/%d^nBase health: %d/%d^nLevel: %d%s

@@ -5824,13 +5824,13 @@ public MainMenu(id)
 	formatex(string, 128, "%L", id, "MENU_MM_TITLE")
 	new menu = menu_create(string, "mh_MainMenu");
 	
-	new items[6][24] = {
-		"MENU_MM_SHOWMENU", "MENU_MM_DROPMENU", "MENU_MM_HELP",/* "MENU_MM_HEROLIST",*/ "MENU_MM_MYHEROES",
-		"MENU_MM_PLAYERSKILLS",
+	new items[7][24] = {
+		"MENU_MM_SHOWMENU", "MENU_MM_DROPMENU", "MENU_MM_SENTRY",
+		"MENU_MM_HELP", /*"MENU_MM_SENRY_HELP",*/ "MENU_MM_MYHEROES",	"MENU_MM_PLAYERSKILLS",
 		"MENU_MM_SETTINGS"
 	}
 
-	for ( new i = 0; i < 6; i++ )
+	for ( new i = 0; i < 7; i++ )
 	{
 		formatex(string, 128, "%L", id, items[i])
 		menu_additem(menu, string, "", 0);
@@ -5863,7 +5863,7 @@ public mh_MainMenu(id, menu, item)
 		return PLUGIN_HANDLED;
 	}
 
-	new command[6], name[64], access, callback;
+	new command[7], name[64], access, callback;
 
 	menu_item_getinfo(menu, item, access, command, sizeof command - 1, name, sizeof name - 1, callback);
 
@@ -5900,11 +5900,12 @@ public mh_MainMenu(id, menu, item)
 			else
 				DropMenu(id)
 		}
-		//case 2: showHeroList(id)
-		case 2: showHelp(id)
-		case 3: showHeroes(id)
-		case 4: showPlayerSkills(id, 1, "")
-		case 5: SettingsMenu(id)
+		case 2: client_cmd(id, "sentry_build")
+		case 3: showHelp(id)
+		//case 4: client_cmd(id, "sentryhelp")
+		case 4: showHeroes(id)
+		case 5: showPlayerSkills(id, 1, "")
+		case 6: SettingsMenu(id)
 	}
 	if (item >= 2 && item <= 4)
 		MainMenu(id)
