@@ -28,6 +28,7 @@ public plugin_init()
 	// FIRE THE EVENTS TO CREATE THIS SUPERHERO!
 	gHeroID = sh_create_hero(gHeroName, pcvarLevel)
 	sh_set_hero_info(gHeroID, "Revive Dead", "Utilize cosmic life force to revive dead players")
+	register_event("DeathMsg", "ev_DeathMsg", "a")
 }
 //----------------------------------------------------------------------------------------------
 public plugin_precache()
@@ -42,9 +43,9 @@ public sh_hero_init(id, heroID, mode)
 	sh_debug_message(id, 1, "%s %s", gHeroName, mode ? "ADDED" : "DROPPED")
 }
 //----------------------------------------------------------------------------------------------
-public sh_client_death(dead)
+public ev_DeathMsg()
 {
-	// if ( is_user_bot(dead) ) return
+	new dead = read_data(2)
 	gDeathTime[dead] = get_gametime()
 	set_task(get_pcvar_float(gPcvarRespawnTime), "gmaster_respawn", dead)
 }
