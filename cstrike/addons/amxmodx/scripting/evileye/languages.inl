@@ -1,4 +1,4 @@
-#define DICT_HEROES		44	// Ammount of heroes
+#define DICT_HEROES		45	// Ammount of heroes
 #define DICT_LANGUAGES	1	// Ammount of languages available
 #define DICT_RU			0	// Number of Russian language
 
@@ -18,6 +18,11 @@ new const heroDictionary[DICT_HEROES][1 + DICT_LANGUAGES * 2][256] = {
 		"Bass",
 	//	"Uber Energy Beam", "Press the +power key to fire your beam cannon",
 		"Мощный луч энергии", "Нажмите +power# клавишу, чтобы выстрелить из лазерной пушки"
+	},
+	{
+		"Bazooka",
+	//	"Rocket-Laucher", "Fire Many Different Types of Rockets",
+		"Ракетница", "Запускайте различные ракеты"
 	},
 	{
 		"Bishop",
