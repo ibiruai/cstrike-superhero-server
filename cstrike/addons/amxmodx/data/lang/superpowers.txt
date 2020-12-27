@@ -18,26 +18,26 @@ BAZOOKA_DEATH_NOT_ENOUGH_MISSLES = У вас недостаточно ракет
 BAZOOKA_BATTERY_DEAD = ^n^nАккумулятор разряжен
 BAZOOKA_BATTERY = ^n^n^nАккумулятор %d
 BAZOOKA_NO_JETPACKS = Нет целей для ракеты с тепловым наведением, никто не использует джетпак
-BAZOOKA_NO_ROPES = Нет целей для ищущей верёвки ракеты
+BAZOOKA_NO_ROPES = Нет целей для ракеты с наведением на верёвки
 BAZOOKA_ROCKET_FAILURE = ОТКАЗ В РАБОТЕ РАКЕТЫ
 BAZOOKA_ANTIMISSILE_LOCKED = ПРОТИВОРАКЕТНАЯ СИСТЕМА НАВЕДЕНА НА ЦЕЛЬ
 BAZOOKA_ANTIMISSILE_FAILURE = ПРЕДУПРЕЖДЕНИЕ: ОТКАЗ ПРОТИВОРАКЕТНОЙ СИСТЕМЫ
 BAZOOKA_NO_FUEL = ПРЕДУПРЕЖДЕНИЕ: ТОПЛИВНЫЙ БАК ПУСТ^nУПРАВЛЕНИЕ ОТСОЕДИНЕНО
 BAZOOKA_COMMON = Стандартная ракета  ( %d )^n
-BAZOOKA_LASER_GUIDED = Ракета с лазерным наведением  ( %d )^n
-BAZOOKA_CAMERA = Камера-ракета  ( %d )^n
+BAZOOKA_LASER_GUIDED = Лазерное наведение  ( %d )^n
+BAZOOKA_CAMERA = Ракета с камерой  ( %d )^n
 BAZOOKA_ANTIMISSILE = Противоракетные снаряды  ( %d )^n
-BAZOOKA_HEAT = Ракета с тепловым наведением  ( %d )^n
-BAZOOKA_ROPE = Ищущая верёвки ракета  ( %d )^n
+BAZOOKA_HEAT = Тепловое наведение  ( %d )^n
+BAZOOKA_ROPE = Наведение на верёвки  ( %d )^n
 BAZOOKA_DEATH = Вихрь смерти  ( %d )
 BAZOOKA_MENU = \yМеню запуска ракет^n\w^n
 BAZOOKA_EXIT = 0. Выход
 BAZOOKA_BUY_COMMON = 1. Стандартная - $%d^n
 BAZOOKA_BUY_LASER_GUIDED = 2. Лазерное наведение - $%d^n
-BAZOOKA_BUY_CAMERA = 3. Камера-ракета - $%d^n
+BAZOOKA_BUY_CAMERA = 3. Камера - $%d^n
 BAZOOKA_BUY_ANTIMISSILE = 4. ПРО - $%d^n
 BAZOOKA_BUY_HEAT = 5. Тепловое наведение - $%d^n
-BAZOOKA_BUY_ROPE = 6. Поиск верёвок - $%d^n
+BAZOOKA_BUY_ROPE = 6. Наведение на верёвки - $%d^n
 BAZOOKA_BUY_DEATH = 7. Вихрь смерти - $%d^n
 
 BISHOP_NO_ENERGY_LEFT = У вас нет энергии в запасе!
@@ -126,7 +126,7 @@ MONITOR_SPEC= Уровень: %d/%d  |  Опыт: %d%s^nЗдоровье: %d  | 
 MONITOR_INVINCIBLE = [ЩИТ]
 
 SHMOD_BIND_NOT_A_CHAT_COMMAND = * Команду bind нужно писать не в чате, а в консоли (нажмите ~).
-SHMOD_HUD_HELP = Команды чата:^n--------------------^n/shmenu - Меню мода^n/help - Помощь^n/langmenu - Language menu^n^nКнопки активных умений^n--------------------^nЧтобы назначить кнопку,^nпропишите bind в консоли^nПримеры:^nbind f +power1^nbind mouse3 +power2^n--------------------^nВкл. эту справку:  /helpon^nВыкл. эту справку: /helpoff
+SHMOD_HUD_HELP = Команды чата:^n--------------------^n/menu - Меню мода^n/help - Помощь^n/langmenu - Language menu^n^nКнопки активных умений^n--------------------^nЧтобы назначить кнопку,^nпропишите bind в консоли^nПримеры:^nbind f +power1^nbind mouse3 +power2^n--------------------^nВкл. эту справку:  /helpon^nВыкл. эту справку: /helpoff
 
 SHMOD_NOT_ALLOWED_TO_HAVE_POWERS = Вам не позволено иметь способности
 SHMOD_SHOWMENU_TITLE = \yВыберите способности:%-3s\r(Выбрано %d/%d)^n^n
@@ -372,7 +372,7 @@ MONITOR_SPEC = Level: %d/%d  |  XP: %d%s^nHealth: %d  |  Armor: %d  %s^nGravity:
 MONITOR_INVINCIBLE = [INVINCIBLE]
 
 SHMOD_BIND_NOT_A_CHAT_COMMAND = * Bind command doesn't work in the chat. You should use it in the console (press ~).
-SHMOD_HUD_HELP = Say Commands:^n--------------------^n/shmenu - Main menu^n/help - Help^n^nHow To Use Powers:^n--------------------^nYou need to bind a key^nInput bind into console^nExamples:^nbind f +power1^nbind mouse3 +power2^n--------------------^nEnable This HUD:  /helpon^nDisable This HUD: /helpoff
+SHMOD_HUD_HELP = Say Commands:^n--------------------^n/menu - Main menu^n/help - Help^n^nHow To Use Powers:^n--------------------^nYou need to bind a key^nInput bind into console^nExamples:^nbind f +power1^nbind mouse3 +power2^n--------------------^nEnable This HUD:  /helpon^nDisable This HUD: /helpoff
 
 SHMOD_NOT_ALLOWED_TO_HAVE_POWERS = You are not allowed to have powers
 SHMOD_SHOWMENU_TITLE = \ySelect Super Power:%-16s\r(You've Selected %d/%d)^n^n

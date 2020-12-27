@@ -70,7 +70,8 @@ No footsteps while walking, Hints, Bot Manager
 [Mario](https://forums.alliedmods.net/showthread.php?t=32041),
 [Catwoman](https://forums.alliedmods.net/showthread.php?t=34742),
 [Electro](https://forums.alliedmods.net/showthread.php?t=30095),
-[Jubilee](https://forums.alliedmods.net/showthread.php?t=30592)
+[Jubilee](https://forums.alliedmods.net/showthread.php?t=30592),
+[Bazooka](https://forums.alliedmods.net/showthread.php?t=30087)
 
 **Ported heroes**
 
