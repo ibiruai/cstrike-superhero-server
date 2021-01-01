@@ -978,9 +978,9 @@ public cmd_say(id)
 				}
 			}
 		}
-		else if (get_pcvar_num(cvar_nomPlayerAllowance)) // "say <nominate|nom|cancel> <map>"
+		if (get_pcvar_num(cvar_nomPlayerAllowance)) // "say <nominate|nom|cancel> <map>"
 		{
-			if (equali(arg1, "nominate") || equali(arg1, "nom"))
+			if (equali(arg1, "nominate") || equali(arg1, "nom") || equali(arg1, "maps") || equali(arg1, "map"))
 			{
 				nomination_attempt(id, arg2);
 				return PLUGIN_HANDLED;
@@ -1015,7 +1015,7 @@ nomination_attempt(id, nomination[]) // (playerName[], &phraseIdx, matchingSegme
 	{
 		ArrayGetString(g_nominationMap, mapIdx, nominationMap, sizeof(nominationMap)-1);
 		
-		if (contain(nominationMap, nomination) > -1)
+		if (contain(nominationMap, nomination) > -1 || equali(nomination, ""))
 		{
 			matchCnt++;
 			matchIdx = mapIdx;	// store in case this is the only match
@@ -1064,7 +1064,8 @@ nomination_attempt(id, nomination[]) // (playerName[], &phraseIdx, matchingSegme
 		default:
 		{
 			// this is kinda sexy; we put up a menu of the matches for them to pick the right one
-			client_print(id, print_chat, "%L", id, "GAL_NOM_MATCHES", nomination);
+			if  (!equali(nomination, ""))
+				client_print(id, print_chat, "%L", id, "GAL_NOM_MATCHES", nomination);
 			if (matchCnt == MAX_NOM_MATCH_CNT)
 			{
 				client_print(id, print_chat, "%L", id, "GAL_NOM_MATCHES_MAX", MAX_NOM_MATCH_CNT, MAX_NOM_MATCH_CNT);
