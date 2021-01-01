@@ -177,7 +177,7 @@ gets near it) also vicinity grenades with: explosions, gas, flashes and stuff co
 #include <fun>
 #include <cstrike>
 #include <fakemeta>
-/*#include <superheromod>*/
+#include <superheromod>
 #if defined DEBUG
 #include <amxmisc>
 #endif
@@ -206,11 +206,11 @@ new sentry_max, sentry_cost1, sentry_cost2, sentry_cost3, sentry_team;
 #define BOT_NEXT_MIN			0.0				// next = after building a sentry, this specifies the time a bot will wait until considering about waittime again (seconds)
 #define BOT_NEXT_MAX			120.0
 // These are per sentry level, 1-3
-new const g_SENTRYFRAGREWARDS[3] = {300, 150, 150}		// how many $ you get if your sentry frags someone. If you built and upgraded to level 3 you would get $300 + $150 = $450. If built and upgraded all you would get $600.
-new const g_DMG[3] = {5, 10, 15}						// how much damage a bullet from a sentry does per hit
+//new const g_SENTRYFRAGREWARDS[3] = {300, 150, 150}		// how many $ you get if your sentry frags someone. If you built and upgraded to level 3 you would get $300 + $150 = $450. If built and upgraded all you would get $600.
+new const g_DMG[3] = {5, 8, 12}						// how much damage a bullet from a sentry does per hit
 new const Float:g_THINKFREQUENCIES[3] = {2.0, 1.0, 0.5}	// how often, in seconds, a sentry searches for targets when not locked at a target, a lower value means a sentry will lock on targets faster
 new const Float:g_HITRATIOS[3] = {0.6, 0.75, 0.85}		// how good a sentry is at hitting its target. 1.0 = always hit, 0.0 = never hit
-new const Float:g_HEALTHS[3] = {300.0, 450.0, 600.0}	// how many HP a sentry has. Increase to make sentry sturdier
+new const Float:g_HEALTHS[3] = {300.0, 400.0, 500.0}	// how many HP a sentry has. Increase to make sentry sturdier
 //new const g_COST[3] = {1000, 500, 250}					// fun has a price, first is build cost, the next two upgrade costs
 #define COST_INIT get_pcvar_num(sentry_cost1)
 #define COST_UP get_pcvar_num(sentry_cost2)
@@ -356,7 +356,7 @@ new g_playerSentries[32] = {0, ...}
 new g_playerSentriesEdicts[32][MAXSENTRIESTOTAL]
 new g_sModelIndexFireball
 new g_msgDamage
-new g_msgDeathMsg
+//new g_msgDeathMsg
 new g_msgScoreInfo
 new g_msgHostagePos
 new g_msgHostageK
@@ -1512,12 +1512,12 @@ public sentry_think(parm[1]) {
 }
 
 stock sentry_damagetoplayer(sentry, sentryLevel, Float: sentryOrigin[3], target) {
-	/*new owner = GetSentryPeople(sentry, OWNER)
-	sh_extra_damage(target, owner, g_DMG[sentryLevel], "Sentry Gun")*/
 	new newHealth = get_user_health(target) - g_DMG[sentryLevel]
 
 	if (newHealth <= 0) {
-		new targetFrags = get_user_frags(target) + 1
+		new owner = GetSentryPeople(sentry, OWNER)
+		sh_extra_damage(target, owner, g_DMG[sentryLevel], "Sentry Gun")
+		/*new targetFrags = get_user_frags(target) + 1
 		new owner = GetSentryPeople(sentry, OWNER)
 		new ownerFrags = get_user_frags(owner) + 1
 		set_user_frags(target, targetFrags) // otherwise frags are subtracted from victim for dying (!!)
@@ -1545,7 +1545,7 @@ stock sentry_damagetoplayer(sentry, sentryLevel, Float: sentryOrigin[3], target)
 		scoreinfo_update(owner, ownerFrags, cs_get_user_deaths(owner), int: cs_get_user_team(owner))
 		//scoreinfo_update(target, targetFrags, targetDeaths, targetTeam) // dont need to update frags of victim, because it's done after set_user_health
 
-		set_msg_block(g_msgDeathMsg, BLOCK_ONCE)
+		set_msg_block(g_msgDeathMsg, BLOCK_ONCE)*/
 	}
 
 	set_user_health(target, newHealth)
@@ -2601,7 +2601,7 @@ public plugin_init() {
 	register_think("sentrybase", "think_sentrybase")
 
 	g_msgDamage = get_user_msgid("Damage")
-	g_msgDeathMsg = get_user_msgid("DeathMsg")
+	//g_msgDeathMsg = get_user_msgid("DeathMsg")
 	g_msgScoreInfo = get_user_msgid("ScoreInfo")
 	g_msgHostagePos = get_user_msgid("HostagePos")
 	g_msgHostageK = get_user_msgid("HostageK")
