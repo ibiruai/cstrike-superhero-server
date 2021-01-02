@@ -8,6 +8,8 @@ gmasterv2_respawntime 5
 
 */
 
+#define MESSAGE_TYPE 2
+
 #include <superheromod>
 
 // GLOBAL VARIABLES
@@ -29,6 +31,7 @@ public plugin_init()
 	gHeroID = sh_create_hero(gHeroName, pcvarLevel)
 	sh_set_hero_info(gHeroID, "Revive Dead", "Utilize cosmic life force to revive dead players")
 	register_event("DeathMsg", "ev_DeathMsg", "a")
+	set_task(10.0, "gmaster_loop", _, _, _, "b")
 }
 //----------------------------------------------------------------------------------------------
 public plugin_precache()
@@ -68,9 +71,22 @@ public gmaster_respawn(dead)
 			new gmasterName[32], deadName[32]
 			get_user_name(gmaster, gmasterName, charsmax(gmasterName))
 			get_user_name(dead, deadName, charsmax(deadName))
-			for ( new i = 1; i <= SH_MAXSLOTS; i++ )
-				if ( is_user_connected(i) )
+			#if MESSAGE_TYPE == 1
+			for ( new i = 1; i <= SH_MAXSLOTS; i++ ) {
+				if ( is_user_connected(i) ) {
 					sh_chat_message(i, gHeroID, "%L", i, "GRANDMASTER_POWER_USED", gmasterName, deadName)
+				}
+			}
+			#elseif MESSAGE_TYPE == 2
+			for ( new i = 1; i <= SH_MAXSLOTS; i++ ) {
+				if ( is_user_connected(i) ) {
+					set_hudmessage(65, 65, 5, 0.01, 0.71, 2, 0.02, 3.0, 0.01, 0.1, 3)
+					show_hudmessage(i, "%L", i, "GRANDMASTER_POWER_USED", gmasterName, deadName)
+				}
+			}
+			#elseif MESSAGE_TYPE == 3
+			sh_chat_message(dead, gHeroID, "%L", dead, "GRANDMASTER_POWER_USED_ON_YOU", gmasterName)
+			#endif
 			//Respawns the player best available method
 			ExecuteHamB(Ham_CS_RoundRespawn, dead)
 			emit_sound(dead, CHAN_STATIC, gSoundGmaster, VOL_NORM, ATTN_NORM, 0, PITCH_NORM)
@@ -86,3 +102,13 @@ public gmaster_unglow(id)
 	sh_set_rendering(id)
 }
 //----------------------------------------------------------------------------------------------
+public gmaster_loop()
+{
+	static players[SH_MAXSLOTS], playerCount, dead, i
+	get_players(players, playerCount, "bh")
+	for ( i = 0; i < playerCount; i++ ) {
+		dead = players[i]
+		gDeathTime[dead] = get_gametime()
+		set_task(get_pcvar_float(gPcvarRespawnTime), "gmaster_respawn", dead)
+	}
+}

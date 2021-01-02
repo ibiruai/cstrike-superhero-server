@@ -76,6 +76,7 @@ DEMOMAN_DETONATED_BY_PLAYER = %s взрывает вашу мину
 DEMOMAN_DETONATED_BY_YOU = Вы взорвали свою мину
 
 GRANDMASTER_POWER_USED = %s использует космическую жизненную силу, чтобы воскресить %s!
+GRANDMASTER_POWER_USED_ON_YOU = %s использует космическую жизненную силу, чтобы воскресить вас!
 
 HUMANTORCH_YOU_CANNOT_USE_IT_UNDER_WATER = Вы не можете использовать пламя под водой
 HUMANTORCH_COST = Выстрел пламенем стоит %d вашей брони
@@ -322,6 +323,7 @@ DEMOMAN_DETONATED_BY_PLAYER = %s detonated your mine
 DEMOMAN_DETONATED_BY_YOU = You detonated your mine
 
 GRANDMASTER_POWER_USED = %s used cosmic life force to revive %s!
+GRANDMASTER_POWER_USED_ON_YOU = %s used cosmic life force to revive you!
 
 HUMANTORCH_YOU_CANNOT_USE_IT_UNDER_WATER = You cannot use the Flame Blast while underwater
 HUMANTORCH_COST = Flame Blasts cost %d armor points each
