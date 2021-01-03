@@ -172,12 +172,7 @@ public sh_hero_init(id, heroID, mode)
 
 public sh_client_spawn(id)
 {
-	if ( !gHasChell[id] )
-		return
-
-	if ( !VISIBLE_PORTAL_GUN(id) )
-		sh_chat_message(id, gHeroID, "%L", id, "CHELL_INSTRUCTION")
-	else
+	if ( gHasChell[id] && VISIBLE_PORTAL_GUN(id) )
 		set_task(0.1, "on_spawn", id) //sh_orc.amxx
 }
 
@@ -203,13 +198,16 @@ public client_disconnected(id) {
 }
 
 @event_hltv() {
-	for(new i = 1; i <= SH_MAXSLOTS; i++)
+	for(new i = 1; i <= SH_MAXSLOTS; i++) {
+		if (gHasChell[i] && !VISIBLE_PORTAL_GUN(i) && is_user_connected(i) && is_user_alive(i))
+			sh_chat_message(i, gHeroID, "%L", i, "CHELL_INSTRUCTION")
 		if (is_user_connected(i) && portal_is_set_pair(i))
 		{
 			//portal_close(i, PORTAL_ALL)
 			portal_remove_pair(i)
 			portal_create_pair(i)
 		}
+	}
 	freezetime = true
 }
 
@@ -344,7 +342,7 @@ public client_disconnected(id) {
 	pev(toucher, pev_classname, classname, 32)
 	if (equal(classname, "walkguardzone")) // WalkGuard plugin 
 		return
-	if (equal(classname, "func_ladder") || equal(classname, "func_buyzone")) // de_rats
+	if (equal(classname, "func_ladder") || equal(classname, "func_buyzone") || equal(classname, "func_bombsite")) // de_rats
 		return
 	/*
 	these are not to go through portal too
