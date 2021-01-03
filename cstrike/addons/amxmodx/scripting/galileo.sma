@@ -980,7 +980,7 @@ public cmd_say(id)
 		}
 		if (get_pcvar_num(cvar_nomPlayerAllowance)) // "say <nominate|nom|cancel> <map>"
 		{
-			if (equali(arg1, "nominate") || equali(arg1, "nom") || equali(arg1, "maps") || equali(arg1, "map"))
+			if (equali(arg1, "nominate") || equali(arg1, "nom") || equali(arg1, "maps") || equali(arg1, "/maps"))
 			{
 				nomination_attempt(id, arg2);
 				return PLUGIN_HANDLED;

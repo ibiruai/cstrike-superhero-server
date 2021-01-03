@@ -108,6 +108,8 @@ public gmaster_loop()
 	get_players(players, playerCount, "bh")
 	for ( i = 0; i < playerCount; i++ ) {
 		dead = players[i]
+		if (cs_get_user_team(dead) == CS_TEAM_UNASSIGNED)
+			continue
 		gDeathTime[dead] = get_gametime()
 		set_task(get_pcvar_float(gPcvarRespawnTime), "gmaster_respawn", dead)
 	}
