@@ -48,6 +48,7 @@ Website: <https://ibiruai.github.io/cstrike-superhero-server/>
 [LongJump Enabler](https://forums.alliedmods.net/showthread.php?t=108382),
 [Anti-ChatSpam](https://forums.alliedmods.net/showthread.php?t=90414),
 [Sentry Guns](https://forums.alliedmods.net/showthread.php?t=78632),
+[One Name](https://forums.alliedmods.net/showpost.php?p=1552827&postcount=3),
 No footsteps while walking, Hints, Bot Manager
 
 **Heroes**
