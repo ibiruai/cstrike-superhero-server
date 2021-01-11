@@ -139,22 +139,22 @@ public player_spawn(id)
 			//client_cmd(id, "spk shmod/orc_reincarnation.wav")
 			emit_sound(id, CHAN_AUTO, "shmod/orc_reincarnation.wav", VOL_NORM, ATTN_NORM, 0, PITCH_LOW)
 			sh_screen_fade(id, 0.5, 0.25, 10, 255, 10, 70)	// Green Screen Flash
-			set_task(0.05, "orc_glow", id * 10000 + 2853)
-			set_task(2.5, "orc_unglow", id * 10000 + 2854)
+			//set_task(0.05, "orc_glow", id * 10000 + 2853)
+			//set_task(2.5, "orc_unglow", id * 10000 + 2854)
 		}
 	}
 	DiedLastRound[id] = false
 }
 //----------------------------------------------------------------------------------------------
-public orc_glow(task_id)
-{
-	sh_set_rendering( task_id / 10000, 0, 128, 0, 16, kRenderFxGlowShell )
-}
+// public orc_glow(task_id)
+// {
+	// sh_set_rendering( task_id / 10000, 0, 128, 0, 16, kRenderFxGlowShell )
+// }
 //----------------------------------------------------------------------------------------------
-public orc_unglow(task_id)
-{
-	sh_set_rendering( task_id / 10000 )
-}
+// public orc_unglow(task_id)
+// {
+	// sh_set_rendering( task_id / 10000 )
+// }
 //----------------------------------------------------------------------------------------------
 public reincarnation_weapons(iParm[2])
 {

@@ -90,17 +90,18 @@ public gmaster_respawn(dead)
 			//Respawns the player best available method
 			ExecuteHamB(Ham_CS_RoundRespawn, dead)
 			emit_sound(dead, CHAN_STATIC, gSoundGmaster, VOL_NORM, ATTN_NORM, 0, PITCH_NORM)
-			sh_set_rendering(dead, 255, 255, 0, 16, kRenderFxGlowShell)
-			set_task(3.0, "gmaster_unglow", dead)
+			// sh_set_rendering(dead, 255, 255, 0, 16, kRenderFxGlowShell)
+			// set_task(2.0, "gmaster_unglow", dead)
+			sh_set_godmode(dead, 1.75)
 			break
 		}
 	}
 }
 //----------------------------------------------------------------------------------------------
-public gmaster_unglow(id)
-{
-	sh_set_rendering(id)
-}
+// public gmaster_unglow(id)
+// {
+	// sh_set_rendering(id)
+// }
 //----------------------------------------------------------------------------------------------
 public gmaster_loop()
 {
