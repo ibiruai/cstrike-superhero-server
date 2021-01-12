@@ -368,7 +368,7 @@ SPIDERMAN_SWINGS = You have %d web swing%s left
 THING_BULLETS_MSG_TO_YOU = Bullet bounces off your rock skin.
 THING_BULLETS_MSG_TO_ENEMY = ^nBullet bounces off victim's rock skin.
 THING_KNIFE_MSG_TO_YOU = Your rock skin blocks the knife attack.
-THING_KNIFE_MSG_TO_ENEMY = nVictim's rock skin blocks the knife attack.
+THING_KNIFE_MSG_TO_ENEMY = ^nVictim's rock skin blocks the knife attack.
 
 MONITOR_SPEC = Level: %d/%d  |  XP: %d%s^nHealth: %d  |  Armor: %d  %s^nGravity: %d%%  |  Speed: %d
 MONITOR_INVINCIBLE = [INVINCIBLE]
