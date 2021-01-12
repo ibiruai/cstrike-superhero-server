@@ -114,7 +114,7 @@ public sh_hero_key(id, heroID, key)
 	if ( key == SH_KEYDOWN ) {
 		// Make sure they're not in the middle of clip already
 		// Let them know they already used their ultimate if they have
-		if ( gPlayerInCooldown[id] || gShadowcatTimer[id] >= 0 ) {
+		if ( gPlayerInCooldown[id] || gShadowcatTimer[id] >= 0 || get_pcvar_num(gPcvarClipTime) == 0) {
 			sh_sound_deny(id)
 			return
 		}

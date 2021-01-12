@@ -1,0 +1,109 @@
+// This is the map configuration file. Add Cmds for specific maps here.
+// Format:
+//   Map sections are named with '[map]' or '[map'. If the closing bracket is not set,
+//      this means that not the full name was given - example: '[fy_ice' means that these
+//      are executed for fy_iceworld, fy_iceworld2k_ fy_icewhatever as well.
+//   Server and Client Sections are named #server, #client or #all.
+//      This specifies where the commands are being executed.
+//   Comments (like these (-.-) ) HAVE to be made with // at the BEGINNING of the line.
+
+[zm_
+mp_roundtime 6
+
+[helms_deep_ag]
+mp_roundtime 4
+
+[mp_
+mp_roundtime 4
+pb_maxbots 6
+pb fillserver
+shadowcat_cliptime 10
+shadowcat_cooldown 10
+
+[as_oilrig]
+pb_maxbots 6
+pb fillserver
+
+[cs_militia]
+pb_maxbots 6
+pb fillserver
+
+[de_airstrip]
+pb_maxbots 6
+pb fillserver
+
+[cs_siege]
+pb_maxbots 6
+pb fillserver
+
+[35hp_
+electro_maxdamage 10
+explosion_damage 5
+phoenix_maxdamage 5
+goblin_grenadetimer 15
+goblin_grenademult 1
+bass_laser_ammo 0
+alien_knifemult 1
+alien_vision 90
+alien_tint 0
+alien_alpha 255
+bazooka_cost1 6000		//Common missile cost
+bazooka_cost2 7000		//Laser guided missile cost
+bazooka_cost3 9000		//Gun camera missile cost
+bazooka_cost4 7000		//Anti-missile shot
+bazooka_cost5 8000		//Heat seeking missile cost
+bazooka_cost6 8000		//Rope seeking missile cost
+bazooka_cost7 16000	    //Swirling death missile cost
+sentry_cost1 "16000"
+sentry_cost2 "17000"
+sentry_cost3 "17000"
+catwoman_seconds 0.01
+scorpion_escapetime 2.5
+htorch_armorcost 50
+htorch_numburns 1
+htorch_burndamage 10
+
+[fun_matrix_reloaded]
+catwoman_pctperlev 0.0
+shadowcat_cliptime 0
+gmasterv2_messagetype 1
+gmasterv2_limit 1
+
+[fun_allinone]
+catwoman_pctperlev 0.0
+shadowcat_cliptime 0
+gmasterv2_messagetype 1
+gmasterv2_limit 1
+
+[fun_atraccions]
+gmasterv2_sameteam 2
+sh_defaulthealth 1000
+wolv_healpoints 200
+captaina_percent 0.5
+captaina_godsecs 1.0
+Thing_weapon_percent 0.5
+blink_cooldown 0
+phoenix_cooldown 0
+jubilee_cooldown 0
+snake_cooldown 0
+shadowcat_cooldown 0
+spiderman_reelspeed 1600
+ironman_maxspeed 1600
+superman_gravity 0.45
+bazooka_cost1 0
+bazooka_cost2 0
+bazooka_cost3 0
+bazooka_cost4 0
+bazooka_cost5 0
+bazooka_cost6 0
+bazooka_cost7 0
+bazooka_speed 1550
+bass_speed 600
+bass_laser_ammo -1
+bass_laser_burndecals 0
+bass_cooldown 0
+bass_multishot 0.1
+xavier_showteam 1
+demoman_maxmines 20
+sentry_cost1 "500"
+afk_min_players 10

@@ -49,6 +49,7 @@ Website: <https://ibiruai.github.io/cstrike-superhero-server/>
 [Anti-ChatSpam](https://forums.alliedmods.net/showthread.php?t=90414),
 [Sentry Guns](https://forums.alliedmods.net/showthread.php?t=78632),
 [One Name](https://forums.alliedmods.net/showpost.php?p=1552827&postcount=3),
+[Map specific commands](https://forums.alliedmods.net/showthread.php?t=16517),
 No footsteps while walking, Hints, Bot Manager
 
 **Heroes**
