@@ -958,14 +958,14 @@ public cmd_say(id)
 			if ((get_pcvar_num(cvar_rtvCommands) & RTV_CMD_SHORTHAND && equali(arg1, "rtv")) || ((get_pcvar_num(cvar_rtvCommands) & RTV_CMD_DYNAMIC && equali(arg1, "rockthe", 7) && equali(arg1[strlen(arg1)-4], "vote"))) || equali(arg1, "/rtv") || equali(arg1, "votemap") || equali(arg1, "/votemap") || equali(arg1, "rockthevote") || equali(arg1, "/rockthevote"))
 			{
 				vote_rock(id);
-				return PLUGIN_HANDLED;
+				return PLUGIN_CONTINUE;
 			}
 			else if (get_pcvar_num(cvar_nomPlayerAllowance))
 			{
 				if (equali(arg1, "noms"))
 				{
 					nomination_list(id);
-					return PLUGIN_HANDLED;
+					return PLUGIN_CONTINUE;
 				}
 				else
 				{
@@ -973,7 +973,7 @@ public cmd_say(id)
 					if (idxMap >= 0)
 					{
 						nomination_toggle(id, idxMap);
-						return PLUGIN_HANDLED;
+						return PLUGIN_CONTINUE;
 					}
 				}
 			}
@@ -983,7 +983,7 @@ public cmd_say(id)
 			if (equali(arg1, "nominate") || equali(arg1, "nom") || equali(arg1, "maps") || equali(arg1, "/maps"))
 			{
 				nomination_attempt(id, arg2);
-				return PLUGIN_HANDLED;
+				return PLUGIN_CONTINUE;
 			}
 			else if (equali(arg1, "cancel"))
 			{
@@ -992,7 +992,7 @@ public cmd_say(id)
 				if (idxMap >= 0)
 				{
 					nomination_cancel(id, idxMap);
-					return PLUGIN_HANDLED;
+					return PLUGIN_CONTINUE;
 				}
 			}
 		}
