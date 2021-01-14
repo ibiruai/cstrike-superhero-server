@@ -9,7 +9,7 @@ chogath_maxextrahp 125
 
 */
 
-#define SHMOD_EDIT 125
+#define SHMOD_EDIT 1
 
 #include <amxmodx>
 #include <superheromod>
@@ -115,11 +115,11 @@ public chogath_healthOnSpawn(array[])
 	if (!array[2])
 	{
 		//gMaxHealth[id] = sh_get_max_hp(id)
-		chogath_change_max_hp(id, /*gMaxHealth[id]*/ SHMOD_EDIT + hitPoints)
+		chogath_change_max_hp(id, /*gMaxHealth[id]*/ get_cvar_num("sh_defaulthealth") + hitPoints)
 		sh_add_hp( id, hitPoints )
 	}
 	else
-		chogath_change_max_hp(id, /*gMaxHealth[id]*/ SHMOD_EDIT + hitPoints)
+		chogath_change_max_hp(id, /*gMaxHealth[id]*/ get_cvar_num("sh_defaulthealth") + hitPoints)
 	#else
 	sh_add_hp( id, hitPoints, sh_get_max_hp(id) + get_cvar_num("chogath_maxextrahp") )
 	#endif
@@ -152,7 +152,7 @@ public chogath_death()
 			if ( is_user_connected(i) )
 				sh_chat_message(i, gHeroID, "%L", i, "CHOGATH_FEAST", attackerName, victimName, hp_gain)
 		#if SHMOD_EDIT
-		chogath_change_max_hp(attacker, /*gMaxHealth[id]*/SHMOD_EDIT + gExtraHP[attacker])
+		chogath_change_max_hp(attacker, /*gMaxHealth[id]*/get_cvar_num("sh_defaulthealth") + gExtraHP[attacker])
 		#endif
 	} else
 		for ( new i = 1; i <= SH_MAXSLOTS; i++ )
@@ -212,8 +212,8 @@ public chogath_loop()
 	for ( i = 0; i < playerCount; i++ ) {
 		id = players[i]
 
-		if ( gHasChogath[id] && sh_get_max_hp(id) != SHMOD_EDIT + gExtraHP[id] ) {
-			chogath_change_max_hp(id, /*gMaxHealth[id]*/SHMOD_EDIT + gExtraHP[id])
+		if ( gHasChogath[id] && sh_get_max_hp(id) != get_cvar_num("sh_defaulthealth") + gExtraHP[id] ) {
+			chogath_change_max_hp(id, /*gMaxHealth[id]*/get_cvar_num("sh_defaulthealth") + gExtraHP[id])
 		}
 	}
 }

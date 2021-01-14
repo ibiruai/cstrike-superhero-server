@@ -1,91 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="description" content="This is Counter-Strike 1.6 server with SuperHero mod. Kill your opponents to gain XP and level up. Every level you'll be able to pick a new superpower.">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EVILEYE # SUPERHERO # SENTRY</title>
-<style>
-body {
-  font-family: sans-serif;
-  font-size: 12pt;
-  line-height: 175%;
-  background-color: #201c16;
-  color: #ebdbb2;
-  overflow-x: hidden;
-}
-h1, h2, h3 {
-  font-family: monospace;
-  font-weight: 100;
-}
-@media screen and (min-width: 800px) {
-  .wrapper {
-    max-width: 60%;
-    min-width: 800px !important;
-    margin: 0 auto;
-  }
-}
-h1 {
-  font-size: 180%;
-  text-align: center;
-  margin-bottom: 18px;
-}
-h2 {
-  font-size: 160%;
-  margin-top: 24px;
-  margin-bottom: 7px;
-  padding-bottom: 7px;
-}
-h4 {
-  font-size: 120%;
-}
-h4 {
-  font-size: 100%;
-  margin-top: 14px;
-  margin-bottom: 0;
-}
-:not(h3) + h4 {
-  padding-top: 10px;
-}
-p, ul {
-  margin: 6px 0;
-}
-a, .property {
-  color: #a8a08c;
-}
-.active {
-  color: #72ff72;
-}
-.passive {
-  color: #79aaff;
-}
-.languages {
-  text-align: right;
-}
-table {
-  border-collapse: collapse;
-}
-tr:not(:last-child) td {
-  border-bottom: 1px solid darkgrey;
-}
-td {
-  padding: 2px 10px 2px 0px;
-}
-.gametracker img {
-  max-width: 100%;
-  filter: sepia(1);
-}
-</style>
-</head>
+<head><meta charset="UTF-8"><meta name="description" content="This is Counter-Strike 1.6 server with SuperHero mod. Kill your opponents to gain XP and level up. Every level you'll be able to pick a new superpower."><meta name="viewport" content="width=device-width, initial-scale=1"><title>EVILEYE # SUPERHERO # SENTRY</title><style>body{font-family:sans-serif;font-size:12pt;line-height:175%;background-color:#201c16;color:#ebdbb2;overflow-x:hidden}h1,h2,h3{font-family:monospace;font-weight:100}@media screen and (min-width:800px){.wrapper{max-width:60%;min-width:800px!important;margin:0 auto}}h1{font-size:180%;text-align:center;margin-bottom:18px}h2{font-size:160%;margin-top:24px;margin-bottom:7px;padding-bottom:7px}h4{font-size:120%}h4{font-size:100%;margin-top:14px;margin-bottom:0}p,ul{margin:6px 0}a,.property{color:#a8a08c}.active{color:#72ff72}.passive{color:#79aaff}.languages{text-align:right}table{border-collapse:collapse}tr:not(:last-child) td{border-bottom:1px solid darkgrey}td{padding:2px 10px 2px 0}.gametracker img{max-width:100%;filter:sepia(1)}:not(h3)+h4{padding-top:10px}</style></head>
 <body>
 <div id="en" lang="en" class="wrapper">
 <p class="languages">
-<script>
-document.write('English | <a href="javascript:ru()">Русский</a>');
-</script>
-<noscript>
-English | <a href="#ru">Русский</a>
-</noscript>
+<script>document.write('English | <a href="javascript:ru()">Русский</a>');</script>
+<noscript>English | <a href="#ru">Русский</a></noscript>
 </p>
 <h1>EVILEYE # SUPERHERO # SENTRY</h1>
 <p>EVILEYE # SUPERHERO # SENTRY is a CS 1.6 server with SuperHero mod and Sentry Guns.</p>
@@ -96,240 +16,48 @@ English | <a href="#ru">Русский</a>
 <p>02 Feb 2019 - The server was launched. English and Russian languages are available.</p>
 <h2 id="server-status">Server status</h2>
 <p><a href="https://www.gametracker.com/server_info/95.142.47.100:27015/" class="gametracker"><img src="https://cache.gametracker.com/server_info/95.142.47.100:27015/b_560_95_1.png" alt="Current server status" /></a></p>
-<h2 id="superhero-mod-help">SuperHero Mod Help</h2>
-<p>As you kill opponents you gain Experience Points (XP). The higher the level of the person you kill the more XP you get. Once you have accumulated enough for a level up you will be able to choose a hero. The starting point is level 0 and you cannot select any heroes on this level.</p>
-<p>Contents:</p>
-<ol>
-  <li><a href="#say-commands">Say commands</a></li>
-  <li><a href="#how-to-use-powers">How to use powers?</a></li>
-  <li><a href="#list-of-powers">List of powers</a></li>
-</ol>
-<h3 id="say-commands">Say commands</h3>
-<p>Press [ <strong>I</strong> ] or say <strong>/menu</strong> to open the main menu. Most of things below are available from the main menu, so there is no need to remember any of those say commands.</p>
-<table>
-  <tbody>
-    <tr>
-      <td>say /help</td>
-      <td>This help page</td>
-    </tr>
-    <tr>
-      <td>say /showmenu</td>
-      <td>Displays Select Super Power menu</td>
-    </tr>
-    <tr>
-      <td>say /herolist</td>
-      <td>Lets you see <a href="#list-of-powers">a list of heroes and powers</a> (you can also use "herolist" in the console)</td>
-    </tr>
-    <tr>
-      <td>say /myheroes</td>
-      <td>Displays your heroes</td>
-    </tr>
-    <tr>
-      <td>say /clearpowers</td>
-      <td>Clears ALL powers</td>
-    </tr>
-    <tr>
-      <td>say /drop &lt;hero&gt;</td>
-      <td>Drop one power so you can pick another</td>
-    </tr>
-    <tr>
-      <td>say /whohas &lt;hero&gt;</td>
-      <td>Shows you who has a particular hero</td>
-    </tr>
-    <tr>
-      <td>say /playerskills [@ALL|@CT|@T|name]</td>
-      <td>Shows you what heroes other players have chosen</td>
-    </tr>
-    <tr>
-      <td>say /playerlevels [@ALL|@CT|@T|name]</td>
-      <td>Shows you what levels other players are</td>
-    </tr>
-    <tr>
-      <td>say /automenu</td>
-      <td>Enable/Disable auto-show of Select Super Power menu</td>
-    </tr>
-    <tr>
-      <td>say /helpon</td>
-      <td>Enable HUD Help message (enabled by default)</td>
-    </tr>
-    <tr>
-      <td>say /helpoff</td>
-      <td>Disable HUD Help message</td>
-    </tr>
-  </tbody>
-</table>
-<h3 id="how-to-use-powers">How to use powers?</h3>
-<p><span class="passive">Passive powers</span> are used automatically. To use <span class="active">active powers</span> you have to bind a key to +power#. In order to bind a key, you must open your console and use the bind command: bind "key" "command". In this case, the command is "+power#". Here are some examples:</p>
-<ul>
-  <li>bind f +power1</li>
-  <li>bind mouse3 +power2</li>
-</ul>
-<p>You can have only up to 3 <span class="active">active powers</span>. You can have 10 superpowers in total (you get one slot each level).</p>
-<h3 id="list-of-powers">List of powers</h3>
-<h4>Punisher - Bullets are added to your current mag!</h4>
-<p><span class="passive">Passive power: </span>You get more bullets into your current mag!</p>
-<h4>Wolverine - Auto-Heal</h4>
-<p><span class="passive">Passive power: </span>HP Regeneration.</p>
-<p><span class="property">Health regenerated per second: </span>3 HP</p>
-<h4>Orc - Equipment Reincarnation</h4>
-<p><span class="passive">Passive power: </span>You will get all of your equipment in your next life.</p>
-<h4>Captain America - Super Shield</h4>
-<p><span class="passive">Passive power: </span>Random Invincibility.</p>
-<p><span class="property">Chance per second: </span>10%</p>
-<p><span class="property">Duration: </span>0.5 seconds</p>
-<h4>Domino - Even the Odds</h4>
-<p><span class="passive">Passive power: </span>Do more Gun Damage to Higher Levels, the larger the difference the more damage.</p>
-<p><span class="property">Max damage multiplier: </span>1.5</p>
-<p><em>Damage multiplier = (Victim level - Attacker level) / Victim level</em></p>
-<h4>Daredevil - Radar Sense</h4>
-<p><span class="passive">Passive power: </span>ESP Rings show you when other players are approaching.</p>
-<h4>Dracula - Vampiric Drain</h4>
-<p><span class="passive">Passive power: </span>Gain HP by attacking players.</p>
-<p><span class="property">Life steal: </span>15%</p>
-<h4>Chell - Portal Gun</h4>
-<p><span class="passive">Passive power: </span>Press R holding knife to get Portal Gun.</p>
-<h4>Hobgoblin - Hobgoblin Grenades</h4>
-<p><span class="passive">Passive power: </span>Extra Nade Damage/Refill Nade.</p>
-<p><span class="property">Damage multiplier: </span>1.75</p>
-<p><span class="property">HE grenades delivery: </span>every 7 seconds</p>
-<h4>Mario - Mulitple Jumps</h4>
-<p><span class="passive">Passive power: </span>You can now jump in the air for a certain amount of times!</p>
-<p><span class="property">Additional jumps: </span>2000</p>
-<h4>Human Torch - Flame Blast</h4>
-<p><span class="active">Active power: </span>Ignite your enemies on fire with a Flame Blast.</p>
-<p><span class="property">Cost: </span>3 AP</p>
-<p><span class="property">How many blasts to burn one victim: </span>3</p>
-<p><span class="property">Damage: </span>40</p>
-<h4>Iron Man - Rocket Pack</h4>
-<p><span class="active">Active power: </span>Rocket Jetpack - use +power key to take off.</p>
-<p><span class="property">Cost per second: </span>1 AP</p>
-<p><span class="property">Armor: </span>150 AP</p>
-<p><span class="property">Armor regenerated per second while not using: </span>1 AP</p>
-<h4>Shadowcat - Walk Through Walls</h4>
-<p><span class="active">Active power: </span>Can Walk Through Walls for Short Time - GET STUCK AND YOU'LL BE AUTO-SLAIN!</p>
-<p><span class="property">Noclip time: </span>6 seconds</p>
-<p><span class="property">Cooldown: </span>30 seconds</p>
-<h4>Spider-Man - Web Swing</h4>
-<p><span class="active">Active power: </span>Shoot Web to Swing - Jump Reels In, Duck Reels Out.</p>
-<h4>Mystique - Morph into Enemy</h4>
-<p><span class="active">Active power: </span>Press the +power key to shapeshift into the Enemy.</p>
-<h4>Freeman - Long Jump Module</h4>
-<p><span class="passive">Passive power: </span>Get Crowbar and Long Jump Module.</p>
-<h4>Black Panther - Silent Boots</h4>
-<p><span class="passive">Passive power: </span>Your boots have Vibranium soles that absorb sound.</p>
-<h4>Superman - Reduced Gravity</h4>
-<p><span class="passive">Passive power: </span>You can jump higher.</p>
-<p><span class="property">Gravity: </span>65%</p>
-<h4>The Tick - No Fall Damage</h4>
-<p><span class="passive">Passive power: </span>SPOOOON! Take no damage from falling.</p>
-<h4>Invisible Man - Invisibility</h4>
-<p><span class="passive">Passive power: </span>Makes you less visible and harder to see. Only works while not running, not shooting and not zooming.</p>
-<p><span class="property">Invisibility: </span>68%</p>
-<h4>Psylocke - Psychic Detection</h4>
-<p><span class="passive">Passive power: </span>Recieve a telepathic warning when an enemy is near.</p>
-<p><span class="property">Required level: </span>3</p>
-<p><span class="property">Distance: </span>50 meters</p>
-<h4>Xavier - Team Detection</h4>
-<p><span class="passive">Passive power: </span>Detect what team a player is on by a glowing trail.</p>
-<p><span class="property">Required level: </span>3</p>
-<h4>Snake - Health Rations</h4>
-<p><span class="active">Active power: </span>Health Rations on +power key use.</p>
-<p><span class="property">Required level: </span>3</p>
-<p><span class="property">Heal: </span>35 HP</p>
-<p><span class="property">Cooldown: </span>20 seconds</p>
-<h4>Demolition Man - Tripmines</h4>
-<p><span class="active">Active power: </span>Unlimited Tripmines - Limited ammount that can be planted at once.</p>
-<p><span class="property">Required level: </span>3</p>
-<p><span class="property">Max damage: </span>150</p>
-<p><span class="property">Max ammount of mines at once: </span>4</p>
-<p><span class="property">Mine health: </span>200 HP</p>
-<h4>Explosion - Explosion</h4>
-<p><span class="passive">Passive power: </span>Blows up when killed!</p>
-<p><span class="property">Required level: </span>3</p>
-<p><span class="property">Damage: </span>35</p>
-<h4>Mirage - Delusion</h4>
-<p><span class="passive">Passive power: </span>Turn invisible for a short time when someone aims at you.</p>
-<p><span class="property">Required level: </span>3</p>
-<p><span class="property">Cooldown: </span>6 seconds</p>
-<h4>Blink - Teleportation</h4>
-<p><span class="active">Active power: </span>Teleport to where you are currently aiming at.</p>
-<p><span class="property">Required level: </span>4</p>
-<p><span class="property">Cooldown: </span>18 seconds</p>
-<h4>Cho'Gath - Feast</h4>
-<p><span class="passive">Passive power: </span>Get Extra HP by killing enemies with a knife.</p>
-<p><span class="property">Required level: </span>4</p>
-<p><span class="property">Bonus health per stack: </span>10 HP</p>
-<p><span class="property">Max bonus health: </span>50 HP</p>
-<p><em>You'll loose your extra health on map change.</em></p>
-<h4>Catwoman - Sneak Into Enemies Base</h4>
-<p><span class="passive">Passive power: </span>Chance Of Sneaking Into Enemies Base.</p>
-<p><span class="property">Required level: </span>4</p>
-<p><span class="property">Chance per round: </span>17%</p>
-<h4>Janna - Healing Grenades</h4>
-<p><span class="passive">Passive power: </span>Heal your team with healing grenades.</p>
-<p><span class="property">Required level: </span>4</p>
-<p><span class="property">Heal: </span>30 HP</p>
-<p><span class="property">Duration: </span>5 seconds</p>
-<p><span class="property">Smoke grenades delivery: </span>every 20 seconds</p>
-<h4>Bazooka - Rocket-Laucher</h4>
-<p><span class='active'>Active power:</span> Fire Many Different Types of Rockets.</p>
-<p><span class='property'>Required level: </span>4</p>
-<h4>Alien - Alien Vision</h4>
-<p><span class="passive">Passive power: </span>Get Alien Vision and Invisibility - You can use only knife.</p>
-<p><span class="property">Required level: </span>5</p>
-<p><span class="property">Invisibility: </span>85%</p>
-<h4>Bass - Uber Energy Beam</h4>
-<p><span class="active">Active power: </span>Press the +power key to fire your beam cannon.</p>
-<p><span class="property">Required level: </span>5</p>
-<p><span class="property">Laser ammo: </span>5</p>
-<p><span class="property">Damage: </span>36 − 100</p>
-<h4>Thing - Rock Skin</h4>
-<p><span class="passive">Passive power: </span>Chance to ignore bullets and knife hits.</p>
-<p><span class="property">Required level: </span>5</p>
-<p><span class="property">Chance to ignore a bullet: </span>12%</p>
-<p><span class="property">Chance to ignore a knife hit: </span>10%</p>
-<h4>Electro - Chain Lightning</h4>
-<p><span class="active">Active power: </span>Powerful Lightning Attack that can hurt Multiple Enemies.</p>
-<p><span class="property">Required level: </span>6</p>
-<p><span class="property">Cooldown: </span>35 seconds</p>
-<p><span class="property">Max damage toward each enemy: </span>30</p>
-<h4>Jubilee - Pink Shades</h4>
-<p><span class="active">Active power: </span>Use Shades for protection from bright flashes.</p>
-<p><span class="property">Required level: </span>6</p>
-<p><span class="property">Shades wearing time: </span>3 seconds</p>
-<p><span class="property">Cooldown: </span>20 seconds</p>
-<p><span class="property">Flashbangs delivery: </span>each 10 seconds</p>
-<h4>Scorpion - Get Over Here!</h4>
-<p><span class="active">Active power: </span>Hold +power key to Harpoon and Drag opponents to you.</p>
-<p><span class="property">Required level: </span>7</p>
-<p><span class="property">Damage: </span>15</p>
-<p><span class="property">Required time for victim to escape: </span>6 seconds</p>
-<h4>Ainz Ooal Gown - Resurrection Wand</h4>
-<p><span class="active">Active power: </span>Use Resurrection Wand to revive players</p>
-<p><span class="property">Required level: </span>7</p>
-<p><span class="property">Cost: </span>$1500</p>
-<h4>Bomberman - Toy Bombs</h4>
-<p><span class="active">Active power: </span>Press +power button to plant a toy bomb.</p>
-<p><span class="property">Required level: </span>7</p>
-<h4>Phoenix - Re-Birth</h4>
-<p><span class="passive">Passive power: </span>As the Phoenix you shall Rise Again from your Burning Ashes.</p>
-<p><span class="property">Required level: </span>8</p>
-<p><span class="property">Max explosion damage: </span>30</p>
-<p><span class="property">Cooldown: </span>600 seconds</p>
-<h4>Poison Ivy - Infect Poison</h4>
-<p><span class="passive">Passive power: </span>Infect the enemy with your Poisoned Bullets or Poisoned Knife.</p>
-<p><span class="property">Required level: </span>8</p>
-<p><span class="property">Damage per second: </span>2</p>
-<h4>Grandmaster - Revive Dead</h4>
-<p><span class="passive">Passive power: </span>Utilize cosmic life force to revive dead players.</p>
-<p><span class="property">Required level: </span>8</p>
-<p><span class="property">Respawn time: </span>5 seconds</p>
-<h4>Bishop - Absorb Energy</h4>
-<p><span class="active">Active power: </span>Absorb Damage and use it with your weapons! Or release all energy to deal even more damage.</p>
-<p><span class="property">Required level: </span>10</p>
-<p><span class="property">Absorptivity: </span>25% x Weapon damage taken</p>
-<p><span class="property">Damage multiplier: </span>30% x Absorbed damage</p>
-<p><span class="property">Blast damage: </span>100% x Absorbed damage</p>
+<h2 id="superhero-mod-help">SuperHero Mod Help</h2><p>As you kill opponents you gain Experience Points (XP). The higher the level of the person you kill the more XP you get. Once you have accumulated enough for a level up you will be able to choose a hero. The starting point is level 0 and you cannot select any heroes on this level.</p><p>Contents:</p><ol><li><a href='#commands'>Say commands</a></li><li><a href='#howtouse'>How to use powers?</a></li><li><a href='#powers'>List of powers</a></li></ol><h3 id='commands'>Say commands</h3><p>Press <strong>I</strong> or say <strong>/menu</strong> to open the main menu. Most of things below are available from the main menu, so there is no need to remember any of those say commands.</p><table><tr><td>say /help</td><td>This help page</td></tr><tr><td>say /showmenu</td><td>Displays Select Super Power menu</td></tr><tr><td>say /herolist</td><td>Lets you see <a href='#powers'>a list of heroes and powers</a> (you can also use "herolist" in the console)</td></tr><tr><td>say /myheroes</td><td>Displays your heroes</td></tr><tr><td>say /clearpowers</td><td>Clears ALL powers</td></tr><tr><td>say /drop &lt;hero&gt;</td><td>Drop one power so you can pick another</td></tr><tr><td>say /whohas &lt;hero&gt;</td><td>Shows you who has a particular hero</td></tr><tr><td>say /playerskills [@ALL|@CT|@T|name]</td><td>Shows you what heroes other players have chosen</td></tr><tr><td>say /playerlevels [@ALL|@CT|@T|name]</td><td>Shows you what levels other players are</td></tr><tr><td>say /automenu</td><td>Enable/Disable auto-show of Select Super Power menu</td></tr><tr><td>say /helpon</td><td>Enable HUD Help message (enabled by default)</td></tr><tr><td>say /helpoff</td><td>Disable HUD Help message</td></tr></table><h3 id='howtouse'>How to use powers?</h3><p><span class='passive'>Passive powers</span> are used automatically. To use <span class='active'>active powers</span> you have to bind a key to +power#. In order to bind a key, you must open your console and use the bind command: bind "key" "command". In this case, the command is "+power#". Here are some examples:</p><ul><li>bind f +power1</li><li>bind mouse3 +power2</li></ul><p>You can have only up to 3 <span class='active'>active powers</span>. You can have 15 superpowers in total (you get one slot each level).</p><h3 id='powers'>List of powers</h3><h4>Punisher - Bullets are added to your current mag!</h4><p><span class='passive'>Passive power:</span> You get more bullets into your current mag!</p>
+<h4>Wolverine - Auto-Heal</h4><p><span class='passive'>Passive power:</span> HP Regeneration.</p><p><span class='property'>Health regenerated per second:</span> 3 HP</p>
+<h4>Orc - Equipment Reincarnation</h4><p><span class='passive'>Passive power:</span> You will get all of your equipment in your next life.</p>
+<h4>Captain America - Super Shield</h4><p><span class='passive'>Passive power:</span> Random Invincibility.</p><p><span class='property'>Chance per second:</span> 10%</p><p><span class='property'>Duration:</span> 0.5 seconds</p>
+<h4>Domino - Even the Odds</h4><p><span class='passive'>Passive power:</span> Do more Gun Damage to Higher Levels, the larger the difference the more damage.</p><p><span class='property'>Max damage multiplier:</span> 1.5</p><p><em>Damage multiplier = (Victim level - Attacker level) / Victim level</em></p>
+<h4>Daredevil - Radar Sense</h4><p><span class='passive'>Passive power:</span> ESP Rings show you when other players are approaching.</p>
+<h4>Dracula - Vampiric Drain</h4><p><span class='passive'>Passive power:</span> Gain HP by attacking players.</p><p><span class='property'>Life steal:</span> 15%</p>
+<h4>Chell - Portal Gun</h4><p><span class='passive'>Passive power:</span> Press R holding knife to get Portal Gun.</p>
+<h4>Hobgoblin - Hobgoblin Grenades</h4><p><span class='passive'>Passive power:</span> Extra Nade Damage/Refill Nade.</p><p><span class='property'>Damage multiplier:</span> 1.75</p><p><span class='property'>HE grenades delivery:</span> every 7 seconds</p>
+<h4>Mario - Mulitple Jumps</h4><p><span class='passive'>Passive power:</span> You can now jump in the air for a certain amount of times!</p><p><span class='property'>Additional jumps:</span> 2000</p>
+<h4>Human Torch - Flame Blast</h4><p><span class='active'>Active power:</span> Ignite your enemies on fire with a Flame Blast.</p><p><span class='property'>Cost:</span> 3 AP</p><p><span class='property'>How many blasts to burn one victim:</span> 3</p><p><span class='property'>Damage:</span> 40</p>
+<h4>Iron Man - Rocket Pack</h4><p><span class='active'>Active power:</span> Rocket Jetpack - use +power key to take off.</p><p><span class='property'>Cost per second:</span> 1 AP</p><p><span class='property'>Armor:</span> 150 AP</p><p><span class='property'>Armor regenerated per second while not using:</span> 1 AP</p>
+<h4>Shadowcat - Walk Through Walls</h4><p><span class='active'>Active power:</span> Can Walk Through Walls for Short Time - GET STUCK AND YOU'LL BE AUTO-SLAIN!</p><p><span class='property'>Noclip time:</span> 6 seconds</p><p><span class='property'>Cooldown:</span> 30 seconds</p>
+<h4>Spider-Man - Web Swing</h4><p><span class='active'>Active power:</span> Shoot Web to Swing - Jump Reels In, Duck Reels Out.</p>
+<h4>Mystique - Morph into Enemy</h4><p><span class='active'>Active power:</span> Press the +power key to shapeshift into the Enemy.</p>
+<h4>Freeman - Long Jump Module</h4><p><span class='passive'>Passive power:</span> Get Crowbar and Long Jump Module.</p>
+<h4>Black Panther - Silent Boots</h4><p><span class='passive'>Passive power:</span> Your boots have Vibranium soles that absorb sound.</p>
+<h4>Superman - Reduced Gravity</h4><p><span class='passive'>Passive power:</span> You can jump higher.</p><p><span class='property'>Gravity:</span> 65%</p>
+<h4>The Tick - No Fall Damage</h4><p><span class='passive'>Passive power:</span> SPOOOON! Take no damage from falling.</p>
+<h4>Invisible Man - Invisibility</h4><p><span class='passive'>Passive power:</span> Makes you less visible and harder to see. Only works while not running, not shooting and not zooming.</p><p><span class='property'>Invisibility:</span> 68%</p>
+<h4>Psylocke - Psychic Detection</h4><p><span class='passive'>Passive power:</span> Recieve a telepathic warning when an enemy is near.</p><p><span class='property'>Required level:</span> 3</p><p><span class='property'>Distance:</span> 50 meters</p>
+<h4>Xavier - Team Detection</h4><p><span class='passive'>Passive power:</span> Detect what team a player is on by a glowing trail.</p><p><span class='property'>Required level:</span> 3</p>
+<h4>Snake - Health Rations</h4><p><span class='active'>Active power:</span> Health Rations on +power key use.</p><p><span class='property'>Required level:</span> 3</p><p><span class='property'>Heal:</span> 35 HP</p><p><span class='property'>Cooldown:</span> 20 seconds</p>
+<h4>Demolition Man - Tripmines</h4><p><span class='active'>Active power:</span> Unlimited Tripmines - Limited ammount that can be planted at once.</p><p><span class='property'>Required level:</span> 3</p><p><span class='property'>Max damage:</span> 150</p><p><span class='property'>Max ammount of mines at once:</span> 4</p><p><span class='property'>Mine health:</span> 200 HP</p>
+<h4>Explosion - Explosion</h4><p><span class='passive'>Passive power:</span> Blows up when killed!</p><p><span class='property'>Required level:</span> 3</p><p><span class='property'>Damage:</span> 35</p>
+<h4>Mirage - Delusion</h4><p><span class='passive'>Passive power:</span> Turn invisible for a short time when someone aims at you.</p><p><span class='property'>Required level:</span> 3</p><p><span class='property'>Cooldown:</span> 6 seconds</p>
+<h4>Blink - Teleportation</h4><p><span class='active'>Active power:</span> Teleport to where you are currently aiming at.</p><p><span class='property'>Required level:</span> 4</p><p><span class='property'>Cooldown:</span> 18 seconds</p>
+<h4>Cho'Gath - Feast</h4><p><span class='passive'>Passive power:</span> Get Extra HP by killing enemies with a knife.</p><p><span class='property'>Required level:</span> 4</p><p><span class='property'>Bonus health per stack:</span> 10 HP</p><p><span class='property'>Max bonus health:</span> 50 HP</p><p><em>You'll loose your extra health on map change.</em></p>
+<h4>Catwoman - Sneak Into Enemies Base</h4><p><span class='passive'>Passive power:</span> Chance Of Sneaking Into Enemies Base.</p><p><span class='property'>Required level:</span> 4</p><p><span class='property'>Chance per round:</span> 17%</p>
+<h4>Janna - Healing Grenades</h4><p><span class='passive'>Passive power:</span> Heal your team with healing grenades.</p><p><span class='property'>Required level:</span> 4</p><p><span class='property'>Heal:</span> 30 HP</p><p><span class='property'>Duration:</span> 5 seconds</p><p><span class='property'>Smoke grenades delivery:</span> every 20 seconds</p>
+<h4>Bazooka - Rocket-Laucher</h4><p><span class='active'>Active power:</span> Fire Many Different Types of Rockets.</p><p><span class='property'>Required level:</span> 4</p>
+<h4>Alien - Alien Vision</h4><p><span class='passive'>Passive power:</span> Get Alien Vision and Invisibility - You can use only knife.</p><p><span class='property'>Required level:</span> 5</p><p><span class='property'>Invisibility:</span> 85%</p>
+<h4>Bass - Uber Energy Beam</h4><p><span class='active'>Active power:</span> Press the +power key to fire your beam cannon.</p><p><span class='property'>Required level:</span> 5</p><p><span class='property'>Laser ammo:</span> 5</p><p><span class='property'>Damage:</span> 36 − 100</p>
+<h4>Thing - Rock Skin</h4><p><span class='passive'>Passive power:</span> Chance to ignore bullets and knife hits.</p><p><span class='property'>Required level:</span> 5</p><p><span class='property'>Chance to ignore a bullet:</span> 12%</p><p><span class='property'>Chance to ignore a knife hit:</span> 10%</p>
+<h4>Electro - Chain Lightning</h4><p><span class='active'>Active power:</span> Powerful Lightning Attack that can hurt Multiple Enemies.</p><p><span class='property'>Required level:</span> 6</p><p><span class='property'>Cooldown:</span> 35 seconds</p><p><span class='property'>Max damage toward each enemy:</span> 30</p>
+<h4>Jubilee - Pink Shades</h4><p><span class='active'>Active power:</span> Use Shades for protection from bright flashes.</p><p><span class='property'>Required level:</span> 6</p><p><span class='property'>Shades wearing time:</span> 3 seconds</p><p><span class='property'>Cooldown:</span> 20 seconds</p><p><span class='property'>Flashbangs delivery:</span> each 10 seconds</p>
+<h4>Scorpion - Get Over Here!</h4><p><span class='active'>Active power:</span> Hold +power key to Harpoon and Drag opponents to you.</p><p><span class='property'>Required level:</span> 7</p><p><span class='property'>Damage:</span> 15</p><p><span class='property'>Required time for victim to escape:</span> 6 seconds</p>
+<h4>Bomberman - Toy Bombs</h4><p><span class='active'>Active power:</span> Press +power button to plant a toy bomb.</p><p><span class='property'>Required level:</span> 7</p>
+<h4>Phoenix - Re-Birth</h4><p><span class='passive'>Passive power:</span> As the Phoenix you shall Rise Again from your Burning Ashes.</p><p><span class='property'>Required level:</span> 8</p><p><span class='property'>Max explosion damage:</span> 30</p><p><span class='property'>Cooldown:</span> 600 seconds</p>
+<h4>Poison Ivy - Infect Poison</h4><p><span class='passive'>Passive power:</span> Infect the enemy with your Poisoned Bullets or Poisoned Knife.</p><p><span class='property'>Required level:</span> 8</p><p><span class='property'>Damage per second:</span> 2</p>
+<h4>Grandmaster - Revive Dead</h4><p><span class='passive'>Passive power:</span> Utilize cosmic life force to revive dead players.</p><p><span class='property'>Required level:</span> 8</p>
+<h4>Bishop - Absorb Energy</h4><p><span class='active'>Active power:</span> Absorb Damage and use it with your weapons! Or release all energy to deal even more damage.</p><p><span class='property'>Required level:</span> 10</p><p><span class='property'>Absorptivity:</span> 25% x Weapon damage taken</p><p><span class='property'>Damage multiplier:</span> 30% x Absorbed damage</p><p><span class='property'>Blast damage:</span> 100% x Absorbed damage</p>
 </div>
 <noscript><hr></noscript>
 <div id="ru" lang="ru" class="wrapper">
@@ -350,243 +78,50 @@ document.write('<a href="javascript:en()">English</a> | Русский')
 <p>02 фев 2019 - Сервер запущен. Английский и русский языки доступны.</p>
 <h2 id="состояние-сервера">Состояние сервера</h2>
 <p><a href="https://www.gametracker.com/server_info/95.142.47.100:27015/" class="gametracker"><img src="https://cache.gametracker.com/server_info/95.142.47.100:27015/b_560_95_1.png" alt="Текущее состояние сервера" /></a></p>
-<h2 id="информация-о-моде">Информация о моде</h2>
-<p>Убивая противников и выполняя цели карты, вы получаете очки опыта. Чем выше уровень убитого вами игрока, тем больше опыта вы получаете. Набрав опыт и перейдя на следующий уровень, вы можете выбрать новую способность. Начальный уровень - нулевой, у игроков нет способностей на этом уровне.</p>
-<p>Содержание:</p>
-<ol>
-  <li><a href="#команды-чата">Команды чата</a></li>
-  <li><a href="#как-пользоваться-способностями">Как пользоваться способностями?</a></li>
-  <li><a href="#список-способностей">Список способностей</a></li>
-</ol>
-<h3 id="команды-чата">Команды чата</h3>
-<p>Чтобы открыть главное меню, нажмите клавишу [ <strong>I</strong> ] или напишите в чат <strong>/menu</strong>. Многое из перечисленного ниже также доступно из главного меню, и вам нет необходимости запоминать эти команды.</p>
-<table>
-  <tbody>
-    <tr>
-      <td>say /help</td>
-      <td>Эта справочная страница</td>
-    </tr>
-    <tr>
-      <td>say /showmenu</td>
-      <td>Меню выбора способностей</td>
-    </tr>
-    <tr>
-      <td>say /herolist</td>
-      <td><a href="#список-способностей">Список способностей</a> (вы также можете использовать команду "herolist" в консоли)</td>
-    </tr>
-    <tr>
-      <td>say /myheroes</td>
-      <td>Список взятых вами способностей</td>
-    </tr>
-    <tr>
-      <td>say /clearpowers</td>
-      <td>Сбрасывает все ваши способности</td>
-    </tr>
-    <tr>
-      <td>say /drop &lt;hero&gt;</td>
-      <td>Сбрасывает одну вашу способность</td>
-    </tr>
-    <tr>
-      <td>say /whohas &lt;hero&gt;</td>
-      <td>Показывает вам, у кого есть указанная способность</td>
-    </tr>
-    <tr>
-      <td>say /playerskills [@ALL|@CT|@T|name]</td>
-      <td>Показывает вам, какие способности выбраны другими игроками</td>
-    </tr>
-    <tr>
-      <td>say /playerlevels [@ALL|@CT|@T|name]</td>
-      <td>Показывает вам, какого уровня другие игроки</td>
-    </tr>
-    <tr>
-      <td>say /automenu</td>
-      <td>Включить/выключить автоматическое появление меню выбора способностей</td>
-    </tr>
-    <tr>
-      <td>say /helpon</td>
-      <td>Отобразить справочное HUD сообщение</td>
-    </tr>
-    <tr>
-      <td>say /helpoff</td>
-      <td>Скрыть справочное HUD сообщение</td>
-    </tr>
-  </tbody>
-</table>
-<h3 id="как-пользоваться-способностями">Как пользоваться способностями?</h3>
-<p><span class="passive">Пассивные способности</span> используются автоматически. Чтобы использовать <span class="active">активные способности</span>, вам нужно назначить клавишу на команду +power#, где # - номер активной способности. Для этого откройте консоль (~ или ё) и напишите в консоли: bind "клавиша" "команда". В нашем случае командой является "+power#". Вот пара примеров:</p>
-<ul>
-  <li>bind f +power1</li>
-  <li>bind mouse3 +power2</li>
-</ul>
-<p>У вас может быть до 3 <span class="active">активных способностей</span>. Всего способностей может быть 10 (вы получаете один слот на каждом уровне).</p>
-<h3 id="список-способностей">Список способностей</h3>
-<h4>Punisher - Автопополнение патронов</h4>
-<p><span class="passive">Пассивная способность: </span>Патроны автоматически проникают в магазины ваших пушек!</p>
-<h4>Wolverine - Восстановление</h4>
-<p><span class="passive">Пассивная способность: </span>Регенерация здоровья.</p>
-<p><span class="property">Восстановление здоровья в секунду: </span>3 HP</p>
-<h4>Orc - Реинкарнация снаряжения</h4>
-<p><span class="passive">Пассивная способность: </span>Вы получите всё ваше снаряжение в вашей следующей жизни.</p>
-<h4>Captain America - Суперщит</h4>
-<p><span class="passive">Пассивная способность: </span>Шанс получить неуязвимость.</p>
-<p><span class="property">Шанс кажду секунду: </span>10%</p>
-<p><span class="property">Продолжительность неуязвимости: </span>0.5 сек</p>
-<h4>Domino - Уравнять шансы</h4>
-<p><span class="passive">Пассивная способность: </span>Вы наносите больше урона оружием по врагам более высокого уровня.</p>
-<p><span class="property">Максимальный множитель: </span>1.5</p>
-<p><em>Множитель урона = (Уровень жертвы - Уровень атакующего) / Уровень жертвы</em></p>
-<h4>Daredevil - Радарное чувство</h4>
-<p><span class="passive">Пассивная способность: </span>Экстрасенсорные кольца показывают вам местонахождение игроков.</p>
-<h4>Dracula - Похищение жизни</h4>
-<p><span class="passive">Пассивная способность: </span>Атакуя игроков, вы восстанавливаете своё здоровье.</p>
-<p><span class="property">Вампиризм: </span>15%</p>
-<h4>Chell - Портальная пушка</h4>
-<p><span class="passive">Пассивная способность: </span>Нажмите R с ножом в руках, чтобы взять портальную пушку.</p>
-<h4>Hobgoblin - Гранаты Хобгоблина</h4>
-<p><span class="passive">Пассивная способность: </span>Дополнительный урон от осколочных гранат и их автопополнение.</p>
-<p><span class="property">Множитель урона: </span>1.75</p>
-<p><span class="property">Выдача осколочных гранат: </span>каждые 7 сек</p>
-<h4>Mario - Многократные прыжки</h4>
-<p><span class="passive">Пассивная способность: </span>Вы можете прыгать в воздухе много раз.</p>
-<p><span class="property">Прыжков: </span>2000</p>
-<h4>Human Torch - Поток пламени</h4>
-<p><span class="active">Активная способность: </span>Поджигайте своих врагов.</p>
-<p><span class="property">Стоимость выстрела: </span>3 AP</p>
-<p><span class="property">Количество выстрелов, чтобы убить жертву: </span>3</p>
-<p><span class="property">Урон: </span>40</p>
-<h4>Iron Man - Реактивный ранец</h4>
-<p><span class="active">Активная способность: </span>Используйте +power# клавишу, чтобы взлететь.</p>
-<p><span class="property">Стоимость полёта в секунду: </span>1 AP</p>
-<p><span class="property">Ваша броня: </span>150 AP</p>
-<p><span class="property">Восстановление брони в секунду, когда не используется: </span>1 AP</p>
-<h4>Shadowcat - Прохождение сквозь стены</h4>
-<p><span class="active">Активная способность: </span>Вы можете ходить сквозь стены - Вы умрёте, если застрянете в стене.</p>
-<p><span class="property">Время действия: </span>6 сек</p>
-<p><span class="property">Откат: </span>30 сек</p>
-<h4>Spider-Man - Раскачивание на паутине</h4>
-<p><span class="active">Активная способность: </span>Выстреливайте паутиной и раскачивайтесь - Контролируйте длину, прыгая и приседая.</p>
-<h4>Mystique - Перевоплощение</h4>
-<p><span class="active">Активная способность: </span>Нажмите +power# клавишу, чтобы замаскироваться под противника.</p>
-<h4>Freeman - Длинные прыжки</h4>
-<p><span class="passive">Пассивная способность: </span>Получите лом и модуль длинных прыжков.</p>
-<h4>Black Panther - Бесшумные шаги</h4>
-<p><span class="passive">Пассивная способность: </span>Подошвы вашей обуви сделаны из Вибраниума и поглощают звук.</p>
-<h4>Superman - Пониженная гравитация</h4>
-<p><span class="passive">Пассивная способность: </span>Вы можете прыгать выше.</p>
-<p><span class="property">Гравитация: </span>65%</p>
-<h4>The Tick - Нетравматичные падения</h4>
-<p><span class="passive">Пассивная способность: </span>SPOOOON! Не получайте урон от падений.</p>
-<h4>Invisible Man - Невидимость</h4>
-<p><span class="passive">Пассивная способность: </span>Вы замаскированы, и вас труднее заметить. Не работает, когда вы бежите и используете оружие.</p>
-<p><span class="property">Невидимость: </span>68%</p>
-<h4>Psylocke - Телепатическое обнаружение</h4>
-<p><span class="passive">Пассивная способность: </span>Вы будете получать телепатическое предупреждение о врагах поблизости.</p>
-<p><span class="property">Требуемый уровень: </span>3</p>
-<p><span class="property">Дистанция: </span>50 метров</p>
-<h4>Xavier - Определение команды</h4>
-<p><span class="passive">Пассивная способность: </span>Вы видите хвост, по которому понятно, какой команде принадлежит игрок.</p>
-<p><span class="property">Требуемый уровень: </span>3</p>
-<h4>Snake - Лечебный паёк</h4>
-<p><span class="active">Активная способность: </span>Лечебные пайки на +power# клавишу.</p>
-<p><span class="property">Требуемый уровень: </span>3</p>
-<p><span class="property">Лечение: </span>35 HP</p>
-<p><span class="property">Откат: </span>20 сек</p>
-<h4>Demolition Man - Мины-ловушки</h4>
-<p><span class="active">Активная способность: </span>Бесконечные мины - Количество мин, устанавливаемых одновременно, ограничено.</p>
-<p><span class="property">Требуемый уровень: </span>3</p>
-<p><span class="property">Максимальный урон: </span>150</p>
-<p><span class="property">Мин одновременно: </span>4</p>
-<p><span class="property">Прочность мины: </span>200 HP</p>
-<h4>Explosion - Взрыв!</h4>
-<p><span class="passive">Пассивная способность: </span>Вы взрываетесь, когда вас убивают.</p>
-<p><span class="property">Требуемый уровень: </span>3</p>
-<p><span class="property">Урон: </span>35</p>
-<h4>Mirage - Наваждение</h4>
-<p><span class="passive">Пассивная способность: </span>Вы становитесь невидимы на короткое время, когда по вам целятся.</p>
-<p><span class="property">Требуемый уровень: </span>3</p>
-<p><span class="property">Откат: </span>6 сек</p>
-<h4>Blink - Телепортация</h4>
-<p><span class="active">Активная способность: </span>Вы телепорируетесь в направлении своего взгляда.</p>
-<p><span class="property">Требуемый уровень: </span>4</p>
-<p><span class="property">Откат: </span>18 сек</p>
-<h4>Cho'Gath - Пожирание</h4>
-<p><span class="passive">Пассивная способность: </span>Зарабатывайте HP, убивая врагов ножом.</p>
-<p><span class="property">Требуемый уровень: </span>4</p>
-<p><span class="property">Бонусное здоровье за каждое пожирание: </span>10 HP</p>
-<p><span class="property">Максимальная прибавка к здоровью: </span>50 HP</p>
-<p><em>При смене карты вы потеряете накопленное здоровье.</em></p>
-<h4>Catwoman - Внедрение</h4>
-<p><span class="passive">Пассивная способность: </span>Шанс проникнуть на базу противника.</p>
-<p><span class="property">Требуемый уровень: </span>4</p>
-<p><span class="property">Шанс в начале каждого раунда: </span>17%</p>
-<h4>Janna - Лечебные гранаты</h4>
-<p><span class="passive">Пассивная способность: </span>Лечите ваших союзников лечебными гранатами.</p>
-<p><span class="property">Требуемый уровень: </span>4</p>
-<p><span class="property">Лечение: </span>30 HP</p>
-<p><span class="property">Время действия: </span>5 сек</p>
-<p><span class="property">Выдача дымовых гранат: </span>каждые 20 сек</p>
-<h4>Bazooka - Ракетница</h4>
-<p><span class='active'>Активная способность: </span>Запускайте различные ракеты.</p>
-<p><span class='property'>Требуемый уровень: </span>4</p>
-<h4>Alien - Зрение Чужого</h4>
-<p><span class="passive">Пассивная способность: </span>Получите Зрение Чужого и Невидимость - Вы можете использовать только нож.</p>
-<p><span class="property">Требуемый уровень: </span>5</p>
-<p><span class="property">Невидимость: </span>85%</p>
-<h4>Bass - Мощный луч энергии</h4>
-<p><span class="active">Активная способность: </span>Нажмите +power# клавишу, чтобы выстрелить из лазерной пушки.</p>
-<p><span class="property">Требуемый уровень: </span>5</p>
-<p><span class="property">Выстрелов: </span>5</p>
-<p><span class="property">Урон: </span>36 − 100</p>
-<h4>Thing - Каменная кожа</h4>
-<p><span class="passive">Пассивная способность: </span>Шанс проигнорировать пули и ножевые удары.</p>
-<p><span class="property">Требуемый уровень: </span>5</p>
-<p><span class="property">Шанс проигнорировать пулевой урон: </span>12%</p>
-<p><span class="property">Шанс проигнорировать ножевой удар: </span>10%</p>
-<h4>Electro - Цепь молний</h4>
-<p><span class="active">Активная способность: </span>Мощная атака молниями, наносящая урон нескольким целям.</p>
-<p><span class="property">Требуемый уровень: </span>6</p>
-<p><span class="property">Откат: </span>35 сек</p>
-<p><span class="property">Максимальный урон по каждой жертве: </span>30</p>
-<h4>Jubilee - Солнцезащитные очки</h4>
-<p><span class="active">Активная способность: </span>Используйте солнцезащитные очки, чтобы защититься от ярких вспышек.</p>
-<p><span class="property">Требуемый уровень: </span>6</p>
-<p><span class="property">Время действия: </span>3 сек</p>
-<p><span class="property">Откат: </span>20 сек</p>
-<p><span class="property">Выдача светошумовых гранат: </span>каждые 10 сек</p>
-<h4>Scorpion - Get Over Here!</h4>
-<p><span class="active">Активная способность: </span>Удерживайте +power# клавишу, чтобы выстреливать гарпуном и подтягивать им к себе противников.</p>
-<p><span class="property">Требуемый уровень: </span>7</p>
-<p><span class="property">Урон: </span>15</p>
-<p><span class="property">Время, требуемое жертве на побег: </span>6 сек</p>
-<h4>Ainz Ooal Gown - Палочка воскрешения</h4>
-<p><span class="active">Активная способность: </span>Воскрешайте игроков Палочкой воскрешения</p>
-<p><span class="property">Требуемый уровень: </span>7</p>
-<p><span class="property">Стоимость: </span>$1500</p>
-<h4>Bomberman - Игрушечные бомбы</h4>
-<p><span class="active">Активная способность: </span>Нажмите +power# кнопку, чтобы установить игрушечную бомбу.</p>
-<p><span class="property">Требуемый уровень: </span>7</p>
-<h4>Phoenix - Перерождение</h4>
-<p><span class="passive">Пассивная способность: </span>Подобно Фениксу вы восстаёте из пепла.</p>
-<p><span class="property">Требуемый уровень: </span>8</p>
-<p><span class="property">Максимальный урон при взрыве: </span>30</p>
-<p><span class="property">Откат: </span>600 сек</p>
-<h4>Poison Ivy - Отравление ядом</h4>
-<p><span class="passive">Пассивная способность: </span>Отравляйте ваших врагов ядовитыми пулями или ножом.</p>
-<p><span class="property">Требуемый уровень: </span>8</p>
-<p><span class="property">Урон в секунду: </span>2</p>
-<h4>Grandmaster - Оживление павших</h4>
-<p><span class="passive">Пассивная способность: </span>Используйте космическую жизненную энергию, чтобы воскрешать павших игроков.</p>
-<p><span class="property">Требуемый уровень: </span>8</p>
-<p><span class="property">Время воскрешения: </span>5 сек</p>
-<h4>Bishop - Поглощение энергии</h4>
-<p><span class="active">Активная способность: </span>Впитывайте урон и используйте его с вашими пушками! Или высвободите всю энергию во врага.</p>
-<p><span class="property">Требуемый уровень: </span>10</p>
-<p><span class="property">Количество поглощаемого входящего урона: </span>25%</p>
-<p><span class="property">Множитель урона: </span>30% x Кол-во поглощённого урона в данный момент</p>
-<p><span class="property">Урон активной способности: </span>100% x Кол-во поглощённого урона в данный момент</p>
+<h2 id="информация-о-моде">Информация о моде</h2><p>Убивая противников и выполняя цели карты, вы получаете очки опыта. Чем выше уровень убитого вами игрока, тем больше опыта вы получаете. Набрав опыт и перейдя на следующий уровень, вы можете выбрать новую способность. Начальный уровень - нулевой, у игроков нет способностей на этом уровне.</p><p>Содержание:</p><ol><li><a href='#команды-чата'>Команды чата</a></li><li><a href='#как-пользоваться-способностями'>Как пользоваться способностями?</a></li><li><a href='#список-способностей'>Список способностей</a></li></ol><h3 id='команды-чата'>Команды чата</h3><p>Чтобы открыть главное меню, нажмите клавишу <strong>Ш</strong> или напишите в чат <strong>/menu</strong>. Многое из перечисленного ниже также доступно из главного меню, и вам нет необходимости запоминать эти команды.</p><table><tr><td>say /help</td><td>Эта справочная страница</td></tr><tr><td>say /showmenu</td><td>Меню выбора способностей</td></tr><tr><td>say /herolist</td><td><a href='#список-способностей'>Список способностей</a> (вы также можете использовать команду "herolist" в консоли)</td></tr><tr><td>say /myheroes</td><td>Список взятых вами способностей</td></tr><tr><td>say /clearpowers</td><td>Сбрасывает все ваши способности</td></tr><tr><td>say /drop &lt;hero&gt;</td><td>Сбрасывает одну вашу способность</td></tr><tr><td>say /whohas &lt;hero&gt;</td><td>Показывает вам, у кого есть указанная способность</td></tr><tr><td>say /playerskills [@ALL|@CT|@T|name]</td><td>Показывает вам, какие способности выбраны другими игроками</td></tr><tr><td>say /playerlevels [@ALL|@CT|@T|name]</td><td>Показывает вам, какого уровня другие игроки</td></tr><tr><td>say /automenu</td><td>Включить/выключить автоматическое появление меню выбора способностей</td></tr><tr><td>say /helpon</td><td>Отобразить справочное HUD сообщение</td></tr><tr><td>say /helpoff</td><td>Скрыть справочное HUD сообщение</td></tr></table><h3 id='как-пользоваться-способностями'>Как пользоваться способностями?</h3><p><span class='passive'>Пассивные способности</span> используются автоматически. Чтобы использовать <span class='active'>активные способности</span>, вам нужно назначить клавишу на команду +power#, где # - номер активной способности. Для этого откройте консоль (~ или ё) и напишите в консоли: bind&nbsp;"клавиша"&nbsp;"команда". В нашем случае командой является "+power#". Вот пара примеров:</p><ul><li>bind f +power1</li><li>bind mouse3 +power2</li></ul><p>У вас может быть до 3 <span class='active'>активных способностей</span>. Всего способностей может быть 15 (вы получаете один слот на каждом уровне).</p><h3 id='список-способностей'>Список способностей</h3><h4>Punisher - Автопополнение патронов</h4><p><span class='passive'>Пассивная способность:</span> Патроны автоматически проникают в магазины ваших пушек!</p>
+<h4>Wolverine - Восстановление</h4><p><span class='passive'>Пассивная способность:</span> Регенерация здоровья.</p><p><span class='property'>Восстановление здоровья в секунду:</span> 3 HP</p>
+<h4>Orc - Реинкарнация снаряжения</h4><p><span class='passive'>Пассивная способность:</span> Вы получите всё ваше снаряжение в вашей следующей жизни.</p>
+<h4>Captain America - Суперщит</h4><p><span class='passive'>Пассивная способность:</span> Шанс получить неуязвимость.</p><p><span class='property'>Шанс кажду секунду:</span> 10%</p><p><span class='property'>Продолжительность неуязвимости:</span> 0.5 сек</p>
+<h4>Domino - Уравнять шансы</h4><p><span class='passive'>Пассивная способность:</span> Вы наносите больше урона оружием по врагам более высокого уровня.</p><p><span class='property'>Максимальный множитель:</span> 1.5</p><p><em>Множитель урона = (Уровень жертвы - Уровень атакующего) / Уровень жертвы</em></p>
+<h4>Daredevil - Радарное чувство</h4><p><span class='passive'>Пассивная способность:</span> Экстрасенсорные кольца показывают вам местонахождение игроков.</p>
+<h4>Dracula - Похищение жизни</h4><p><span class='passive'>Пассивная способность:</span> Атакуя игроков, вы восстанавливаете своё здоровье.</p><p><span class='property'>Вампиризм:</span> 15%</p>
+<h4>Chell - Портальная пушка</h4><p><span class='passive'>Пассивная способность:</span> Нажмите R с ножом в руках, чтобы взять портальную пушку.</p>
+<h4>Hobgoblin - Гранаты Хобгоблина</h4><p><span class='passive'>Пассивная способность:</span> Дополнительный урон от осколочных гранат и их автопополнение.</p><p><span class='property'>Множитель урона:</span> 1.75</p><p><span class='property'>Выдача осколочных гранат:</span> каждые 7 сек</p>
+<h4>Mario - Многократные прыжки</h4><p><span class='passive'>Пассивная способность:</span> Вы можете прыгать в воздухе много раз.</p><p><span class='property'>Прыжков:</span> 2000</p>
+<h4>Human Torch - Поток пламени</h4><p><span class='active'>Активная способность:</span> Поджигайте своих врагов.</p><p><span class='property'>Стоимость выстрела:</span> 3 AP</p><p><span class='property'>Количество выстрелов, чтобы убить жертву:</span> 3</p><p><span class='property'>Урон:</span> 40</p>
+<h4>Iron Man - Реактивный ранец</h4><p><span class='active'>Активная способность:</span> Используйте +power# клавишу, чтобы взлететь.</p><p><span class='property'>Стоимость полёта в секунду:</span> 1 AP</p><p><span class='property'>Ваша броня:</span> 150 AP</p><p><span class='property'>Восстановление брони в секунду, когда не используется:</span> 1 AP</p>
+<h4>Shadowcat - Прохождение сквозь стены</h4><p><span class='active'>Активная способность:</span> Вы можете ходить сквозь стены - Вы умрёте, если застрянете в стене.</p><p><span class='property'>Время действия:</span> 6 сек</p><p><span class='property'>Откат:</span> 30 сек</p>
+<h4>Spider-Man - Раскачивание на паутине</h4><p><span class='active'>Активная способность:</span> Выстреливайте паутиной и раскачивайтесь - Контролируйте длину, прыгая и приседая.</p>
+<h4>Mystique - Перевоплощение</h4><p><span class='active'>Активная способность:</span> Нажмите +power# клавишу, чтобы замаскироваться под противника.</p>
+<h4>Freeman - Длинные прыжки</h4><p><span class='passive'>Пассивная способность:</span> Получите лом и модуль длинных прыжков.</p>
+<h4>Black Panther - Бесшумные шаги</h4><p><span class='passive'>Пассивная способность:</span> Подошвы вашей обуви сделаны из Вибраниума и поглощают звук.</p>
+<h4>Superman - Пониженная гравитация</h4><p><span class='passive'>Пассивная способность:</span> Вы можете прыгать выше.</p><p><span class='property'>Гравитация:</span> 65%</p>
+<h4>The Tick - Нетравматичные падения</h4><p><span class='passive'>Пассивная способность:</span> SPOOOON! Не получайте урон от падений.</p>
+<h4>Invisible Man - Невидимость</h4><p><span class='passive'>Пассивная способность:</span> Вы замаскированы, и вас труднее заметить. Не работает, когда вы бежите и используете оружие.</p><p><span class='property'>Невидимость:</span> 68%</p>
+<h4>Psylocke - Телепатическое обнаружение</h4><p><span class='passive'>Пассивная способность:</span> Вы будете получать телепатическое предупреждение о врагах поблизости.</p><p><span class='property'>Требуемый уровень:</span> 3</p><p><span class='property'>Дистанция:</span> 50 метров</p>
+<h4>Xavier - Определение команды</h4><p><span class='passive'>Пассивная способность:</span> Вы видите хвост, по которому понятно, какой команде принадлежит игрок.</p><p><span class='property'>Требуемый уровень:</span> 3</p>
+<h4>Snake - Лечебный паёк</h4><p><span class='active'>Активная способность:</span> Лечебные пайки на +power# клавишу.</p><p><span class='property'>Требуемый уровень:</span> 3</p><p><span class='property'>Лечение:</span> 35 HP</p><p><span class='property'>Откат:</span> 20 сек</p>
+<h4>Demolition Man - Мины-ловушки</h4><p><span class='active'>Активная способность:</span> Бесконечные мины - Количество мин, устанавливаемых одновременно, ограничено.</p><p><span class='property'>Требуемый уровень:</span> 3</p><p><span class='property'>Максимальный урон:</span> 150</p><p><span class='property'>Мин одновременно:</span> 4</p><p><span class='property'>Прочность мины:</span> 200 HP</p>
+<h4>Explosion - Взрыв!</h4><p><span class='passive'>Пассивная способность:</span> Вы взрываетесь, когда вас убивают.</p><p><span class='property'>Требуемый уровень:</span> 3</p><p><span class='property'>Урон:</span> 35</p>
+<h4>Mirage - Наваждение</h4><p><span class='passive'>Пассивная способность:</span> Вы становитесь невидимы на короткое время, когда по вам целятся.</p><p><span class='property'>Требуемый уровень:</span> 3</p><p><span class='property'>Откат:</span> 6 сек</p>
+<h4>Blink - Телепортация</h4><p><span class='active'>Активная способность:</span> Вы телепорируетесь в направлении своего взгляда.</p><p><span class='property'>Требуемый уровень:</span> 4</p><p><span class='property'>Откат:</span> 18 сек</p>
+<h4>Cho'Gath - Пожирание</h4><p><span class='passive'>Пассивная способность:</span> Зарабатывайте HP, убивая врагов ножом.</p><p><span class='property'>Требуемый уровень:</span> 4</p><p><span class='property'>Бонусное здоровье за каждое пожирание:</span> 10 HP</p><p><span class='property'>Максимальная прибавка к здоровью:</span> 50 HP</p><p><em>При смене карты вы потеряете накопленное здоровье.</em></p>
+<h4>Catwoman - Внедрение</h4><p><span class='passive'>Пассивная способность:</span> Шанс проникнуть на базу противника.</p><p><span class='property'>Требуемый уровень:</span> 4</p><p><span class='property'>Шанс в начале каждого раунда:</span> 17%</p>
+<h4>Janna - Лечебные гранаты</h4><p><span class='passive'>Пассивная способность:</span> Лечите ваших союзников лечебными гранатами.</p><p><span class='property'>Требуемый уровень:</span> 4</p><p><span class='property'>Лечение:</span> 30 HP</p><p><span class='property'>Время действия:</span> 5 сек</p><p><span class='property'>Выдача дымовых гранат:</span> каждые 20 сек</p>
+<h4>Bazooka - Ракетница</h4><p><span class='active'>Активная способность:</span> Запускайте различные ракеты.</p><p><span class='property'>Требуемый уровень:</span> 4</p>
+<h4>Alien - Зрение Чужого</h4><p><span class='passive'>Пассивная способность:</span> Получите Зрение Чужого и Невидимость - Вы можете использовать только нож.</p><p><span class='property'>Требуемый уровень:</span> 5</p><p><span class='property'>Невидимость:</span> 85%</p>
+<h4>Bass - Мощный луч энергии</h4><p><span class='active'>Активная способность:</span> Нажмите +power# клавишу, чтобы выстрелить из лазерной пушки.</p><p><span class='property'>Требуемый уровень:</span> 5</p><p><span class='property'>Выстрелов:</span> 5</p><p><span class='property'>Урон:</span> 36 − 100</p>
+<h4>Thing - Каменная кожа</h4><p><span class='passive'>Пассивная способность:</span> Шанс проигнорировать пули и ножевые удары.</p><p><span class='property'>Требуемый уровень:</span> 5</p><p><span class='property'>Шанс проигнорировать пулевой урон:</span> 12%</p><p><span class='property'>Шанс проигнорировать ножевой удар:</span> 10%</p>
+<h4>Electro - Цепь молний</h4><p><span class='active'>Активная способность:</span> Мощная атака молниями, наносящая урон нескольким целям.</p><p><span class='property'>Требуемый уровень:</span> 6</p><p><span class='property'>Откат:</span> 35 сек</p><p><span class='property'>Максимальный урон по каждой жертве:</span> 30</p>
+<h4>Jubilee - Солнцезащитные очки</h4><p><span class='active'>Активная способность:</span> Используйте солнцезащитные очки, чтобы защититься от ярких вспышек.</p><p><span class='property'>Требуемый уровень:</span> 6</p><p><span class='property'>Время действия:</span> 3 сек</p><p><span class='property'>Откат:</span> 20 сек</p><p><span class='property'>Выдача светошумовых гранат:</span> каждые 10 сек</p>
+<h4>Scorpion - Get Over Here!</h4><p><span class='active'>Активная способность:</span> Удерживайте +power# клавишу, чтобы выстреливать гарпуном и подтягивать им к себе противников.</p><p><span class='property'>Требуемый уровень:</span> 7</p><p><span class='property'>Урон:</span> 15</p><p><span class='property'>Время, требуемое жертве на побег:</span> 6 сек</p>
+<h4>Bomberman - Игрушечные бомбы</h4><p><span class='active'>Активная способность:</span> Нажмите +power# кнопку, чтобы установить игрушечную бомбу.</p><p><span class='property'>Требуемый уровень:</span> 7</p>
+<h4>Phoenix - Перерождение</h4><p><span class='passive'>Пассивная способность:</span> Подобно Фениксу вы восстаёте из пепла.</p><p><span class='property'>Требуемый уровень:</span> 8</p><p><span class='property'>Максимальный урон при взрыве:</span> 30</p><p><span class='property'>Откат:</span> 600 сек</p>
+<h4>Poison Ivy - Отравление ядом</h4><p><span class='passive'>Пассивная способность:</span> Отравляйте ваших врагов ядовитыми пулями или ножом.</p><p><span class='property'>Требуемый уровень:</span> 8</p><p><span class='property'>Урон в секунду:</span> 2</p>
+<h4>Grandmaster - Оживление павших</h4><p><span class='passive'>Пассивная способность:</span> Используйте космическую жизненную энергию, чтобы воскрешать павших игроков.</p><p><span class='property'>Требуемый уровень:</span> 8</p>
+<h4>Bishop - Поглощение энергии</h4><p><span class='active'>Активная способность:</span> Впитывайте урон и используйте его с вашими пушками! Или высвободите всю энергию во врага.</p><p><span class='property'>Требуемый уровень:</span> 10</p><p><span class='property'>Количество поглощаемого входящего урона:</span> 25%</p><p><span class='property'>Множитель урона:</span> 30% x Кол-во поглощённого урона в данный момент</p><p><span class='property'>Урон активной способности:</span> 100% x Кол-во поглощённого урона в данный момент</p>
 </div>
-<script>
-function ru() {
+<script>function ru() {
   document.getElementById('en').style.display = 'none';
   document.getElementById('ru').style.display = 'block';
 }
@@ -595,8 +130,6 @@ function en() {
   document.getElementById('en').style.display = 'block';
 }
 var language = window.navigator.userLanguage || window.navigator.language;
-if (language.indexOf('ru') > -1) ru();
-else en();
-</script>
+if (language.indexOf('ru') > -1) ru();</script>
 </body>
 </html>

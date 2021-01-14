@@ -235,6 +235,7 @@ public setDictionaryRelation()
 {
 	for ( new x = 0; x < gSuperHeroCount && x < SH_MAXHEROS; x++ ) 
 	{
+		dictionaryRelation[x] = -1
 		for ( new i = 0; i < DICT_HEROES; i++ )
 			if ( equal( heroDictionary[i][0], gSuperHeros[x][hero] ) )
 			{

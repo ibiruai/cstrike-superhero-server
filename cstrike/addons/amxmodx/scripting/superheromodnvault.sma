@@ -3,7 +3,6 @@
 // It works like Anubis and Advanced Bullet Damage, but damage dealt with superpowers is also shown!
 // Player can enable and disable this feature with shmenu
 #define MY_ANUBIS 1			// 1 - Enabled, 0 - Disabled
-#define DEFAULT_HEALTH 125	// 100 - Default
 // You can use hudmessage for displaying status information for those who have hud_centerid 1
 #define MESSAGE_LENGTH 64
 #define STATUS_HUDMESSAGE 1	// 1 - Enabled, 0 - Disabled
@@ -529,7 +528,7 @@ new gSHConfigDir[128], gBanFile[128], gSHConfig[128], gHelpMotd[128], gHelpMotd_
 //PCVARs
 new sv_superheros, sh_adminaccess, sh_alivedrop, sh_autobalance, sh_objectivexp
 new sh_cmdprojector, sh_debug_messages, sh_endroundsave, sh_hsmult, sh_loadimmediate, sh_lvllimit
-new sh_maxbinds, sh_maxpowers, sh_menumode, sh_mercyxp, sh_mercyxpmode, sh_buyxp, sh_minlevel
+new sh_maxbinds, sh_maxpowers, sh_menumode, sh_mercyxp, sh_mercyxpmode, sh_buyxp, sh_defaulthealth, sh_minlevel
 new sh_savexp, sh_saveby, sh_xpsavedays, sh_minplrsbhxp, sh_reloadmode, sh_blockvip, sh_ffa
 new mp_friendlyfire, sv_maxspeed, sv_lan, bot_quota
 
@@ -642,6 +641,7 @@ public plugin_init()
 	sh_mercyxp = register_cvar("sh_mercyxp", "0")
 	sh_mercyxpmode = register_cvar("sh_mercyxpmode", "1")
 	sh_buyxp = register_cvar("sh_buyxp", "2000")
+	sh_defaulthealth = register_cvar("sh_defaulthealth", "125")
 	sh_minlevel = register_cvar("sh_minlevel", "0")
 	sh_savexp = register_cvar("sh_savexp", "1")
 	sh_saveby = register_cvar("sh_saveby", "1")
@@ -1892,7 +1892,7 @@ Float:getMaxSpeed(id, weapon)
 getMaxHealth(id)
 {
 	static returnHealth, x
-	returnHealth = DEFAULT_HEALTH
+	returnHealth = get_pcvar_num(sh_defaulthealth)
 
 	if ( !(id == gXpBounsVIP && getVipFlags() & VIP_BLOCK_HEALTH) ) {
 		static heroIndex, playerpowercount, heroHealthPointer
@@ -2130,7 +2130,7 @@ menuSuperPowers(id, menuOffset)
 		keys |= (1<<x-menuOffset) // enable this option
 		formatex(temp, charsmax(temp), "%s (%d%s)", gSuperHeros[heroIndex][hero], heroLevel, gSuperHeros[heroIndex][requiresKeys] ? "b" : "")
 		
-		if ( contain( plrlang, "ru" ) == -1 )
+		if ( contain( plrlang, "ru" ) == -1 || dictionaryRelation[heroIndex] == -1 )
 			format(temp, charsmax(temp), "%d. %-20s- %s^n", x - menuOffset + 1, temp, gSuperHeros[heroIndex][superpower])
 		else
 			format(temp, charsmax(temp), "%d. %-20s- %s^n", x - menuOffset + 1, temp, heroDictionary[dictionaryRelation[heroIndex]][DICT_RU * 2 + 1])
@@ -2231,7 +2231,7 @@ public selectedSuperPower(id, key)
 	new message[256]
 	if ( !gSuperHeros[heroIndex][requiresKeys] ) {
 		
-		if ( contain( plrlang, "ru" ) == -1 )
+		if ( contain( plrlang, "ru" ) == -1 || dictionaryRelation[heroIndex] == -1 )
 			formatex(message, charsmax(message), "%L", id, "SHMOD_AUTOMATIC_POWER", gSuperHeros[heroIndex][superpower], gSuperHeros[heroIndex][help])
 		else
 			formatex(message, charsmax(message), "%L", id, "SHMOD_AUTOMATIC_POWER", heroDictionary[dictionaryRelation[heroIndex]][DICT_RU * 2 + 1], heroDictionary[dictionaryRelation[heroIndex]][DICT_RU * 2 + 2])
@@ -2239,7 +2239,7 @@ public selectedSuperPower(id, key)
 	}
 	else {
 		
-		if ( contain( plrlang, "ru" ) == -1 )
+		if ( contain( plrlang, "ru" ) == -1 || dictionaryRelation[heroIndex] == -1 )
 			formatex(message, charsmax(message), "%L", id, "SHMOD_BIND_INSTRUCTION", gPlayerBinds[id][0]+1, gSuperHeros[heroIndex][superpower], gSuperHeros[heroIndex][help])
 		else
 			formatex(message, charsmax(message), "%L", id, "SHMOD_BIND_INSTRUCTION", gPlayerBinds[id][0]+1, heroDictionary[dictionaryRelation[heroIndex]][DICT_RU * 2 + 1], heroDictionary[dictionaryRelation[heroIndex]][DICT_RU * 2 + 2])
@@ -4639,7 +4639,7 @@ showHeroes(id)
 
 		formatex(name_lvl, charsmax(name_lvl), "%s (%d)", gSuperHeros[heroIndex][hero], getHeroLevel(heroIndex))
 
-		if ( contain( plrlang, "ru" ) == -1 )
+		if ( contain( plrlang, "ru" ) == -1 || dictionaryRelation[heroIndex] == -1 )
 			n += formatex(buffer[n], charsmax(buffer)-n, "%d) %-18s- %s %s^n", x, name_lvl, gSuperHeros[heroIndex][superpower], bindNumtxt)
 		else
 			n += formatex(buffer[n], charsmax(buffer)-n, "%d) %-18s- %s %s^n", x, name_lvl, heroDictionary[dictionaryRelation[heroIndex]][DICT_RU * 2 + 1], bindNumtxt)
