@@ -673,7 +673,13 @@ map_populateList(Array:mapArray, mapFilename[])
 			log_error(AMX_ERR_NOTFOUND, "%L", LANG_SERVER, "GAL_MAPS_FOLDERMISSING");
 		}
 	}
+	ArraySortEx(mapArray, "sort_strings");
 	return mapCnt;	
+}
+
+public sort_strings(Array:array, elem1[], elem2[])
+{
+	return (strcmp(elem1, elem2) == 1);
 }
 
 public map_loadNominationList()
@@ -2495,6 +2501,8 @@ vote_unrock(id)
 
 vote_getRocksNeeded()
 {
+	if (get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_ExcludeHLTV) == 2 && get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "CT") + get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "TERRORIST") == 2)
+		return 2;
 	return floatround(get_pcvar_float(cvar_rtvRatio) * float(get_realplayersnum()), floatround_ceil);
 }
 
