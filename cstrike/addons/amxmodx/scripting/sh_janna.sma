@@ -166,6 +166,8 @@ public event_round_start()
 //----------------------------------------------------------------------------------------------
 // https://forums.alliedmods.net/showpost.php?p=591365&postcount=2
 public fw_SetModel(ent, model[]) {
+	if (!sh_is_active())
+		return FMRES_IGNORED;
 	if (!pev_valid(ent))
 		return FMRES_IGNORED;
 	

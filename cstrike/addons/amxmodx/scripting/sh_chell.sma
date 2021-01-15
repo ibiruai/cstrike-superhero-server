@@ -6,6 +6,7 @@
 
 //Chell
 chell_level 0
+chell_enabled 1
 
 */
 
@@ -93,6 +94,7 @@ public plugin_init() {
 	register_plugin("SUPERHERO Chell", "1.0", AUTHOR)
 	
 	new gLevel = register_cvar("chell_level", "0")
+	register_cvar("chell_enabled", "1")
 	gHeroID = sh_create_hero(gHeroName, gLevel)
 	sh_set_hero_info(gHeroID, "Portal Gun", "Press R holding knife to get Portal Gun")
 	
@@ -295,7 +297,7 @@ public client_disconnected(id) {
 		
 		engfunc(EngFunc_TraceHull, testOrigin, testOrigin, 0, HULL_HUMAN, id, g_pCommonTr)
 		
-		if(get_tr2(g_pCommonTr, TR_StartSolid) || get_tr2(g_pCommonTr, TR_AllSolid))
+		if(!sh_is_active() || !get_cvar_num("chell_enabled") || get_tr2(g_pCommonTr, TR_StartSolid) || get_tr2(g_pCommonTr, TR_AllSolid))
 			goto error
 		
 		// test another portal

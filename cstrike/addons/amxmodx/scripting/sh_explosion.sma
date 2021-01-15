@@ -163,6 +163,7 @@ public apacheexplode(parm[2]){
 //---------------------------------------------------------------------------------------------- 
 public death()
 {
+  if ( !sh_is_active() ) return
   new id = read_data(2)
   if (g_hasexplosionPower[id] == true) BlowUp(id)
 }

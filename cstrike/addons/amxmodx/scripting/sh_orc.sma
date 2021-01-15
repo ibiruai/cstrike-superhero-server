@@ -123,6 +123,7 @@ public sh_client_death(id)
 //----------------------------------------------------------------------------------------------
 public player_spawn(id)
 {
+	if ( !sh_is_active() ) return
 	if ( !gHasOrcPower[id] || !is_user_connected(id) || !is_user_alive(id) ) return	
 	
 	new iParm[2]

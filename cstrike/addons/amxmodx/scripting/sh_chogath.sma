@@ -88,6 +88,7 @@ public sh_hero_init(id, heroID, mode)
 //----------------------------------------------------------------------------------------------
 public newSpawn(id)
 {
+	if ( !sh_is_active() ) return
 	if ( !gHasChogath[id] || !gExtraHP[id] ) return
 	
 	new array[3]
@@ -127,6 +128,7 @@ public chogath_healthOnSpawn(array[])
 //----------------------------------------------------------------------------------------------
 public chogath_death()
 {
+	if ( !sh_is_active() ) return
 	new attacker = read_data(1)
 	new victim = read_data(2)
 	new WeaponName[20]

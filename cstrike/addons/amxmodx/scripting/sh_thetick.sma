@@ -62,6 +62,8 @@ public sh_hero_init(id, heroID, mode)
 //----------------------------------------------------------------------------------------------
 public ham_TakeDamage(this, inflictor, attacker, Float:damage, damagebits)
 {
+	if ( !sh_is_active() ) return HAM_IGNORED
+
 	if ( damagebits & DMG_FALL && HasTheTick[this] ) return HAM_SUPERCEDE
 
 	return HAM_IGNORED

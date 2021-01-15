@@ -45,6 +45,7 @@ public mirage_init() {
 
 public mirage_loop()
 {
+	if( !sh_is_active() ) return PLUGIN_CONTINUE
 	new parm[2],i
 	for ( new id=1; id<=SH_MAXSLOTS; id++ ) if (gHasMiragePowers[id]&&is_user_alive(id)) 
 	{
