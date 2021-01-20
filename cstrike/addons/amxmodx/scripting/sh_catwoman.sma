@@ -324,7 +324,7 @@ find_free_spawn(spawnType, Float:spawnOrigin[3], Float:spawnAngle[3])
 //----------------------------------------------------------------------------------------------
 public catwoman_changeback(id)
 {
-	if ( !is_user_alive(id) || !is_user_connected(id) )
+	if ( !is_user_connected(id) )
 		return
 
 	cs_reset_user_model(id)
