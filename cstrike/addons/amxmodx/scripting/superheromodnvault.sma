@@ -5867,13 +5867,6 @@ public mh_MainMenu(id, menu, item)
 {
 	if ( !is_user_connected(id) || is_user_bot(id) ) return PLUGIN_HANDLED;
 	
-	if(item == MENU_EXIT)
-	{
-		menu_cancel(id);
-		backToMenu[id] = false;
-		return PLUGIN_HANDLED;
-	}
-
 	new command[10], name[64], access, callback;
 
 	menu_item_getinfo(menu, item, access, command, sizeof command - 1, name, sizeof name - 1, callback);
@@ -5919,7 +5912,12 @@ public mh_MainMenu(id, menu, item)
 		case 6: SettingsMenu(id)
 		case 7: client_cmd(id, "say /maps")
 		case 8: client_cmd(id, "say buyxp")
-		case 9: menu_destroy(menu);
+		case 9: 
+		{
+			menu_cancel(id);
+			backToMenu[id] = false;
+			return PLUGIN_HANDLED;
+		}
 	}
 	if (item >= 2 && item <= 4)
 		MainMenu(id)
