@@ -48,7 +48,7 @@ public plugin_init()
 
 	RegisterHam(Ham_Player_Jump, "player", "Player_Jump")
 	register_forward(FM_UpdateClientData, "UpdateClientData")
-	register_forward(FM_CmdStart, "CmdStart")
+	//register_forward(FM_CmdStart, "CmdStart")
 	RegisterHam(Ham_Spawn, "player", "Check_Alive", 1)
 	RegisterHam(Ham_Killed, "player", "Check_Alive", 1)
 	RegisterHam(Ham_TakeDamage, "player", "Ham_TakeDamage_player")
