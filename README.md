@@ -52,6 +52,7 @@ Website: <https://ibiruai.github.io/cstrike-superhero-server/>
 [Map specific commands](https://forums.alliedmods.net/showthread.php?t=16517),
 [Vote Ban](https://forums.alliedmods.net/showthread.php?t=96586),
 [Bunny Hop Abilities](https://forums.alliedmods.net/showthread.php?t=69840),
+[Force Round End](https://forums.alliedmods.net/showthread.php?t=56941),
 No footsteps while walking, Hints, Bot Manager
 
 **Heroes**
