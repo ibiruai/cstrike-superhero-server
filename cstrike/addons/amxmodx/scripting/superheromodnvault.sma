@@ -528,7 +528,7 @@ new gSHConfigDir[128], gBanFile[128], gSHConfig[128], gHelpMotd[128], gHelpMotd_
 //PCVARs
 new sv_superheros, sh_adminaccess, sh_alivedrop, sh_autobalance, sh_objectivexp
 new sh_cmdprojector, sh_debug_messages, sh_endroundsave, sh_hsmult, sh_loadimmediate, sh_lvllimit
-new sh_maxbinds, sh_maxpowers, sh_menumode, sh_mercyxp, sh_mercyxpmode, sh_buyxp, sh_defaulthealth, sh_minlevel
+new sh_maxbinds, sh_maxpowers, sh_menumode, sh_mercyxp, sh_mercyxpmode, sh_defaulthealth, sh_minlevel
 new sh_savexp, sh_saveby, sh_xpsavedays, sh_minplrsbhxp, sh_reloadmode, sh_blockvip, sh_ffa
 new mp_friendlyfire, sv_maxspeed, sv_lan, bot_quota
 
@@ -640,7 +640,6 @@ public plugin_init()
 	sh_menumode = register_cvar("sh_menumode", "1")
 	sh_mercyxp = register_cvar("sh_mercyxp", "0")
 	sh_mercyxpmode = register_cvar("sh_mercyxpmode", "1")
-	sh_buyxp = register_cvar("sh_buyxp", "2000")
 	sh_defaulthealth = register_cvar("sh_defaulthealth", "125")
 	sh_minlevel = register_cvar("sh_minlevel", "0")
 	sh_savexp = register_cvar("sh_savexp", "1")
@@ -3766,12 +3765,23 @@ public cl_say(id)
 	}
 	#endif
 	else if ( equali(said[pos], "buyxp") || equali(said[pos], "tome") ) {
-		new buyxp = get_pcvar_num(sh_buyxp)
-		if (gPlayerXP[id] < buyxp) {
-			localAddXP(id, buyxp)
-			chatMessage(id, _, "%L", id, "SHMOD_BUYXP_OK", buyxp)
+		new player_name[33], buyxp_next_time[16], buyxp_wait = 0
+		get_user_name(id, player_name, 32)
+
+		if (fvault_get_data("vault_buyxp", player_name, buyxp_next_time, charsmax(buyxp_next_time)))
+			buyxp_wait = (str_to_num(buyxp_next_time) - get_systime())
+		if (buyxp_wait <= 0) {
+			new buyxp_give = 250 * (1 + gPlayerLevel[id] / 5)
+			localAddXP(id, buyxp_give)
+			displayPowers(id, false)
+			new buyxp_delay = gPlayerLevel[id]
+			chatMessage(id, _, "%L", id, "SHMOD_BUYXP_OK", buyxp_give)
+			format(buyxp_next_time, charsmax(buyxp_next_time), "%i", get_systime() + 60 * buyxp_delay)
+			fvault_pset_data("vault_buyxp", player_name, buyxp_next_time)
 		} else {
-			chatMessage(id, _, "%L", id, "SHMOD_BUYXP_NO", said[pos])
+			new t[] = "0"
+			if (buyxp_wait % 60 >= 10) t = ""
+			chatMessage(id, _, "%L", id, "SHMOD_BUYXP_NO", buyxp_wait / 60, t, buyxp_wait % 60)
 		}
 	}
 	else if ( containi(said, "powers") != -1 || containi(said, "superhero") != -1 ) {
@@ -5824,19 +5834,20 @@ public MainMenu(id)
 	formatex(string, 128, "%L", id, "MENU_MM_TITLE")
 	new menu = menu_create(string, "mh_MainMenu");
 	
-	new items[7][24] = {
+	new items[10][24] = {
 		"MENU_MM_SHOWMENU", "MENU_MM_DROPMENU", "MENU_MM_SENTRY",
 		"MENU_MM_HELP", /*"MENU_MM_SENRY_HELP",*/ "MENU_MM_MYHEROES",	"MENU_MM_PLAYERSKILLS",
-		"MENU_MM_SETTINGS"
+		"MENU_MM_SETTINGS", "MENU_MM_MAPS", "MENU_MM_BUYXP", "MENU_EXIT"
 	}
 
-	for ( new i = 0; i < 7; i++ )
+	for ( new i = 0; i < 10; i++ )
 	{
 		formatex(string, 128, "%L", id, items[i])
 		menu_additem(menu, string, "", 0);
 	}
 
-	menu_setprop(menu, MPROP_EXIT, MEXIT_ALL);
+	//menu_setprop(menu, MPROP_EXIT, MEXIT_ALL);
+	menu_setprop(menu, MPROP_PERPAGE, 0);
 	menu_setprop(menu, MPROP_NOCOLORS, 1);
 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\w");
 		
@@ -5863,7 +5874,7 @@ public mh_MainMenu(id, menu, item)
 		return PLUGIN_HANDLED;
 	}
 
-	new command[7], name[64], access, callback;
+	new command[10], name[64], access, callback;
 
 	menu_item_getinfo(menu, item, access, command, sizeof command - 1, name, sizeof name - 1, callback);
 
@@ -5906,6 +5917,9 @@ public mh_MainMenu(id, menu, item)
 		case 4: showHeroes(id)
 		case 5: showPlayerSkills(id, 1, "")
 		case 6: SettingsMenu(id)
+		case 7: client_cmd(id, "say /maps")
+		case 8: client_cmd(id, "say buyxp")
+		case 9: menu_destroy(menu);
 	}
 	if (item >= 2 && item <= 4)
 		MainMenu(id)

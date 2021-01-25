@@ -183,8 +183,8 @@ SHMOD_MOTD_MYHEROES_LIST = Ваши герои:^n^n
 SHMOD_MOTD_HEROLIST_TEXT1 = СОВЕТ: Детальная информация о способностях доступна в /help.^n^n
 SHMOD_MOTD_HEROLIST_TEXT2 = Герои:^n
 
-SHMOD_BUYXP_OK = Вы получили %d XP в подарок
-SHMOD_BUYXP_NO = Команда %s недоступна на вашем уровне
+SHMOD_BUYXP_OK = Вы получили %d XP
+SHMOD_BUYXP_NO = Пожалуйста, подождите %i:%s%i минут
 
 MENU_MM_TITLE = \yМеню сервера\w
 MENU_MM_SHOWMENU = Выбор способностей
@@ -196,6 +196,8 @@ MENU_MM_HEROLIST = Описание способностей
 MENU_MM_HELP = Помощь по SuperHero Mod
 MENU_MM_SENRY_HELP = Помощь по Sentry Guns
 MENU_MM_SETTINGS = Настройки
+MENU_MM_MAPS = Номинировать карту
+MENU_MM_BUYXP = Бесплатный опыт
 MENU_SM_DROP_SOME_POWERS = Сбросьте имеющиеся способности, чтобы иметь возможность выбрать новые
 MENU_SM_YOU_ARE_0_LVL = Способности становятся доступны с первого уровня
 MENU_DM_NO_POWERS = У вас нет способностей
@@ -430,8 +432,8 @@ SHMOD_MOTD_MYHEROES_LIST = Your Heroes Are:^n^n
 SHMOD_MOTD_HEROLIST_TEXT1 = TIP: Use "herolist" in the console for better output and searchability.^nTIP: Say /help to learn more details about heroes.^n^n
 SHMOD_MOTD_HEROLIST_TEXT2 = Installed Heroes:^n^n
 
-SHMOD_BUYXP_OK = You got %d XP as a gift
-SHMOD_BUYXP_NO = The %s command is not available on your level
+SHMOD_BUYXP_OK = You got %d XP
+SHMOD_BUYXP_NO = Please wait %i:%s%i minutes
 
 MENU_MM_TITLE = \yMain menu\w
 MENU_MM_SHOWMENU = Select powers
@@ -443,6 +445,8 @@ MENU_MM_HEROLIST = Description of powers
 MENU_MM_HELP = SuperHero Mod Help
 MENU_MM_SENRY_HELP = Sentry Guns Help
 MENU_MM_SETTINGS = Settings
+MENU_MM_MAPS = Nominate a map
+MENU_MM_BUYXP = Free XP
 MENU_SM_DROP_SOME_POWERS = Drop some powers so you can pick another
 MENU_SM_YOU_ARE_0_LVL = No powers are available on level 0
 MENU_DM_NO_POWERS = You don't have any powers
