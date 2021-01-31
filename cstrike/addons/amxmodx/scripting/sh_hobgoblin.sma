@@ -80,7 +80,7 @@ public sh_client_spawn(id)
 //----------------------------------------------------------------------------------------------
 public give_grenade(id)
 {
-	if ( sh_is_active() && is_user_alive(id) && gHasHobgoblin[id] ) {
+	if ( sh_is_active() && is_user_alive(id) && gHasHobgoblin[id] && get_pcvar_float(gPcvarGrenadeTimer) > 0 ) {
 		sh_give_weapon(id, CSW_HEGRENADE)
 	}
 }

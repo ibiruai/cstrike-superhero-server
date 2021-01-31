@@ -1006,6 +1006,12 @@ public cmd_say(id)
 	return PLUGIN_CONTINUE;
 }
 
+public nominate_a_map(id)
+{
+	nomination_attempt(id, "");
+	return PLUGIN_CONTINUE;
+}
+
 nomination_attempt(id, nomination[]) // (playerName[], &phraseIdx, matchingSegment[])
 {
 	// all map names are stored as lowercase, so normalize the nomination

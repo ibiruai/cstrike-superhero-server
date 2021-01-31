@@ -253,6 +253,5 @@ public AdminCmd_Bhop(id, level, cid)
 		}
 	}
 
-	client_print(id, print_console, "Player %s autobhop is currently : %s", szPlayer, g_bAutoBhop[iPlayer] ? "On" : "Off")
 	return PLUGIN_HANDLED
 }

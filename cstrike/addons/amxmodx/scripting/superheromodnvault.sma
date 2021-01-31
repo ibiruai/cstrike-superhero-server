@@ -426,6 +426,7 @@
 
 #if COOL_MENUS
 	new bool:backToMenu[SH_MAXSLOTS]
+	new nominate_a_map_forward
 #endif
 
 new const SH_CORE_STR[] =  "SuperHero Core"
@@ -750,6 +751,7 @@ public plugin_init()
 	#if COOL_MENUS
 	//Show main menu on I
 	register_clcmd("showbriefing", "MainMenu")
+	nominate_a_map_forward = CreateMultiForward("nominate_a_map", ET_CONTINUE, FP_CELL)
 	#endif
 	
 	// Power Commands, using a loop so it adjusts with SH_MAXBINDPOWERS
@@ -3765,24 +3767,7 @@ public cl_say(id)
 	}
 	#endif
 	else if ( equali(said[pos], "buyxp") || equali(said[pos], "tome") ) {
-		new player_name[33], buyxp_next_time[16], buyxp_wait = 0
-		get_user_name(id, player_name, 32)
-
-		if (fvault_get_data("vault_buyxp", player_name, buyxp_next_time, charsmax(buyxp_next_time)))
-			buyxp_wait = (str_to_num(buyxp_next_time) - get_systime())
-		if (buyxp_wait <= 0) {
-			new buyxp_give = 250 * (1 + gPlayerLevel[id] / 5)
-			localAddXP(id, buyxp_give)
-			displayPowers(id, false)
-			new buyxp_delay = gPlayerLevel[id]
-			chatMessage(id, _, "%L", id, "SHMOD_BUYXP_OK", buyxp_give)
-			format(buyxp_next_time, charsmax(buyxp_next_time), "%i", get_systime() + 60 * buyxp_delay)
-			fvault_pset_data("vault_buyxp", player_name, buyxp_next_time)
-		} else {
-			new t[] = "0"
-			if (buyxp_wait % 60 >= 10) t = ""
-			chatMessage(id, _, "%L", id, "SHMOD_BUYXP_NO", buyxp_wait / 60, t, buyxp_wait % 60)
-		}
+		buyxp(id)
 	}
 	else if ( containi(said, "powers") != -1 || containi(said, "superhero") != -1 ) {
 		chatMessage(id, _, "%L", id, "SHMOD_HELP_HINT")
@@ -3790,6 +3775,28 @@ public cl_say(id)
 	}
 
 	return PLUGIN_CONTINUE
+}
+//----------------------------------------------------------------------------------------------
+public buyxp(id)
+{
+	new player_name[33], buyxp_next_time[16], buyxp_wait = 0
+	get_user_name(id, player_name, 32)
+
+	if (fvault_get_data("vault_buyxp", player_name, buyxp_next_time, charsmax(buyxp_next_time)))
+		buyxp_wait = (str_to_num(buyxp_next_time) - get_systime())
+	if (buyxp_wait <= 0) {
+		new buyxp_give = 250 * (1 + gPlayerLevel[id] / 5)
+		localAddXP(id, buyxp_give)
+		displayPowers(id, false)
+		new buyxp_delay = gPlayerLevel[id]
+		chatMessage(id, _, "%L", id, "SHMOD_BUYXP_OK", buyxp_give)
+		format(buyxp_next_time, charsmax(buyxp_next_time), "%i", get_systime() + 60 * buyxp_delay)
+		fvault_pset_data("vault_buyxp", player_name, buyxp_next_time)
+	} else {
+		new t[] = "0"
+		if (buyxp_wait % 60 >= 10) t = ""
+		chatMessage(id, _, "%L", id, "SHMOD_BUYXP_NO", buyxp_wait / 60, t, buyxp_wait % 60)
+	}
 }
 //----------------------------------------------------------------------------------------------
 public bind_not_a_command(id)
@@ -5906,20 +5913,22 @@ public mh_MainMenu(id, menu, item)
 		}
 		case 2: client_cmd(id, "sentry_build")
 		case 3: showHelp(id)
-		//case 4: client_cmd(id, "sentryhelp")
 		case 4: showHeroes(id)
 		case 5: showPlayerSkills(id, 1, "")
 		case 6: SettingsMenu(id)
-		case 7: client_cmd(id, "say /maps")
-		case 8: client_cmd(id, "say buyxp")
-		case 9: 
+		case 7:
+		{
+			ExecuteForward(nominate_a_map_forward, _, id);
+			backToMenu[id] = false;
+		}
+		case 8: buyxp(id)
+		case 9:
 		{
 			menu_cancel(id);
 			backToMenu[id] = false;
-			return PLUGIN_HANDLED;
 		}
 	}
-	if (item >= 2 && item <= 4)
+	if (2 <= item <= 5 || item == 8)
 		MainMenu(id)
 
 	menu_destroy(menu);
