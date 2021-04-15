@@ -1,6 +1,6 @@
-## About my server
+## About
 
-I have been editing SuperHero Mod plugin, its heroes, and porting new heroes from other plugins for my Counter-Strike 1.6 server. This repository helps me track my edits.
+I was editing SuperHero Mod plugin, its heroes, and porting new heroes from other plugins for my Counter-Strike 1.6 server. This repository helped me track my edits.
 
 Things I did
 
@@ -12,6 +12,8 @@ Things I did
 - [x] Scorpion doesn't hold a target forever, no footsteps with Shift pressed, and minor things like that
 
 Website: <https://ibiruai.github.io/cstrike-superhero-server/>
+
+Send `amx_helpfile` to game server console to generate help pages and docs/index.html
 
 ## What does someone need to run a Counter-Strike 1.6 server with plugins
 
