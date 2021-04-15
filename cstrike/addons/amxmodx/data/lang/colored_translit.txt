@@ -34,9 +34,9 @@ CT_SPAMGAG = You were banned from chat for %d min. Reason: Spam
 CT_LONGMSG = The message is too long!
 CT_SPAMWARN = Your message looks like spam. Warns: %d
 CT_SWEARWARN = Cursing is not allowed. Warns: %d
-CT_LAN = LAN
-CT_PROVIDER = Provider
-CT_ERROR = Error
+CT_LAN = ??
+CT_PROVIDER = ??
+CT_ERROR = ??
 
 [ru]
 CT_DEAD = DEAD
@@ -74,6 +74,6 @@ CT_SPAMGAG = Вы получили бан чата на %d мин. Причин�
 CT_LONGMSG = Слишком длинное сообщение!
 CT_SPAMWARN = Ваше сообщение было сочтено за спам. Предупреждений: %d
 CT_SWEARWARN = Пожалуйста, не сквернословьте. Предупреждений: %d
-CT_LAN = LAN
-CT_PROVIDER = Provider
-CT_ERROR = Error
+CT_LAN = ??
+CT_PROVIDER = ??
+CT_ERROR = ??

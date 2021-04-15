@@ -4801,6 +4801,9 @@ public client_kill(id)
 //----------------------------------------------------------------------------------------------
 public client_connect(id)
 {
+	client_cmd(id, "cl_forwardspeed 2000")
+	client_cmd(id, "cl_backspeed 2000")
+	client_cmd(id, "cl_sidespeed 2000")
 	// Don't want any left over residuals
 	initPlayer(id)
 }
@@ -5843,8 +5846,8 @@ public MainMenu(id)
 	
 	new items[10][24] = {
 		"MENU_MM_SHOWMENU", "MENU_MM_DROPMENU", "MENU_MM_SENTRY",
-		"MENU_MM_HELP", /*"MENU_MM_SENRY_HELP",*/ "MENU_MM_MYHEROES",	"MENU_MM_PLAYERSKILLS",
-		"MENU_MM_SETTINGS", "MENU_MM_MAPS", "MENU_MM_BUYXP", "MENU_EXIT"
+		"MENU_MM_HELP", "MENU_MM_MYHEROES",	"MENU_MM_PLAYERSKILLS",
+		"MENU_MM_SETTINGS", "MENU_MM_MAPS", "MENU_MM_BUYXP", "MENU_MM_EXIT"
 	}
 
 	for ( new i = 0; i < 10; i++ )
@@ -6370,22 +6373,22 @@ public LanguageMenu(id)
 //----------------------------------------------------------------------------------------------
 public mh_LanguageMenu(id, key)
 {
-	new playerName[33]
-	get_user_name(id, playerName, charsmax(playerName))
+	new authid[33]
+	get_user_authid(id, authid, charsmax(authid))
 	
 	switch(key) {
 		case 7: {
-			fvault_pset_data("vault_language", playerName, "en")
+			fvault_pset_data("vault_language", authid, "en")
 			set_user_info(id, "lang", "en")
 			sh_chat_message(id, -1, "You've selected English language")
 		}
 		case 8: {
-			fvault_pset_data("vault_language", playerName, "ru")
+			fvault_pset_data("vault_language", authid, "ru")
 			set_user_info(id, "lang", "ru")
 			sh_chat_message(id, -1, "Вы выбрали русский язык")
 		}
 		case 9: {
-			fvault_pset_data("vault_language", playerName, "default")
+			fvault_pset_data("vault_language", authid, "default")
 		}
 	}
 	

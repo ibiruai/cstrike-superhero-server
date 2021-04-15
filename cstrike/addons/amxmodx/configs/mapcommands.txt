@@ -10,6 +10,21 @@
 [zm_
 mp_roundtime 6
 
+[zm_hidenseek]
+daredevil_bright 0
+psylocke_distance 0
+
+[beach_attack]
+catwoman_pctperlev 0.0
+spiderman_maxhooks 0
+mario_maxjumps 1
+blink_delay 180
+ironman_fuelcost 50
+amx_weapon_maxspeed_multiplier 1.0
+chell_enabled 0
+freeman_longjump 0
+goblin_grenadetimer 0
+
 [helms_deep_ag]
 mp_roundtime 4
 
@@ -62,8 +77,9 @@ scorpion_escapetime 2.5
 htorch_armorcost 50
 htorch_numburns 1
 htorch_burndamage 10
+freeman_longjump 0
 
-[fun_matrix_reloaded]
+[fun_matrix_
 catwoman_pctperlev 0.0
 shadowcat_cliptime 0
 gmasterv2_messagetype 1
@@ -75,9 +91,17 @@ shadowcat_cliptime 0
 gmasterv2_messagetype 1
 gmasterv2_limit 1
 
+[gf_allinone_beta4]
+catwoman_pctperlev 0.0
+gmasterv2_messagetype 1
+gmasterv2_limit 1
+
 [fun_atraccions]
+catwoman_pctperlev 0.0
+sh_defaulthealth 200
 gmasterv2_sameteam 2
-sh_defaulthealth 1000
+//amx_fre 0
+mp_roundtime 9
 wolv_healpoints 200
 captaina_percent 0.5
 captaina_godsecs 1.0
@@ -106,4 +130,61 @@ bass_multishot 0.1
 xavier_showteam 1
 demoman_maxmines 20
 sentry_cost1 "500"
+afk_min_players 10
+
+[happyvalley_2nd_lt]
+catwoman_pctperlev 0.0
+sh_defaulthealth 200
+gmasterv2_sameteam 2
+//amx_fre 0
+mp_roundtime 9
+wolv_healpoints 200
+captaina_percent 0.5
+captaina_godsecs 1.0
+Thing_weapon_percent 0.5
+blink_cooldown 0
+phoenix_cooldown 0
+jubilee_cooldown 0
+snake_cooldown 0
+shadowcat_cooldown 0
+spiderman_reelspeed 1600
+ironman_maxspeed 1600
+superman_gravity 0.45
+bazooka_cost1 0
+bazooka_cost2 0
+bazooka_cost3 0
+bazooka_cost4 0
+bazooka_cost5 0
+bazooka_cost6 0
+bazooka_cost7 0
+bazooka_speed 1550
+bass_speed 600
+bass_laser_ammo -1
+bass_laser_burndecals 0
+bass_cooldown 0
+bass_multishot 0.1
+xavier_showteam 1
+demoman_maxmines 20
+sentry_cost1 "500"
+afk_min_players 10
+
+[fy_shahmat]
+amx_weapon_maxspeed_multiplier 2.0
+catwoman_pctperlev 0.0
+sh_defaulthealth 200
+gmasterv2_sameteam 2
+//amx_fre 0
+mp_roundtime 9
+wolv_healpoints 200
+captaina_percent 0.5
+captaina_godsecs 1.0
+Thing_weapon_percent 0.5
+blink_cooldown 0
+phoenix_cooldown 0
+jubilee_cooldown 0
+snake_cooldown 0
+shadowcat_cooldown 0
+spiderman_reelspeed 800
+ironman_maxspeed 800
+superman_gravity 0.45
 afk_min_players 10

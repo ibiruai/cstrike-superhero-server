@@ -2452,19 +2452,27 @@ public vote_rock(id)
 		return;
 	}
 	
+	new bool:alreadyRockedVote = g_rockedVote[id];
+	g_rockedVote[id] = true;
+
 	// determine how many total rocks are needed
 	new rocksNeeded = vote_getRocksNeeded();
 
 	// make sure player hasn't already rocked the vote
-	if (g_rockedVote[id])
+	if (alreadyRockedVote)
 	{
+		if (g_rockedVoteCnt >= rocksNeeded)
+		{
+			client_print(0, print_chat, "%L", LANG_PLAYER, "GAL_ROCK_ENOUGH");
+			vote_startDirector(true);
+			return;
+		}
 		client_print(id, print_chat, "%L", id, "GAL_ROCK_FAIL_ALREADY", rocksNeeded - g_rockedVoteCnt);
 		rtv_remind(TASKID_REMINDER + id);
 		return;
 	}
 
 	// allow the player to rock the vote
-	g_rockedVote[id] = true;
 	client_print(id, print_chat, "%L", id, "GAL_ROCK_SUCCESS");
 
 	// make sure the rtv reminder timer has stopped
@@ -2507,17 +2515,29 @@ vote_unrock(id)
 
 vote_getRocksNeeded()
 {
+	new rocksNeeded = 0;
+	new players[32], playerCnt;
+	get_players(players, playerCnt, "che", "SPECTATOR");
+	for (new playerIdx = 0; playerIdx < playerCnt; ++playerIdx)
+		if (g_rockedVote[players[playerIdx]] == true)
+			rocksNeeded++;
 	if (get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_ExcludeHLTV) == 2 && get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "CT") + get_playersnum_ex(GetPlayers_ExcludeBots | GetPlayers_MatchTeam, "TERRORIST") == 2)
-		return 2;
-	return floatround(get_pcvar_float(cvar_rtvRatio) * float(get_realplayersnum()), floatround_ceil);
+		return rocksNeeded + 2;
+	return rocksNeeded + floatround(get_pcvar_float(cvar_rtvRatio) * float(get_realplayersnum()), floatround_ceil);
 }
 
 public rtv_remind(param)
 {
 	new who = param - TASKID_REMINDER;
-	
+	new rocksNeeded = vote_getRocksNeeded();
+	if (g_rockedVoteCnt >= rocksNeeded)
+	{
+		client_print(0, print_chat, "%L", LANG_PLAYER, "GAL_ROCK_ENOUGH");
+		vote_startDirector(true);
+		return;
+	}
 	// let the players know how many more rocks are needed
-	client_print_color(who, print_team_grey, "%L", LANG_PLAYER, "GAL_ROCK_NEEDMORE", vote_getRocksNeeded() - g_rockedVoteCnt);
+	client_print_color(who, print_team_grey, "%L", LANG_PLAYER, "GAL_ROCK_NEEDMORE", rocksNeeded - g_rockedVoteCnt);
 }
 
 public cmd_listmaps(id)

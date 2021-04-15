@@ -173,7 +173,7 @@ public create_helpfile_html_(website)
 			fputs(thefile, "^n")
 	}
 	if (!website) {
-		fputs(thefile, "<h3 id='links'>Links</h3><p>Website: <a href='https://ibiruai.github.io/'>https://ibiruai.github.io/</a></p><p>Git repository: <a href='https://github.com/ibiruai/cstrike-superhero-server'>https://github.com/ibiruai/cstrike-superhero-server</a></p><p>SuperHero Mod Sub-forum on Alliedmods.net (not affiliated with the server): <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
+		fputs(thefile, "<h3 id='links'>Links</h3><p>Website: <a href='https://ibiruai.github.io/cstrike-superhero-server/'>https://ibiruai.github.io/cstrike-superhero-server/</a></p><p>Git repository: <a href='https://github.com/ibiruai/cstrike-superhero-server'>https://github.com/ibiruai/cstrike-superhero-server</a></p><p>SuperHero Mod Sub-forum on Alliedmods.net (not affiliated with the server): <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
 		fputs(thefile, "</div></body></html>")
 		fclose(thefile)
 	}
@@ -345,7 +345,7 @@ public create_helpfile_html_(website)
 	}
 	else
 	{
-		fputs(thefile, "<h3 id='ссылки'>Ссылки</h3><p>Сайт сервера: <a href='https://ibiruai.github.io/'>https://ibiruai.github.io/</a></p><p>Git-репозиторий: <a href='https://github.com/ibiruai/cstrike-superhero-server'>https://github.com/ibiruai/cstrike-superhero-server</a></p><p>Подфорум SuperHero Mod на Alliedmods.net (не имеет отношения к этому серверу): <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
+		fputs(thefile, "<h3 id='ссылки'>Ссылки</h3><p>Сайт сервера: <a href='https://ibiruai.github.io/cstrike-superhero-server/'>https://ibiruai.github.io/cstrike-superhero-server/</a></p><p>Git-репозиторий: <a href='https://github.com/ibiruai/cstrike-superhero-server'>https://github.com/ibiruai/cstrike-superhero-server</a></p><p>Подфорум SuperHero Mod на Alliedmods.net (не имеет отношения к этому серверу): <a href='https://forums.alliedmods.net/forumdisplay.php?f=30'>https://forums.alliedmods.net/forumdisplay.php?f=30</a></p>")
 		fputs(thefile, "</div></body></html>")
 		fclose(thefile)
 	}

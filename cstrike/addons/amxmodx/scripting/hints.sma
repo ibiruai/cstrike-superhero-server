@@ -99,15 +99,16 @@ public client_putinserver(id)
 	showGreeting[id] = true
 	newPlayer[id]  = true
 	
-	new name[32], string[10]
-	get_user_name(id, name, 31)
+	new authid[32], string[10]
+	get_user_authid(id, authid, 31)
 	
-	if ( fvault_get_data("vault_language", name, string, 9) )
+	if ( fvault_get_data("vault_language", authid, string, 9) )
 	{
 		if ( contain( string, "default" ) == -1 )
 			set_user_info(id, "lang", string)
 		
 		newPlayer[id] = false
+		showLangmenu[id] = false
 	}
 	else
 	{
@@ -132,10 +133,7 @@ public client_putinserver(id)
 		if ( !showLangmenu[id] )
 		{
 			set_user_info(id, "lang", "ru")
-			
-			new playerName[33]
-			get_user_name(id, playerName, charsmax(playerName))
-			fvault_pset_data("vault_language", playerName, "ru")
+			fvault_pset_data("vault_language", authid, "ru")
 		}
 	}
 }
