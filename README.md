@@ -1,3 +1,5 @@
+***New mod for Counter-Strike based on SuperHero Mod <https://github.com/ibiruai/cstrike-skills>***
+
 ## About
 
 I was editing SuperHero Mod plugin, its heroes, and porting new heroes from other plugins for my Counter-Strike 1.6 server. This repository helped me track my edits.
@@ -27,6 +29,8 @@ Send `amx_helpfile` to game server console to generate help pages and docs/index
 
 5. AMX Mod X plugins. Since you are probably interested in SuperHero Mod, you might want to check [its subforum on Alliedmods.net](https://forums.alliedmods.net/forumdisplay.php?f=30).
 [How to compile AMX Mod X plugins](https://wiki.alliedmods.net/Compiling_Plugins_(AMX_Mod_X)).
+
+6. Maps, sounds, models and other files should be available via FastDL or people won't join the server.
 
 [SteamCMD]: https://developer.valvesoftware.com/wiki/SteamCMD
 
